@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:db": "node supabase/tests/rls.test.mjs"
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "node supabase/tests/rls.test.mjs"
   },
   "dependencies": {
     "@line/liff": "^2.31.2",

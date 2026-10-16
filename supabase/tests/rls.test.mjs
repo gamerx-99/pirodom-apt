@@ -1,4 +1,4 @@
-// ทดสอบ migration + RLS บน PGlite (ไม่ต้องใช้ Docker): npm run test:db
+// ทดสอบ migration + RLS บน PGlite (ไม่ต้องใช้ Docker): npm test
 // จำลองส่วนของ Supabase ที่ migration ใช้: auth.users, auth.uid(), storage.buckets, role anon/authenticated
 import { PGlite } from "@electric-sql/pglite";
 import { readdirSync, readFileSync } from "node:fs";
@@ -22,18 +22,27 @@ for (const f of readdirSync(dir).sort()) await db.exec(readFileSync(new URL(f, d
 const A = "00000000-0000-0000-0000-00000000000a";
 const B = "00000000-0000-0000-0000-00000000000b";
 const ADMIN = "00000000-0000-0000-0000-0000000000ad";
+const C = "00000000-0000-0000-0000-00000000000c"; // ผู้เช่าเก่าห้อง 101 (ย้ายออกแล้ว)
 await db.exec(`
-  insert into auth.users values ('${A}'), ('${B}'), ('${ADMIN}');
-  insert into profiles (id, role) values ('${A}', 'tenant'), ('${B}', 'tenant'), ('${ADMIN}', 'admin');
+  insert into auth.users values ('${A}'), ('${B}'), ('${C}'), ('${ADMIN}');
+  insert into profiles (id, role) values ('${A}', 'tenant'), ('${B}', 'tenant'), ('${C}', 'tenant'), ('${ADMIN}', 'admin');
   insert into rooms (id, room_no, unit_type) values
     ('10000000-0000-0000-0000-000000000001', '101', 'residential'),
     ('10000000-0000-0000-0000-000000000002', '205', 'residential');
   insert into leases (id, room_id, start_date, rent_amount, due_day) values
-    ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', '2026-11-01', 3500, 31),
-    ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', '2026-11-10', 3500, 10);
+    ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', '2026-10-01', 3500, 31),
+    ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', '2026-10-10', 3500, 10);
+  insert into leases (id, room_id, start_date, end_date, status, rent_amount, due_day) values
+    ('20000000-0000-0000-0000-00000000000c', '10000000-0000-0000-0000-000000000001', '2026-01-01', '2026-09-30', 'ended', 3500, 31);
   insert into lease_tenants values
     ('20000000-0000-0000-0000-000000000001', '${A}', true),
-    ('20000000-0000-0000-0000-000000000002', '${B}', true);
+    ('20000000-0000-0000-0000-000000000002', '${B}', true),
+    ('20000000-0000-0000-0000-00000000000c', '${C}', true);
+  insert into meter_readings (room_id, period, prev_value, curr_value) values
+    ('10000000-0000-0000-0000-000000000001', '2026-09-01', 100, 150),
+    ('10000000-0000-0000-0000-000000000001', '2026-11-01', 150, 230);
+  insert into maintenance_requests (room_id, category, created_at) values
+    ('10000000-0000-0000-0000-000000000001', 'ประปา', '2026-06-01');
   insert into invoices (id, lease_id, period, due_date, total, status) values
     ('30000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000001', '2026-12-01', '2026-11-30', 3500, 'issued'),
     ('30000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000002', '2026-12-01', '2026-12-10', 3500, 'issued');
@@ -67,8 +76,21 @@ await rejects(as(A, "insert into payments (invoice_id, slip_path, amount) values
 await rejects(as(A, "update invoices set status = 'paid'"), /permission denied/);
 await rejects(as(ADMIN, "update invoices set total = 0"), /permission denied/);
 
+// ห้องเดียวกันคนละสัญญา: เห็นมิเตอร์/งานซ่อมเฉพาะช่วงสัญญาตัวเอง
+assert.deepEqual((await as(A, "select period::text from meter_readings")).rows, [{ period: "2026-11-01" }]);
+assert.deepEqual((await as(C, "select period::text from meter_readings")).rows, [{ period: "2026-09-01" }]);
+assert.equal((await as(A, "select id from maintenance_requests")).rows.length, 0);
+assert.equal((await as(C, "select id from maintenance_requests")).rows.length, 1);
+assert.equal((await as(C, "select id from rooms")).rows.length, 0);
+await rejects(as(C, "insert into maintenance_requests (room_id, category) values ('10000000-0000-0000-0000-000000000001', 'ไฟฟ้า')"), /row-level security/);
+
+// audit log แก้จาก client ไม่ได้
+await rejects(as(ADMIN, "delete from audit_logs"), /permission denied/);
+
 // แจ้งซ่อมได้เฉพาะห้องตัวเอง
 await as(A, "insert into maintenance_requests (room_id, category) values ('10000000-0000-0000-0000-000000000001', 'ไฟฟ้า')");
+assert.equal((await as(A, "select id from maintenance_requests")).rows.length, 1);
+assert.equal((await as(C, "select id from maintenance_requests")).rows.length, 1);
 await rejects(as(A, "insert into maintenance_requests (room_id, category) values ('10000000-0000-0000-0000-000000000002', 'ไฟฟ้า')"), /row-level security/);
 
 // กันสร้างบิลซ้ำ (lease_id, period)

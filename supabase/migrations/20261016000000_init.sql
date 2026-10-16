@@ -172,11 +172,25 @@ language sql stable security definer set search_path = '' as $$
   select lease_id from public.lease_tenants where profile_id = auth.uid();
 $$;
 
+-- ห้องของสัญญาที่ยัง active (ผู้เช่าที่ย้ายออกแล้วไม่ได้ห้องคืน)
 create function public.my_room_ids() returns setof uuid
 language sql stable security definer set search_path = '' as $$
   select l.room_id from public.leases l
   join public.lease_tenants lt on lt.lease_id = l.id
-  where lt.profile_id = auth.uid();
+  where lt.profile_id = auth.uid() and l.status = 'active';
+$$;
+
+-- ข้อมูลรายห้อง (มิเตอร์/งานซ่อม) เห็นได้เฉพาะช่วงสัญญาของตัวเอง ไม่เห็นของผู้เช่าคนก่อน/คนถัดไป
+create function public.in_my_lease_period(p_room_id uuid, p_at date) returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1 from public.leases l
+    join public.lease_tenants lt on lt.lease_id = l.id
+    where lt.profile_id = auth.uid()
+      and l.room_id = p_room_id
+      and p_at >= l.start_date
+      and (p_at <= l.end_date or (l.end_date is null and l.status = 'active'))
+  );
 $$;
 
 -- ---------- RLS: เปิดทุกตาราง, owner/admin เข้าถึงทั้งหมด ----------
@@ -208,7 +222,7 @@ create policy tenant_read on public.leases for select to authenticated
 create policy tenant_read on public.lease_tenants for select to authenticated
   using (lease_id in (select public.my_lease_ids()));
 create policy tenant_read on public.meter_readings for select to authenticated
-  using (room_id in (select public.my_room_ids()));
+  using (public.in_my_lease_period(room_id, period));
 create policy tenant_read on public.invoices for select to authenticated
   using (lease_id in (select public.my_lease_ids()));
 create policy tenant_read on public.invoice_items for select to authenticated
@@ -218,9 +232,10 @@ create policy tenant_read on public.payments for select to authenticated
 create policy tenant_read on public.documents for select to authenticated
   using (lease_id in (select public.my_lease_ids()));
 create policy tenant_read on public.maintenance_requests for select to authenticated
-  using (room_id in (select public.my_room_ids()));
+  using (public.in_my_lease_period(room_id, (created_at at time zone 'Asia/Bangkok')::date));
+-- ผ่าน RLS ของ maintenance_requests อีกชั้น
 create policy tenant_read on public.maintenance_updates for select to authenticated
-  using (request_id in (select id from public.maintenance_requests where room_id in (select public.my_room_ids())));
+  using (request_id in (select id from public.maintenance_requests));
 create policy tenant_read on public.notifications for select to authenticated
   using (profile_id = auth.uid());
 
@@ -239,6 +254,9 @@ revoke insert, update, delete on public.payments from anon, authenticated;
 grant insert (invoice_id, slip_path) on public.payments to authenticated;
 revoke insert on public.maintenance_requests from anon, authenticated;
 grant insert (room_id, category, priority, description) on public.maintenance_requests to authenticated;
+
+-- audit log แก้/ลบจาก client ไม่ได้ (เขียนจาก server เท่านั้น)
+revoke insert, update, delete on public.audit_logs from anon, authenticated;
 
 -- ---------- Storage: Private Bucket ทั้งหมด (เปิดดูผ่าน Signed URL) ----------
 
