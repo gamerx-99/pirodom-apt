@@ -48,6 +48,18 @@ export function toObjectName(bucket, path) {
   return clean.startsWith(prefix) ? clean.slice(prefix.length) : clean;
 }
 
+// ตรึง convention นี้ไว้: ถ้า lib/storage.ts เปลี่ยนต้องเปลี่ยนที่นี่ด้วย ไม่เช่นนั้น
+// เทสต์จะผ่านทั้งที่ชื่อไฟล์ที่แอปเขียนจริงไม่ตรงกับที่ policy อ่าน
+export function assertObjectNameConvention(assert) {
+  assert.equal(toObjectName("documents", "documents/lease-1/a.pdf"), "lease-1/a.pdf");
+  assert.equal(toObjectName("documents", "lease-1/a.pdf"), "lease-1/a.pdf");
+  assert.equal(toObjectName("documents", "/documents/lease-1/a.pdf"), "lease-1/a.pdf");
+  assert.equal(toObjectName("meters", "meters/room-1/2026-11-01/m.jpg"), "room-1/2026-11-01/m.jpg");
+  assert.equal(toObjectName("maintenance", "maintenance/room-1/req-1/p.jpg"), "room-1/req-1/p.jpg");
+  // ชื่อไฟล์ที่ policy อ่านเป็น id ต้องไม่มี prefix ค้าง
+  assert.ok(!toObjectName("documents", "documents/lease-1/a.pdf").startsWith("documents/"));
+}
+
 /** รันคำสั่งในฐานข้อมูลในมุมของผู้ใช้ที่เข้าสู่ระบบแล้ว (RLS มีผล) */
 export async function asUser(db, uid, sql) {
   return asRole(db, "authenticated", uid, sql);

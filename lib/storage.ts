@@ -65,6 +65,19 @@ export async function uploadPrivateFile(
 }
 
 /**
+ * ลบไฟล์ออกจาก private bucket
+ * ต้องผ่าน objectName เสมอ ถ้าส่ง path ที่ยังมี prefix ของ bucket มา Supabase จะ
+ * ลบไม่ตกแต่ไม่ error แล้ว audit จะบันทึกว่าลบสำเร็จ ทั้งที่ไฟล์ยังอยู่
+ */
+export async function removePrivateFile(bucket: Bucket, path: string): Promise<void> {
+  const clean = objectName(bucket, path);
+  if (!clean) throw new Error("path ไฟล์ว่าง");
+  const admin = createAdminClient();
+  const { error } = await admin.storage.from(bucket).remove([clean]);
+  if (error) throw new Error(`ลบไฟล์ไม่สำเร็จ: ${error.message}`);
+}
+
+/**
  * ออก Signed URL — ต้องตรวจสิทธิ์ของผู้ขอก่อนเรียกใช้ทุกครั้ง
  * policy ใน storage_rls.sql กันการอ่านตรงจาก client แล้ว
  */

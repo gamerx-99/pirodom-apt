@@ -33,5 +33,9 @@ create policy tenant_maintenance_insert on storage.objects for insert to authent
       where lt.profile_id = auth.uid()
         and mr.room_id::text = split_part(storage.objects.name, '/', 1)
         and mr.id::text = split_part(storage.objects.name, '/', 2)
+        -- งานต้องเกิดในช่วงที่ผู้เช่าคนนี้เช่าห้องนั้นจริง
+        -- ไม่เช่นนั้นผู้เช่าห้องใหม่จะเขียนทับโฟลเดอร์ของงานผู้เช่าเดิมในห้องเดียวกันได้
+        and (mr.created_at at time zone 'Asia/Bangkok')::date >= l.start_date
+        and (l.end_date is null or (mr.created_at at time zone 'Asia/Bangkok')::date <= l.end_date)
     )
   );

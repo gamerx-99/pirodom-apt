@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { audit, requireStaff } from "@/lib/phase1";
-import { storagePath, uploadPrivateFile } from "@/lib/storage";
+import { removePrivateFile, storagePath, uploadPrivateFile } from "@/lib/storage";
 
 const MAX_TYPE_LEN = 120;
 
@@ -64,7 +64,7 @@ export async function uploadDocument(form: FormData): Promise<void> {
 
   if (error) {
     // เขียนแถวไม่ได้ = ไม่มีใครเห็นไฟล์นี้ ถอนไฟล์ทิ้งไม่ให้เป็นขยะใน storage
-    await admin.storage.from("documents").remove([stored]).catch(() => {});
+    await removePrivateFile("documents", stored).catch(() => {});
     throw new Error(`บันทึกเอกสารไม่สำเร็จ: ${error.message}`);
   }
 
@@ -106,7 +106,10 @@ export async function deleteDocument(form: FormData): Promise<void> {
 
   // ลบไฟล์ไม่สำเร็จไม่ทำให้งานหลักล้ม เพราะแถวใน DB ถูกลบถูกต้องแล้ว
   // (ไฟล์ที่ค้างอยู่ไม่มีแถวอ้างอิง จึงไม่มีใครขอ Signed URL ได้) — ผลลัพธ์บันทึกไว้ใน audit
-  const { error: removeError } = await admin.storage.from("documents").remove([doc.file_path]);
+  const { error: removeError } = await removePrivateFile("documents", doc.file_path).then(
+    () => ({ error: null }),
+    (e: unknown) => ({ error: e instanceof Error ? e : new Error("unknown") }),
+  );
   await audit(admin, {
     actor_id: userId,
     action: "document.delete",
