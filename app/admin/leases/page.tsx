@@ -2,7 +2,7 @@ import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { CreateLeaseForm, InviteButton } from "./lease-forms";
-import { endLease, removeTenant, revokeInvite } from "./actions";
+import { endLease, removeTenant, revokeInvite, setPrimaryTenant } from "./actions";
 
 export default async function Page() {
   if (!isSupabaseConfigured()) {
@@ -96,20 +96,29 @@ export default async function Page() {
                     <p className="text-sm text-gray-400">ยังไม่มีผู้ผูก — ออกลิงก์เชิญด้านล่าง</p>
                   ) : (
                     <ul className="mt-1 space-y-1">
-                      {tenants.map((t) => (
-                        <li key={t.profile_id} className="flex items-center justify-between gap-2 text-sm">
-                          <span>
-                            {t.profiles?.display_name ?? t.profile_id}
-                            {t.profiles?.phone ? ` · ${t.profiles.phone}` : ""}
-                            {t.is_primary ? " · ผู้เช่าหลัก" : ""}
-                          </span>
-                          <form action={removeTenant}>
-                            <input type="hidden" name="lease_id" value={l.id} />
-                            <input type="hidden" name="profile_id" value={t.profile_id} />
-                            <button className="text-xs text-red-600 hover:underline">ถอนสิทธิ์</button>
-                          </form>
-                        </li>
-                      ))}
+{tenants.map((t) => (
+                         <li key={t.profile_id} className="flex items-center justify-between gap-2 text-sm">
+                           <span>
+                             {t.profiles?.display_name ?? t.profile_id}
+                             {t.profiles?.phone ? ` · ${t.profiles.phone}` : ""}
+                             {t.is_primary ? " · ผู้เช่าหลัก" : ""}
+                           </span>
+                           <span className="flex items-center gap-2">
+                             {!t.is_primary && (
+                               <form action={setPrimaryTenant}>
+                                 <input type="hidden" name="lease_id" value={l.id} />
+                                 <input type="hidden" name="profile_id" value={t.profile_id} />
+                                 <button className="text-xs text-gray-500 hover:underline">ตั้งเป็นหลัก</button>
+                               </form>
+                             )}
+                             <form action={removeTenant}>
+                               <input type="hidden" name="lease_id" value={l.id} />
+                               <input type="hidden" name="profile_id" value={t.profile_id} />
+                               <button className="text-xs text-red-600 hover:underline">ถอนสิทธิ์</button>
+                             </form>
+                           </span>
+                         </li>
+                       ))}
                     </ul>
                   )}
                 </div>

@@ -25,6 +25,9 @@ await db.exec(`
   grant usage on schema public, auth, storage to anon, authenticated;
   alter default privileges in schema public grant all on tables to anon, authenticated;
   alter default privileges in schema storage grant all on tables to anon, authenticated;
+  -- Supabase โฮสต์ grant execute ให้ anon/authenticated เป็นค่าเริ่มต้นของฟังก์ชันใน schema public
+  -- ถ้าไม่จำลองตรงนี้ ชุดทดสอบจะพลาดกรณีฟังก์ชันที่ถอนสิทธิ์ไว้ยังถูกเรียกจาก REST ได้
+  alter default privileges in schema public grant execute on functions to anon, authenticated;
   grant all on storage.objects to anon, authenticated;
 `);
 
@@ -69,6 +72,17 @@ async function as(uid, sql) {
   }
 }
 const rejects = (p, re) => assert.rejects(p, re);
+
+// รันเป็นบทบาทที่ระบุ (anon ไม่มี claim, authenticated มี sub)
+async function asRole(role, uid, sql) {
+  const claim = uid ? `select set_config('request.jwt.claim.sub', '${uid}', false);` : "";
+  await db.exec(`set role ${role}; ${claim}`);
+  try {
+    return await db.query(sql);
+  } finally {
+    await db.exec("reset role;");
+  }
+}
 
 // ผู้เช่า A เห็นเฉพาะของตัวเอง
 assert.equal((await as(A, "select id from invoices")).rows.length, 1);
@@ -228,5 +242,55 @@ assert.equal(codeOf(await accept("hash-rollback", E)), "ok");
 
 // role ของผู้เชิญเดิมต้องไม่ถูกทับด้วยการรับคำเชิญ
 assert.equal((await db.query("select role from profiles where id = $1", [E])).rows[0].role, "admin");
+
+// ---------- ฟังก์ชันเหล่านี้เชื่อ id ที่ผู้เรียกส่งมา ต้องเรียกจาก service_role เท่านั้น ----------
+// ถ้า grant หลุด ใครก็ตามที่มี token hash จะผูกตัวเองเข้าสัญญาผู้อื่นผ่าน REST ได้
+for (const [role, uid] of [["anon", null], ["authenticated", ADMIN]]) {
+  await rejects(
+    asRole(role, uid, "select * from public.accept_invite('hash-nope', gen_random_uuid(), 'x', '0812345678')"),
+    /permission denied/,
+  );
+  await rejects(
+    asRole(role, uid, "select public.set_primary_tenant('20000000-0000-0000-0000-000000000001', gen_random_uuid())"),
+    /permission denied/,
+  );
+  await rejects(
+    asRole(role, uid, "select public.remove_lease_tenant('20000000-0000-0000-0000-000000000001', gen_random_uuid())"),
+    /permission denied/,
+  );
+}
+
+// ---------- ผู้เช่าหลัก: 1 คนต่อสัญญา และถอนหลักไม่ได้ ----------
+const LEASE1 = "20000000-0000-0000-0000-000000000001";
+const primaryOf = async (lease) =>
+  (await db.query("select profile_id::text as p from lease_tenants where lease_id = $1 and is_primary", [lease]))
+    .rows.map((r) => r.p);
+assert.deepEqual(await primaryOf(LEASE1), [A]);
+// 1 สัญญามีหลักได้คนเดียวแม้แตะตรง ๆ
+const K = "00000000-0000-0000-0000-0000000000b0";
+await db.exec(`
+  insert into auth.users values ('${K}');
+  insert into profiles (id, role) values ('${K}', 'tenant');
+  insert into lease_tenants (lease_id, profile_id, is_primary) values
+    ('20000000-0000-0000-0000-000000000009', '${K}', false);
+`);
+await rejects(
+  db.exec("update lease_tenants set is_primary = true where profile_id = '" + K + "'"),
+  /duplicate key/,
+);
+// ถอนผู้เช่าหลักไม่ได้
+const removePrimary = (lease, uid) =>
+  db.query("select public.remove_lease_tenant($1, $2)", [lease, uid]).then((r) => r.rows[0].remove_lease_tenant);
+assert.equal(await removePrimary(LEASE1, A), "is_primary");
+assert.equal((await db.query("select count(*)::int as n from lease_tenants where profile_id = $1", [A])).rows[0].n, 1);
+// เปลี่ยนผู้เช่าหลักเป็นคนใหม่
+const setPrimary = (lease, uid) =>
+  db.query("select public.set_primary_tenant($1, $2)", [lease, uid]).then((r) => r.rows[0].set_primary_tenant);
+assert.equal(await setPrimary(LEASE1, D), true);
+assert.deepEqual(await primaryOf(LEASE1), [D]);
+assert.equal(await setPrimary(LEASE1, "00000000-0000-0000-0000-0000000000ff"), false);
+// หลังเปลี่ยนหลักแล้ว ถอนคนเดิมได้
+assert.equal(await removePrimary(LEASE1, A), "ok");
+assert.equal(await removePrimary(LEASE1, A), "not_found");
 
 console.log("rls.test: all passed");

@@ -146,24 +146,16 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
    const profile_id = String(form.get("profile_id") ?? "");
    if (!lease_id || !profile_id) throw new Error("ข้อมูลไม่ครบ");
    const admin = createAdminClient();
-   const { data: target } = await admin
-     .from("lease_tenants")
-     .select("is_primary")
-     .eq("lease_id", lease_id)
-     .eq("profile_id", profile_id)
-     .maybeSingle();
-   if (!target) throw new Error("ไม่พบผู้เช่าคนนี้ในสัญญา");
-   if (target.is_primary) {
-     const { count } = await admin
-       .from("lease_tenants")
-       .select("profile_id", { count: "exact", head: true })
-       .eq("lease_id", lease_id);
-     if ((count ?? 0) <= 1) {
-       throw new Error("ผู้เช่าหลักคนสุดท้ายของสัญญาถอนไม่ได้ — ใช้ปิดสัญญาแทน");
-     }
-   }
-   const { error } = await admin.from("lease_tenants").delete().eq("lease_id", lease_id).eq("profile_id", profile_id);
+   const { data, error } = await admin.rpc("remove_lease_tenant", {
+     p_lease_id: lease_id,
+     p_profile_id: profile_id,
+   });
    if (error) throw new Error(`ถอนสิทธิ์ไม่สำเร็จ: ${error.message}`);
+   const code = String(data ?? "ok");
+   if (code === "not_found") throw new Error("ไม่พบผู้เช่าคนนี้ในสัญญา");
+   if (code === "is_primary") {
+     throw new Error("ถอนผู้เช่าหลักไม่ได้ — ตั้งผู้เช่าหลักคนใหม่ก่อน หรือปิดสัญญาถ้าเป็นคนสุดท้าย");
+   }
    await audit(admin, { actor_id: userId, action: "lease.unbind", table_name: "lease_tenants", after: { lease_id, profile_id } });
    revalidatePath("/admin/leases");
  }
@@ -176,24 +168,12 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
    const profile_id = String(form.get("profile_id") ?? "");
    if (!lease_id || !profile_id) throw new Error("ข้อมูลไม่ครบ");
    const admin = createAdminClient();
-   const { data: target } = await admin
-     .from("lease_tenants")
-     .select("lease_id")
-     .eq("lease_id", lease_id)
-     .eq("profile_id", profile_id)
-     .maybeSingle();
-   if (!target) throw new Error("ผู้คนนี้ไม่ได้อยู่ในสัญญานี้");
-   const { error: clearError } = await admin
-     .from("lease_tenants")
-     .update({ is_primary: false })
-     .eq("lease_id", lease_id);
-   if (clearError) throw new Error(`เปลี่ยนผู้เช่าหลักไม่สำเร็จ: ${clearError.message}`);
-   const { error: setError } = await admin
-     .from("lease_tenants")
-     .update({ is_primary: true })
-     .eq("lease_id", lease_id)
-     .eq("profile_id", profile_id);
-   if (setError) throw new Error(`เปลี่ยนผู้เช่าหลักไม่สำเร็จ: ${setError.message}`);
+   const { data, error } = await admin.rpc("set_primary_tenant", {
+     p_lease_id: lease_id,
+     p_profile_id: profile_id,
+   });
+   if (error) throw new Error(`เปลี่ยนผู้เช่าหลักไม่สำเร็จ: ${error.message}`);
+   if (!data) throw new Error("เปลี่ยนผู้เช่าหลักไม่สำเร็จ: ผู้คนนี้ไม่ได้อยู่ในสัญญานี้");
    await audit(admin, { actor_id: userId, action: "lease.set_primary", table_name: "lease_tenants", after: { lease_id, profile_id } });
    revalidatePath("/admin/leases");
  }

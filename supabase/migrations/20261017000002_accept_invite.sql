@@ -35,7 +35,8 @@ if not found then
     return;
   end if;
 
-  select * into v_lease from public.leases where id = v_invite.lease_id;
+  -- ล็อกแถวสัญญาด้วย ไม่งั้นสองคำเชิญของสัญญาเดียวกันที่รับพร้อมกันจะได้ is_primary พร้อมกันสองคน
+  select * into v_lease from public.leases where id = v_invite.lease_id for update;
 
   -- ผู้กับสัญญานี้อยู่แล้ว → สำเร็จเสมอ (กันกดเบิ้ล และไม่ให้สิทธิ์กับผู้อื่น)
   if v_lease.id is not null and exists (
@@ -86,5 +87,70 @@ if not found then
 end;
 $$;
 
-revoke all on function public.accept_invite(text, uuid, text, text) from public;
+-- ---------- ผู้เช่าหลัก / ถอนผู้เช่า: ทำเป็นฟังก์ชันเดียวจบ ไม่งั้นสถานะกลางทางจะค้าง ----------
+
+-- 1 สัญญามีผู้เช่าหลักได้คนเดียว (กันสองคนเป็นหลักจากคำเชิญ 2 ลิงก์ที่รับพร้อมกัน)
+create unique index if not exists lease_tenants_one_primary
+  on public.lease_tenants (lease_id) where is_primary;
+
+-- เปลี่ยนผู้เช่าหลัก: เคลียร์ของเดิมแล้วตั้งของใหม่ในธุรกรรมเดียว
+-- (สองคำสั่งแยกจะเหลือสัญญาที่ไม่มีผู้เช่าหลัก ถ้าคำสั่งที่สองล้ม)
+create or replace function public.set_primary_tenant(p_lease_id uuid, p_profile_id uuid)
+returns boolean
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  perform 1 from public.leases where id = p_lease_id for update;
+  if not found then return false; end if;
+  if not exists (
+    select 1 from public.lease_tenants where lease_id = p_lease_id and profile_id = p_profile_id
+  ) then
+    return false;
+  end if;
+  update public.lease_tenants set is_primary = false where lease_id = p_lease_id and is_primary;
+  update public.lease_tenants set is_primary = true
+    where lease_id = p_lease_id and profile_id = p_profile_id;
+  return true;
+end;
+$$;
+
+-- ถอนผู้เช่า: ถอนผู้เช่าหลักไม่ได้ เพราะสัญญาจะไม่เหลือผู้เช่าหลัก
+-- ให้ตั้งผู้เช่าหลักคนใหม่ก่อน หรือปิดสัญญาทั้งฉบับถ้าเป็นคนสุดท้าย
+create or replace function public.remove_lease_tenant(p_lease_id uuid, p_profile_id uuid)
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+begin
+  perform 1 from public.leases where id = p_lease_id for update;
+  if not exists (
+    select 1 from public.lease_tenants where lease_id = p_lease_id and profile_id = p_profile_id
+  ) then
+    return 'not_found';
+  end if;
+  if exists (
+    select 1 from public.lease_tenants
+    where lease_id = p_lease_id and profile_id = p_profile_id and is_primary
+  ) then
+    return 'is_primary';
+  end if;
+  delete from public.lease_tenants where lease_id = p_lease_id and profile_id = p_profile_id;
+  return 'ok';
+end;
+$$;
+
+-- ---------- สิทธิ์เรียกฟังก์ชันเหล่านี้ ----------
+-- Supabase โฮสต์จะ grant execute ให้ anon/authenticated เป็นค่าเริ่มต้นของฟังก์ชันใน schema public
+-- ฟังก์ชันชุดนี้เชื่อ p_user_id ที่ผู้เรียกส่งมา จึงต้องถอนสิทธิ์จากทุกบทบาทที่เรียกตรงได้
+-- (revoke จาก public อย่างเดียวไม่ตัด grant ที่ให้ anon/authenticated โดยตรง)
+revoke all on function public.accept_invite(text, uuid, text, text)
+  from public, anon, authenticated;
+revoke all on function public.set_primary_tenant(uuid, uuid) from public, anon, authenticated;
+revoke all on function public.remove_lease_tenant(uuid, uuid) from public, anon, authenticated;
+
 grant execute on function public.accept_invite(text, uuid, text, text) to service_role;
+grant execute on function public.set_primary_tenant(uuid, uuid) to service_role;
+grant execute on function public.remove_lease_tenant(uuid, uuid) to service_role;

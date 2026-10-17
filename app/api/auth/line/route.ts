@@ -56,33 +56,18 @@ export async function POST(request: Request) {
   try {
     const admin = createAdminClient();
 
-    // มีแล้วถือว่าสำเร็จ (กันสร้างซ้ำ)
-    const created = await admin.auth.admin.createUser({
-      email,
-      email_confirm: true,
-      user_metadata: { line_user_id: lineUserId, display_name: claims.name ?? null },
-    });
-    if (created.error && !/already|exists|registered/i.test(created.error.message)) {
-      throw new Error(created.error.message);
-    }
-
-    // อ่าน profile 2 ทาง: ผูกด้วย LINE id นี้อยู่แล้ว หรือ auth id ตรงกับที่จะผูก
+    // อ่าน profile ที่ผูก LINE id นี้ไว้ก่อน — ถ้าผูกกับบัญชีอื่นอยู่แล้ว
+    // (เช่น owner ที่สมัครด้วยอีเมล) ไม่ต้องสร้างบัญชีอีเมลสังเคราะห์ขึ้นมาเปล่า ๆ
     // role ที่มีอยู่ต้องคงเดิมเสมอ — สะพานนี้ไม่มีสิทธิ์ยกระดับหรือลดระดับใคร
-    const [{ data: byLine }, { data: byId }] = await Promise.all([
-      admin.from("profiles").select("id, role").eq("line_user_id", lineUserId).maybeSingle(),
-      admin
-        .from("profiles")
-        .select("id, role, line_user_id")
-        .eq("id", created.data.user?.id ?? "00000000-0000-0000-0000-000000000000")
-        .maybeSingle(),
-    ]);
-    const existing = byLine ?? byId ?? null;
+    const { data: byLine } = await admin
+      .from("profiles")
+      .select("id, role")
+      .eq("line_user_id", lineUserId)
+      .maybeSingle();
 
-    // บัญชีที่จะเข้าสู่ระบบต้องเป็นบัญชีเดียวกับ profile ที่ผูก LINE id นี้ไว้
-    // ถ้าผูกไว้กับบัญชีอื่น (เช่น owner ที่สมัครด้วยอีเมล) ต้องออก login link ของบัญชีนั้น
-    // ไม่ใช่ของอีเมลสังเคราะห์ ไม่เช่นนั้น session จะตกไปที่บัญชีที่ไม่ได้ผูกไว้
-    let profileId = existing?.id ?? null;
+    let profileId = byLine?.id ?? null;
     let signInEmail = email;
+    let existing = byLine ?? null;
     if (byLine) {
       const { data: linked, error: linkedError } = await admin.auth.admin.getUserById(byLine.id);
       if (linkedError || !linked.user?.email) {
@@ -90,8 +75,27 @@ export async function POST(request: Request) {
       }
       signInEmail = linked.user.email;
     }
+
     if (!profileId) {
-      profileId = (await findAuthUserByEmail(admin, email))?.id ?? created.data.user?.id ?? null;
+      // ยังไม่ผูก — สร้างบัญชีอีเมลสังเคราะห์ (มีแล้วถือว่าสำเร็จ กันสร้างซ้ำ)
+      const created = await admin.auth.admin.createUser({
+        email,
+        email_confirm: true,
+        user_metadata: { line_user_id: lineUserId, display_name: claims.name ?? null },
+      });
+      if (created.error && !/already|exists|registered/i.test(created.error.message)) {
+        throw new Error(created.error.message);
+      }
+      const createdId = created.data.user?.id ?? null;
+
+      // auth id ตรงกับ profile ที่มีอยู่แล้ว หรือค้นจากอีเมล (ไล่ทุกหน้า ไม่ใช่หน้าแรกอย่างเดียว)
+      const { data: byId } = await admin
+        .from("profiles")
+        .select("id, role")
+        .eq("id", createdId ?? "00000000-0000-0000-0000-000000000000")
+        .maybeSingle();
+      existing = byId ?? null;
+      profileId = byId?.id ?? (await findAuthUserByEmail(admin, email))?.id ?? createdId;
     }
     if (!profileId) {
       throw new Error("หา auth user ไม่เจอ");
