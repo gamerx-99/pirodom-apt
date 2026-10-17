@@ -49,6 +49,7 @@
 - [ ] ทดสอบ Admin guard กับ Supabase env จริง: role ทุกแบบ + ออกจากระบบ + session หมดอายุ — `รอตรวจ`
 - [ ] ตรวจ migration/RLS/GRANT/Storage บนฐานข้อมูล Supabase ทดสอบจริง (PGlite ยังจำลอง Auth/Storage) — `รอตรวจ` (รอ Q-08)
   - 17/10/2569 ผู้ใช้อนุมัติและลง migration ครบ 6 ไฟล์บน `jxvlexoqwqynctlpgafi` แล้ว: 16 ตารางเปิด RLS, 4 private buckets, 10 Storage policies; live SQL role/claim tests ผ่าน 30 assertions และ rollback fixtures หมด; RPC grants ตรวจผ่าน — ยังเหลือ authenticated HTTP/Storage upload/signed URL และ advisor WARN 8 รายการ ดู [หลักฐานล่าสุด](SUPABASE-PHASE0-AUDIT.md)
+  - 17/10/2569 (`supabase migration list --linked`): Cloud ยังไม่มี `20261018000002_tighten_storage_policies`, `20261018000003_billing_snapshots`, `20261018000004_payment_workflow` — สองไฟล์หลังเปลี่ยนชื่อจาก `20261017085823`/`20261017090621` ให้เรียงต่อจากไฟล์ที่ลงแล้ว
 - [x] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน: ผู้ใช้ยืนยันบัญชี LINE “C - Game” คือบัญชี lannatc แล้ว; ตั้ง owner พร้อม audit และผู้ใช้ส่งภาพเข้า Admin ได้จริง (17/10/2569)
 - [ ] แยก env ทดสอบ/จริง และ secret management — `รอข้อมูล (Q-08)`
 - [ ] ขั้นตอน deployment ทดสอบบน Vercel + ติดตาม error + วิธีย้อนกลับ — `รอข้อมูล (Q-08)`
@@ -73,7 +74,7 @@
 - [x] หน้าจดมิเตอร์หลายห้อง + แนบรูป + ตรวจเลขลดลง/ใช้ผิดปกติ — [`app/admin/meters/`](../app/admin/meters/page.tsx) — โค้ดและ migration อยู่ใน commit `c9b2112`; มีชุด `supabase/tests/path-a.test.mjs`; ยังไม่ใช่หลักฐาน UAT บนอุปกรณ์/Cloud
 - [ ] กติกา Q-03–Q-05 สำหรับรอบอัตโนมัติและกรณีพิเศษ — วัน/ช่วงอ่านมิเตอร์เลือกต่อบิลได้; เดือนแรก/สุดท้ายไม่เฉลี่ยและไม่สร้างร่างถ้าไม่เต็มเดือน; ค่าปรับยังไม่คำนวณอัตโนมัติ; ยอดจ่ายบางส่วน/เกินยังไม่รองรับ
 - [x] เอนจินฝั่ง Server สร้างบิลร่างเต็มเดือน: ค่าเช่า + น้ำเหมาจ่าย + หน่วยไฟ×อัตรา + รายการเพิ่ม − ส่วนลดที่ผู้ดูแลกรอกเอง — [`app/admin/billing/actions.ts`](../app/admin/billing/actions.ts)
-- [x] เก็บ snapshot รายการในบิล; migration เพิ่มการอ้างอิงแถวมิเตอร์และล็อกยอด/รายการหลังออกบิล — `20261017085823_billing_snapshots.sql` (ยังไม่ apply กับ Cloud)
+- [x] เก็บ snapshot รายการในบิล; migration เพิ่มการอ้างอิงแถวมิเตอร์และล็อกยอด/รายการหลังออกบิล — `20261018000003_billing_snapshots.sql` (ยังไม่ apply กับ Cloud)
 - [x] ตรวจยอดรวมและออกบิลจากร่างด้วยมือ, unique lease/period กันซ้ำ, audit log, ล็อกบิลชำระแล้ว; `mark-overdue` อัปเดตสถานะหลังพ้นวันครบกำหนดโดยไม่คิดค่าปรับ
 - [x] Admin แสดงบิลจริงและ LIFF อ่านรายละเอียดรายการจาก Supabase — [`app/admin/billing/`](../app/admin/billing/page.tsx), [`app/liff/bills/`](../app/liff/bills)
 
@@ -84,7 +85,7 @@
 - [x] Adapter SlipOK ฝั่ง Server — [`app/api/slipok/verify/route.ts`](../app/api/slipok/verify/route.ts); ผลไม่ตรง/ตรวจไม่ได้เข้าคิวตรวจมือ; รอ credentials และตรวจบัญชีจริง
 - [ ] QR PromptPay ตามบัญชีรับเงินที่ยืนยัน — `รอข้อมูล (Q-06)`
 - [x] อัปโหลดสลิป → Private Storage + ตรวจชนิดไฟล์/ขนาดฝั่ง Server (รูป 4 MB)
-- [x] เทียบยอดและ reference; unique reference + unique open payment + RPC transaction กันอนุมัติซ้ำ — migration `20261017090621_payment_workflow.sql` (ยังไม่ apply)
+- [x] เทียบยอดและ reference; unique reference + unique open payment + RPC transaction กันอนุมัติซ้ำ — migration `20261018000004_payment_workflow.sql` (ยังไม่ apply)
 - [x] คิวตรวจแอดมิน: อนุมัติยอดเต็ม/ปฏิเสธพร้อมเหตุผล + audit log — [`app/admin/payments/`](../app/admin/payments/page.tsx)
 - [x] Provider ล่ม/ไม่มี env/ข้อมูลไม่ตรง → pending/manual review; ห้าม auto mark paid
 - [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — สถานะรายการแสดงบน LIFF แล้ว; LINE push ยังรอ Q-06
