@@ -11,6 +11,7 @@ const NAV = [
   ["/admin/billing", "บิล"],
   ["/admin/payments", "ตรวจสลิป"],
   ["/admin/maintenance", "งานซ่อม"],
+  ["/admin/documents", "เอกสาร"],
   ["/admin/settings", "ตั้งค่า"],
 ] as const;
 
