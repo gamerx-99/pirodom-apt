@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ตรวจสลิปและอนุมัติรับชำระ | ศิริสุข เพลส (Sirisuk Place)</title>
+<!-- Google Fonts: Inter & Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Container Queries and Forms -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#e7f2ff",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary": "#004ac6",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "on-primary-container": "#eeefff",
+            "on-tertiary-fixed": "#001d31",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#5c647a",
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-surface": "#213145",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#e5eeff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2563eb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#00174b",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "secondary-container": "#dae2fd",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary-container": "#0073ae",
+            "surface": "#f8f9ff",
+            "outline": "#737686",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-primary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-tertiary-fixed-variant": "#004b73"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter", "sans-serif"],
+            "headline-xl-mobile": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "title-lg": ["Inter", "sans-serif"],
+            "title-md": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "headline-lg-mobile": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #eff4ff;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c3c6d7;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="h-full bg-background text-on-surface antialiased flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- ==================== SIDEBAR COMPONENT (From JSON Blueprint) ==================== -->
+<aside class="fixed top-0 left-0 h-full w-[260px] z-40 bg-on-background dark:bg-inverse-surface border-r border-on-surface-variant/20 dark:border-outline/20 flex flex-col justify-between p-space-md shadow-none select-none">
+<div class="flex flex-col gap-5">
+<!-- Header / Logo -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-white flex items-center justify-center font-bold text-title-lg shadow-sm">
+          ศ
+        </div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-title-lg font-title-lg font-bold text-surface tracking-tight truncate">ศิริสุข เพลส</span>
+<span class="text-body-sm font-body-sm text-outline-variant flex items-center gap-1.5 truncate">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            LINE OA เชื่อมต่อแล้ว (19 ยูนิต)
+          </span>
+</div>
+</div>
+<!-- Quick CTA Button -->
+<button class="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-surface text-label-md font-label-md border border-outline-variant/30 transition-all duration-150 active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>เพิ่มผู้เช่าใหม่</span>
+</button>
+<!-- Navigation Tabs (7 Tabs from JSON) -->
+<nav class="flex flex-col gap-1 mt-1">
+<!-- 1. ภาพรวม -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-label-md font-label-md">ภาพรวม</span>
+</a>
+<!-- 2. ห้องพักและสัญญา -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">apartment</span>
+<span class="text-label-md font-label-md">ห้องพักและสัญญา</span>
+</a>
+<!-- 3. จดมิเตอร์ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">speed</span>
+<span class="text-label-md font-label-md">จดมิเตอร์</span>
+</a>
+<!-- 4. บิลและใบแจ้งหนี้ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="text-label-md font-label-md">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- 5. ตรวจสลิป LINE (ACTIVE - Exact Route Target) -->
+<a aria-current="page" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary-container/20 text-tertiary-fixed font-title-md border-l-4 border-primary-container dark:border-inverse-primary shadow-sm" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed" style="font-variation-settings: 'FILL' 1;">receipt</span>
+<span class="text-label-md font-label-md font-semibold text-white">ตรวจสลิป LINE</span>
+</div>
+<!-- Requirement: Active มี Badge สีส้ม 3 รายการใหม่ -->
+<span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-amber-500 text-white shadow-sm">
+            3 ใหม่
+          </span>
+</a>
+<!-- 6. งานซ่อมบำรุง -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">handyman</span>
+<span class="text-label-md font-label-md">งานซ่อมบำรุง</span>
+</a>
+<!-- 7. ตั้งค่าระบบ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-label-md font-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Footer Profile & Logout -->
+<div class="pt-4 border-t border-on-surface-variant/20 flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-surface">
+<span class="material-symbols-outlined text-outline-variant text-[24px]">account_circle</span>
+<div class="flex flex-col truncate">
+<span class="text-label-md font-label-md font-medium text-white truncate">ผู้จัดการ สมศักดิ์</span>
+<span class="text-body-sm font-body-sm text-outline-variant">แอดมินอาคาร</span>
+</div>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-outline-variant hover:text-rose-400 hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span class="text-label-md font-label-md">ออกจากระบบ</span>
+</a>
+</div>
+</aside>
+<!-- ==================== TOP BAR COMPONENT ==================== -->
+<header class="sticky top-0 right-0 z-30 w-full pl-[260px] bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant/40 dark:border-outline/20 shadow-sm transition-all">
+<div class="flex justify-between items-center h-16 px-space-xl max-w-full">
+<!-- Title & Month Context -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface tracking-tight">ศิริสุข เพลส (Sirisuk Place)</span>
+</div>
+<div class="h-5 w-px bg-outline-variant/40"></div>
+<div class="flex items-center gap-3 text-label-md font-label-md">
+<span class="text-primary font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+            มีนาคม 2568
+          </span>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-secondary text-label-sm font-label-sm">
+            รอบบิลปัจจุบัน
+          </span>
+</div>
+</div>
+<!-- Action Cluster -->
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container transition-colors text-label-md font-label-md" type="button">
+<span class="material-symbols-outlined text-[18px] text-emerald-600">sync</span>
+<span>ซิงค์ข้อมูล LINE</span>
+</button>
+<button class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-primary-container hover:bg-primary text-white text-label-md font-label-md shadow-sm transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>สร้างบิลประจำเดือน</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/40 mx-1"></div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button aria-label="Notifications" class="p-2 rounded-lg hover:bg-surface-container transition-colors relative" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button aria-label="Refresh" class="p-2 rounded-lg hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+<button aria-label="Help" class="p-2 rounded-lg hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+<main class="flex-1 ml-[260px] p-space-xl min-w-0 bg-[#F8FAFC]">
+<div class="max-w-[1440px] mx-auto flex flex-col gap-space-lg">
+<!-- Page Header & Demo Badge -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-outline-variant/30">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-headline-lg font-headline-lg text-on-surface font-bold tracking-tight">ตรวจสลิปและอนุมัติรับชำระ</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+              ข้อมูลตัวอย่าง (Demo Data)
+            </span>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-on-surface-variant text-label-sm font-mono font-medium">
+              /admin/payments
+            </span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+            ตรวจสอบสลิปโอนเงิน เทียบกับยอดบิล และอนุมัติการรับเงินผ่านระบบ LINE อัตโนมัติสำหรับอาคาร ศิริสุข เพลส
+          </p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-2 rounded-xl bg-surface-container-lowest border border-[#CBD5E1] text-on-surface text-label-md font-label-md hover:bg-surface-container transition-colors flex items-center gap-2 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">file_download</span>
+<span>ส่งออกรายงานสลิป</span>
+</button>
+<button class="px-3.5 py-2 rounded-xl bg-primary-container text-white text-label-md font-label-md hover:bg-primary transition-colors flex items-center gap-2 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>อนุมัติแบบเลือกหลายรายการ (0)</span>
+</button>
+</div>
+</div>
+<!-- ==================== STATUS SUMMARY CARDS (4 KPIs) ==================== -->
+<section aria-label="สถานะสลิป" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- 1. รอตรวจ (Pending Verification) -->
+<div class="bg-surface-container-lowest rounded-2xl border-2 border-amber-300 p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-amber-700 font-semibold uppercase tracking-wider">รอตรวจ (Pending)</span>
+<div class="mt-2 text-headline-xl font-headline-xl font-bold text-on-surface">3 <span class="text-title-md font-title-md text-on-surface-variant font-normal">รายการ</span></div>
+</div>
+<div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-200">
+<span class="material-symbols-outlined text-[24px]">pending_actions</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-amber-100 flex items-center justify-between text-body-sm font-body-sm text-amber-800">
+<span class="flex items-center gap-1 font-medium">
+<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              ต้องดำเนินการทันที
+            </span>
+<span class="font-semibold">฿13,430 รวม</span>
+</div>
+</div>
+<!-- 2. ข้อมูลไม่ตรง/ต้องตรวจเพิ่ม (Flagged) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#E2E8F0] p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-rose-700 font-semibold uppercase tracking-wider">ข้อมูลไม่ตรง (Flagged)</span>
+<div class="mt-2 text-headline-xl font-headline-xl font-bold text-rose-600">1 <span class="text-title-md font-title-md text-on-surface-variant font-normal">รายการ</span></div>
+</div>
+<div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-200">
+<span class="material-symbols-outlined text-[24px]">flag</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between text-body-sm font-body-sm text-rose-700">
+<span class="flex items-center gap-1">ห้อง 402 ยอดโอนขาด ฿200</span>
+<span class="font-medium underline cursor-pointer hover:text-rose-900">ดูรายชื่อ</span>
+</div>
+</div>
+<!-- 3. อนุมัติแล้วงวดนี้ (Approved) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#E2E8F0] p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-emerald-700 font-semibold uppercase tracking-wider">อนุมัติแล้วงวดนี้ (Approved)</span>
+<div class="mt-2 text-headline-xl font-headline-xl font-bold text-emerald-600">14 <span class="text-title-md font-title-md text-on-surface-variant font-normal">/ 19 ยูนิต</span></div>
+</div>
+<div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between text-body-sm font-body-sm text-emerald-700">
+<span>ความคืบหน้า 73.6%</span>
+<span class="font-semibold">฿62,800 สำเร็จ</span>
+</div>
+</div>
+<!-- 4. ปฏิเสธสลิป (Rejected) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#E2E8F0] p-5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-secondary font-semibold uppercase tracking-wider">ปฏิเสธสลิป (Rejected)</span>
+<div class="mt-2 text-headline-xl font-headline-xl font-bold text-on-surface-variant">0 <span class="text-title-md font-title-md text-on-surface-variant font-normal">รายการ</span></div>
+</div>
+<div class="w-11 h-11 rounded-xl bg-slate-100 text-secondary flex items-center justify-center border border-slate-200">
+<span class="material-symbols-outlined text-[24px]">cancel</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-[#E2E8F0] flex items-center justify-between text-body-sm font-body-sm text-secondary">
+<span>ไม่มีสลิปที่ถูกปฏิเสธในรอบนี้</span>
+<span class="text-label-sm font-mono">0.0%</span>
+</div>
+</div>
+</section>
+<!-- ==================== FILTERS & SEARCH TOOLBAR ==================== -->
+<section class="bg-surface-container-lowest rounded-2xl border border-[#CBD5E1] p-4 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+<div class="flex flex-1 flex-col sm:flex-row items-center gap-3">
+<!-- Search input -->
+<div class="relative w-full sm:w-80">
+<span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="w-full h-[42px] pl-10 pr-4 rounded-xl border border-[#CBD5E1] text-on-surface placeholder:text-outline text-body-md focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all outline-none" placeholder="ค้นหาเลขห้อง (101-405), ชื่อผู้เช่า..." type="text" value="102"/>
+</div>
+<!-- Status Dropdown Filter -->
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<div class="relative w-full sm:w-56">
+<select class="w-full h-[42px] px-3.5 rounded-xl border border-[#CBD5E1] bg-surface-container-lowest text-on-surface text-body-md focus:border-primary-container focus:ring-2 focus:ring-primary-container/10 transition-all">
+<option selected="" value="pending">รอตรวจสอบ (3 รายการ)</option>
+<option value="all">ทั้งหมด (18 รายการ)</option>
+<option value="flagged">ต้องตรวจเพิ่ม (1 รายการ)</option>
+<option value="approved">อนุมัติแล้ว (14 รายการ)</option>
+</select>
+</div>
+<!-- Date Filter -->
+<div class="relative w-full sm:w-52">
+<input class="w-full h-[42px] px-3 rounded-xl border border-[#CBD5E1] bg-surface-container-lowest text-on-surface text-body-md focus:border-primary-container focus:ring-2 focus:ring-primary-container/10" type="date" value="2024-10-28"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 justify-end">
+<span class="text-body-sm font-body-sm text-on-surface-variant hidden lg:inline">แสดง 1 จาก 3 รายการรอตรวจ</span>
+<button class="px-3 py-2 rounded-xl border border-[#CBD5E1] hover:bg-surface-container text-on-surface-variant flex items-center gap-1.5 text-label-md font-label-md transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span>ตัวกรองละเอียด</span>
+</button>
+</div>
+</section>
+<!-- ==================== SPLIT COMPARISON VIEW (MAIN WORKSPACE) ==================== -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+<!-- ==================== LEFT COLUMN: QUEUE & SLIP VIEWER (5 Cols) ==================== -->
+<div class="xl:col-span-5 flex flex-col gap-5">
+<!-- Queue List Section -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#E2E8F0] shadow-sm p-4">
+<div class="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">view_list</span>
+<h3 class="text-title-md font-title-md text-on-surface font-semibold">คิวรอตรวจสลิป (3 รายการ)</h3>
+</div>
+<span class="text-label-sm font-label-sm text-secondary">คลิกเพื่อตรวจเทียบ</span>
+</div>
+<!-- The 3 Queue Items -->
+<div class="flex flex-col gap-2 mt-3">
+<!-- Item 1: Active (Room 102 - วริศรา) -->
+<div class="p-3.5 rounded-xl border-2 border-primary-container bg-surface-container-low/60 flex items-center justify-between cursor-pointer transition-all relative">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary text-white font-bold flex items-center justify-center text-title-md">
+                    102
+                  </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md font-semibold text-on-surface">คุณวริศรา ใจดี</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-amber-100 text-amber-800">
+                        รอตรวจ
+                      </span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                      28 ต.ค. 14:15 น. (ผ่าน LINE OA)
+                    </span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-title-md font-title-md font-bold text-primary">฿4,440</div>
+<span class="text-label-sm text-emerald-600 font-medium">OCR ตรงเป๊ะ 100%</span>
+</div>
+</div>
+<!-- Item 2: Room 204 (พัชรา ฿4,490) -->
+<div class="p-3.5 rounded-xl border border-[#E2E8F0] hover:border-primary-container/40 bg-surface-container-lowest flex items-center justify-between cursor-pointer transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-slate-100 text-on-surface font-semibold flex items-center justify-center text-title-md border border-slate-200">
+                    204
+                  </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md font-medium text-on-surface">คุณพัชรา สุขเจริญ</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-slate-100 text-secondary">
+                        รอตรวจ
+                      </span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">28 ต.ค. 13:40 น. (LINE OA)</span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-title-md font-title-md font-semibold text-on-surface">฿4,490</div>
+<span class="text-label-sm text-secondary font-medium">รอการเปิดเทียบ</span>
+</div>
+</div>
+<!-- Item 3: Room 303 (ณภัทร ฿4,500) -->
+<div class="p-3.5 rounded-xl border border-[#E2E8F0] hover:border-primary-container/40 bg-surface-container-lowest flex items-center justify-between cursor-pointer transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-slate-100 text-on-surface font-semibold flex items-center justify-center text-title-md border border-slate-200">
+                    303
+                  </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md font-medium text-on-surface">คุณณภัทร รุ่งเรือง</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-slate-100 text-secondary">
+                        รอตรวจ
+                      </span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">28 ต.ค. 11:05 น. (LINE OA)</span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-title-md font-title-md font-semibold text-on-surface">฿4,500</div>
+<span class="text-label-sm text-secondary font-medium">รอการเปิดเทียบ</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Realistic Bank Slip Simulation (Zoomable View) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#E2E8F0] shadow-sm p-4 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">document_scanner</span>
+<h3 class="text-title-md font-title-md text-on-surface font-semibold">ภาพสลิปโอนเงินจริง (จำลอง)</h3>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="p-1.5 rounded-lg border border-[#CBD5E1] text-secondary hover:text-on-surface hover:bg-slate-100 transition-colors" title="ขยายรูปสลิป" type="button">
+<span class="material-symbols-outlined text-[18px]">zoom_in</span>
+</button>
+<button class="p-1.5 rounded-lg border border-[#CBD5E1] text-secondary hover:text-on-surface hover:bg-slate-100 transition-colors" title="ดาวน์โหลดรูป" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+</div>
+<!-- Simulated Slip Card (Modern Thai Banking Standard) -->
+<div class="relative bg-gradient-to-b from-blue-50 to-slate-100 border border-blue-200 rounded-xl p-5 shadow-inner overflow-hidden select-none">
+<!-- Watermark Stamp -->
+<div class="absolute -right-6 -bottom-6 w-36 h-36 rounded-full border-4 border-dashed border-emerald-400/20 pointer-events-none flex items-center justify-center rotate-12">
+<span class="text-emerald-700/20 font-black text-xl">VERIFIED</span>
+</div>
+<!-- Slip Header -->
+<div class="flex items-center justify-between border-b border-blue-200/80 pb-3">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center text-xs shadow-sm">
+                    K+
+                  </div>
+<div>
+<div class="text-title-md font-title-md font-bold text-slate-800 leading-tight">ธนาคารกสิกรไทย</div>
+<div class="text-label-sm text-slate-500">โอนเงินสำเร็จ (Transfer Successful)</div>
+</div>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                    สลิปแท้
+                  </span>
+</div>
+</div>
+<!-- Slip Transfer Nodes -->
+<div class="my-4 flex flex-col gap-3">
+<!-- From -->
+<div class="flex items-start gap-3">
+<div class="w-3 h-3 rounded-full bg-slate-400 mt-1 ring-4 ring-slate-200"></div>
+<div>
+<div class="text-body-sm font-semibold text-slate-800">น.ส. วริศรา ใจดี (ผู้โอน)</div>
+<div class="text-label-sm text-slate-500 font-mono">กสิกรไทย (KBANK) xxx-x-x1942-8</div>
+</div>
+</div>
+<div class="ml-1.5 h-4 border-l border-dashed border-slate-300"></div>
+<!-- To -->
+<div class="flex items-start gap-3">
+<div class="w-3 h-3 rounded-full bg-emerald-500 mt-1 ring-4 ring-emerald-200"></div>
+<div>
+<div class="text-body-sm font-semibold text-slate-800">หอพัก ศิริสุข เพลส โดย บจก. พร็อพเพอร์ตี้ (ผู้รับ)</div>
+<div class="text-label-sm text-slate-500 font-mono">ไทยพาณิชย์ (SCB) 408-2-89912-4</div>
+</div>
+</div>
+</div>
+<!-- Slip Amount -->
+<div class="my-4 p-3 bg-white/90 backdrop-blur rounded-xl border border-blue-200 text-center shadow-sm">
+<div class="text-label-sm text-slate-500 font-medium">จำนวนเงินที่ทำรายการ</div>
+<div class="text-headline-lg font-headline-lg font-black text-slate-900 tracking-tight">฿ 4,440.00</div>
+<div class="text-label-sm text-slate-400">ค่าธรรมเนียม: 0.00 บาท</div>
+</div>
+<!-- Meta Slip Details -->
+<div class="grid grid-cols-2 gap-2 text-body-sm border-t border-blue-200/80 pt-3">
+<div>
+<span class="text-label-sm text-slate-500 block">วัน-เวลาที่โอน:</span>
+<span class="font-medium text-slate-800">28 ต.ค. 2567, 14:15:32 น.</span>
+</div>
+<div>
+<span class="text-label-sm text-slate-500 block">เลขอ้างอิงทำรายการ:</span>
+<span class="font-mono text-label-sm font-semibold text-slate-800">202410284891024KB</span>
+</div>
+</div>
+<!-- Slip Hash Verification Box -->
+<div class="mt-3 p-2.5 bg-slate-900 text-white rounded-lg text-body-sm font-mono flex items-center justify-between">
+<div class="truncate pr-2">
+<span class="text-slate-400 text-label-sm block">Slip QR Hash Key:</span>
+<span class="text-emerald-400 text-label-sm truncate block font-mono">00020101021229370016A0000006770101110113...</span>
+</div>
+<span class="material-symbols-outlined text-emerald-400 text-[20px]">qr_code_2</span>
+</div>
+</div>
+<!-- OCR Extraction Meta Info -->
+<div class="p-3 bg-surface-container-low rounded-xl border border-[#CBD5E1] text-body-sm">
+<div class="flex items-center justify-between pb-1.5 border-b border-[#CBD5E1]/60">
+<span class="font-semibold text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">smart_toy</span>
+                  ผลสกัดข้อความ OCR (Automated Engine)
+                </span>
+<span class="px-2 py-0.5 rounded text-label-sm font-bold bg-emerald-100 text-emerald-800">ความแม่นยำ 99.4%</span>
+</div>
+<div class="grid grid-cols-2 gap-y-1.5 gap-x-4 mt-2 text-label-md">
+<div class="text-on-surface-variant">ธนาคารต้นทาง: <span class="font-medium text-on-surface">KBANK</span></div>
+<div class="text-on-surface-variant">ธนาคารปลายทาง: <span class="font-medium text-on-surface">SCB</span></div>
+<div class="text-on-surface-variant">รหัสตรวจสอบ: <span class="font-mono font-medium text-on-surface">OK_VERIFIED</span></div>
+<div class="text-on-surface-variant">ช่องทางส่ง: <span class="font-medium text-on-surface">LINE Bot Webhook</span></div>
+</div>
+</div>
+</div>
+</div>
+<!-- ==================== RIGHT COLUMN: COMPARISON & APPROVAL ACTION (7 Cols) ==================== -->
+<div class="xl:col-span-7 flex flex-col gap-5">
+<!-- Detailed Invoice Context Banner -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#CBD5E1] p-5 shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E2E8F0]">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-primary-container text-white font-black flex items-center justify-center text-headline-md shadow-md">
+                  102
+                </div>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="text-headline-md font-headline-md text-on-surface font-bold">ห้อง 102 (ชั้น 1)</h2>
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">
+                      ผู้เช่าปัจจุบัน
+                    </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                    ผู้เช่า: <strong class="text-on-surface">คุณวริศรา ใจดี</strong> • เบอร์โทร: 081-987-6543 • LINE ID: warisara_j
+                  </p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-sm text-secondary block">รหัสใบแจ้งหนี้ (Invoice ID)</span>
+<span class="text-title-md font-mono font-bold text-on-surface">INV-256710-0102</span>
+</div>
+</div>
+<!-- Itemized breakdown in bill -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
+<div class="p-3 rounded-xl bg-surface-container-low/50 border border-[#E2E8F0]">
+<span class="text-label-sm text-secondary block">ค่าเช่าห้อง</span>
+<span class="text-title-md font-bold text-on-surface">฿ 3,500</span>
+</div>
+<div class="p-3 rounded-xl bg-surface-container-low/50 border border-[#E2E8F0]">
+<span class="text-label-sm text-secondary block">ค่าน้ำ (8 ยูนิต × 18)</span>
+<span class="text-title-md font-bold text-on-surface">฿ 144</span>
+</div>
+<div class="p-3 rounded-xl bg-surface-container-low/50 border border-[#E2E8F0]">
+<span class="text-label-sm text-secondary block">ค่าไฟ (96 ยูนิต × 8)</span>
+<span class="text-title-md font-bold text-on-surface">฿ 768</span>
+</div>
+<div class="p-3 rounded-xl bg-blue-50 border border-blue-200">
+<span class="text-label-sm text-primary font-semibold block">ยอดเรียกเก็บรวม</span>
+<span class="text-title-md font-bold text-primary">฿ 4,440</span>
+</div>
+</div>
+</div>
+<!-- POINT-BY-POINT COMPARISON MATRIX (ตารางเทียบจุดต่อจุด) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#CBD5E1] p-5 shadow-sm">
+<div class="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">compare_arrows</span>
+<h3 class="text-title-lg font-title-lg text-on-surface font-bold">ตารางเปรียบเทียบจุดต่อจุด (Point-to-Point Match)</h3>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">done_all</span>
+                ผ่านการตรวจอัตโนมัติ 4/4 จุด
+              </span>
+</div>
+<!-- Matrix Rows -->
+<div class="flex flex-col gap-3">
+<!-- Point 1: Amount -->
+<div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+</div>
+<div>
+<span class="text-label-md font-label-md font-bold text-slate-900 block">1. ยอดเงินชำระ (Payment Amount)</span>
+<span class="text-body-sm text-slate-600">
+                      บิลเรียกเก็บ <strong class="text-slate-900">฿4,440.00</strong> เทียบกับ สลิปโอน <strong class="text-emerald-700">฿4,440.00</strong>
+</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-full text-label-md font-bold bg-emerald-200/80 text-emerald-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    ตรงกัน ✓
+                  </span>
+</div>
+</div>
+<!-- Point 2: Recipient Account -->
+<div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]">account_balance</span>
+</div>
+<div>
+<span class="text-label-md font-label-md font-bold text-slate-900 block">2. บัญชีผู้รับ (Recipient Account)</span>
+<span class="text-body-sm text-slate-600">
+                      ชื่อบัญชีปลายทาง: <strong class="text-slate-900">หอพัก ศิริสุข เพลส (SCB 408-2-89912-4)</strong>
+</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-full text-label-md font-bold bg-emerald-200/80 text-emerald-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    ตรงกัน ✓
+                  </span>
+</div>
+</div>
+<!-- Point 3: Transfer Time -->
+<div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+</div>
+<div>
+<span class="text-label-md font-label-md font-bold text-slate-900 block">3. วัน-เวลาที่โอน (Transfer Timestamp)</span>
+<span class="text-body-sm text-slate-600">
+                      28 ต.ค. 2567 เวลา 14:15 น. <span class="text-emerald-700 font-semibold">(กำหนดชำระ 5 พ.ย. 2567 - โอนตรงเวลา)</span>
+</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-full text-label-md font-bold bg-emerald-200/80 text-emerald-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    ตรงกัน ✓
+                  </span>
+</div>
+</div>
+<!-- Point 4: Duplicate Slip Check -->
+<div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div>
+<span class="text-label-md font-label-md font-bold text-slate-900 block">4. ตรวจสอบสลิปซ้ำ (Anti-Duplicate Fraud)</span>
+<span class="text-body-sm text-slate-600">
+                      ไม่พบประวัติซ้ำในระบบ (Slip Hash ไม่เคยถูกใช้ในระบบหอพัก)
+                    </span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 rounded-full text-label-md font-bold bg-emerald-200/80 text-emerald-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    ผ่าน ✓
+                  </span>
+</div>
+</div>
+</div>
+<!-- Auto-Verification Status Message Box -->
+<div class="mt-4 p-4 rounded-xl bg-blue-50 border border-blue-200 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[28px]">task_alt</span>
+<div class="flex-1">
+<div class="text-title-md font-title-md font-bold text-primary">
+                  ผลตรวจสลิปอัตโนมัติ: ข้อมูลถูกต้องตรงกับใบแจ้งหนี้
+                </div>
+<p class="text-body-sm text-on-surface-variant">
+                  ระบบได้เทียบยอดบิล ฿4,440 กับสลิปของห้อง 102 เรียบร้อยแล้ว สามารถกดอนุมัติเพื่อบันทึกและส่งใบเสร็จได้ทันที
+                </p>
+</div>
+</div>
+<!-- Approval Action Box (ปุ่มหลัก & ปุ่มรอง) -->
+<div class="mt-5 pt-4 border-t border-[#CBD5E1] flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+<!-- Primary Action: อนุมัติรับชำระเงิน -->
+<button class="flex-1 h-12 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-title-md text-title-md font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+<span>อนุมัติรับชำระเงิน (฿4,440)</span>
+</button>
+<!-- Secondary Action: ปฏิเสธสลิป (ระบุเหตุผล) -->
+<button class="h-12 px-5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 font-title-md text-title-md font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+<span>ปฏิเสธสลิป (ระบุเหตุผล)</span>
+</button>
+</div>
+<p class="text-center text-body-sm text-secondary mt-2 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-emerald-600">send</span>
+              เมื่ออนุมัติ ระบบจะเปลี่ยนสถานะบิลเป็น <span class="font-bold text-emerald-700">"ชำระแล้ว"</span> และส่ง e-Receipt ไปยัง LINE ของผู้เช่าอัตโนมัติทันที
+            </p>
+</div>
+<!-- ==================== TIMELINE AUDIT HISTORY ==================== -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#CBD5E1] p-5 shadow-sm">
+<h3 class="text-title-md font-title-md text-on-surface font-bold pb-3 border-b border-[#E2E8F0] flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">history</span>
+              ประวัติการทำงานของรายการนี้ (Audit Timeline)
+            </h3>
+<div class="mt-4 relative pl-6 border-l-2 border-primary-container/30 space-y-6">
+<!-- Timeline Step 1: Tenant Uploaded -->
+<div class="relative">
+<span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white ring-2 ring-emerald-200"></span>
+<div class="flex items-center justify-between">
+<span class="text-body-md font-semibold text-on-surface">ผู้เช่าอัปโหลดสลิปผ่าน LINE OA</span>
+<span class="text-label-sm font-mono text-secondary">28 ต.ค. 14:15:32</span>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-0.5">
+                  คุณวริศรา ใจดี ส่งภาพสลิปธนาคารเข้าสู่หน้าแชททางการของ ศิริสุข เพลส
+                </p>
+</div>
+<!-- Timeline Step 2: System OCR & Verify -->
+<div class="relative">
+<span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white ring-2 ring-emerald-200"></span>
+<div class="flex items-center justify-between">
+<span class="text-body-md font-semibold text-on-surface">ระบบอ่านสลิปและตรวจสอบ Slip Hash อัตโนมัติ</span>
+<span class="text-label-sm font-mono text-secondary">28 ต.ค. 14:15:35</span>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-0.5">
+                  บอท OCR ตรวจพบยอด ฿4,440.00 ตรงกับใบแจ้งหนี้ INV-256710-0102 ยืนยันสลิปไม่ซ้ำ
+                </p>
+</div>
+<!-- Timeline Step 3: Pending Manager Confirmation -->
+<div class="relative">
+<span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-amber-500 border-2 border-white ring-2 ring-amber-200 animate-pulse"></span>
+<div class="flex items-center justify-between">
+<span class="text-body-md font-bold text-amber-800">รอเจ้าหน้าที่ยืนยันการรับเงิน (Pending Approval)</span>
+<span class="text-label-sm font-mono text-amber-700 font-semibold">ขั้นตอนปัจจุบัน</span>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-0.5">
+                  เข้าสู่คิวรอผู้จัดการ สมศักดิ์ ตรวจสอบและกดยืนยันเพื่อออกใบเสร็จ
+                </p>
+</div>
+<!-- Timeline Step 4: Final Step Placeholder -->
+<div class="relative opacity-50">
+<span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-slate-300 border-2 border-white"></span>
+<div class="flex items-center justify-between">
+<span class="text-body-md font-medium text-slate-500">บันทึกชำระเงิน &amp; ส่ง e-Receipt ทาง LINE</span>
+<span class="text-label-sm text-slate-400">รอการอนุมัติ</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Lightweight Inline JS for Interactive Simulation -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle queue active item interaction
+      const queueItems = document.querySelectorAll('.xl\\:col-span-5 .p-3\\.5');
+      queueItems.forEach(item => {
+        item.addEventListener('click', () => {
+          queueItems.forEach(el => {
+            el.classList.remove('border-2', 'border-primary-container', 'bg-surface-container-low/60');
+            el.classList.add('border', 'border-[#E2E8F0]', 'bg-surface-container-lowest');
+          });
+          item.classList.remove('border', 'border-[#E2E8F0]', 'bg-surface-container-lowest');
+          item.classList.add('border-2', 'border-primary-container', 'bg-surface-container-low/60');
+        });
+      });
+    });
+  </script>
+</body></html>

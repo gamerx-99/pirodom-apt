@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<html class="light" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>จัดการบิลและใบแจ้งหนี้ - ศิริสุข เพลส (Sirisuk Place)</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms & Container Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#e7f2ff",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary": "#004ac6",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "on-primary-container": "#eeefff",
+            "on-tertiary-fixed": "#001d31",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#5c647a",
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-surface": "#213145",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#e5eeff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2563eb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#00174b",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "secondary-container": "#dae2fd",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary-container": "#0073ae",
+            "surface": "#f8f9ff",
+            "outline": "#737686",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-primary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-tertiary-fixed-variant": "#004b73"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter", "sans-serif"],
+            "headline-xl-mobile": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"],
+            "title-lg": ["Inter", "sans-serif"],
+            "title-md": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "headline-lg-mobile": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #CBD5E1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex">
+<!-- ==================== SHARED COMPONENT: SideNavBar ==================== -->
+<aside class="fixed top-0 left-0 h-full w-[260px] z-40 bg-on-background dark:bg-inverse-surface border-r border-on-surface-variant/20 dark:border-outline/20 flex flex-col justify-between p-space-md select-none">
+<div class="flex flex-col gap-6">
+<!-- Header / Logo -->
+<div class="flex items-center gap-3 px-2 pt-1">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center text-on-primary font-bold text-title-lg shadow-sm">
+          ศ
+        </div>
+<div class="flex flex-col">
+<span class="text-title-lg font-title-lg font-bold text-surface dark:text-surface-bright leading-tight">ศิริสุข เพลส</span>
+<span class="text-body-sm font-body-sm text-outline-variant flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+            LINE OA เชื่อมต่อแล้ว (19 ยูนิต)
+          </span>
+</div>
+</div>
+<!-- Quick Action CTA -->
+<button class="w-full bg-primary-container hover:bg-blue-600 active:scale-[0.98] text-on-primary py-2.5 px-3 rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 shadow-sm transition-all duration-150">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+<span>เพิ่มผู้เช่าใหม่</span>
+</button>
+<!-- Navigation Tabs (7 tabs as per JSON) -->
+<!-- Active Tab Semantic Mapping: "บิลและใบแจ้งหนี้" is active for route /admin/billing -->
+<nav class="flex flex-col gap-1.5">
+<!-- 1. ภาพรวม -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#overview">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-label-md font-label-md">ภาพรวม</span>
+</a>
+<!-- 2. ห้องพักและสัญญา -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#rooms">
+<span class="material-symbols-outlined text-[20px]">apartment</span>
+<span class="text-label-md font-label-md">ห้องพักและสัญญา</span>
+</a>
+<!-- 3. จดมิเตอร์ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#meter">
+<span class="material-symbols-outlined text-[20px]">speed</span>
+<span class="text-label-md font-label-md">จดมิเตอร์</span>
+</a>
+<!-- 4. บิลและใบแจ้งหนี้ (ACTIVE) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-container/20 text-tertiary-fixed font-title-md border-l-4 border-primary-container dark:border-inverse-primary active:scale-[0.98]" href="#billing">
+<span class="material-symbols-outlined text-[20px] text-tertiary-fixed" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="text-label-md font-label-md font-semibold">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- 5. ตรวจสลิป LINE -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98] justify-between" href="#slips">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]">receipt</span>
+<span class="text-label-md font-label-md">ตรวจสลิป LINE</span>
+</div>
+<span class="px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold">3 รอ</span>
+</a>
+<!-- 6. งานซ่อมบำรุง -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#maintenance">
+<span class="material-symbols-outlined text-[20px]">handyman</span>
+<span class="text-label-md font-label-md">งานซ่อมบำรุง</span>
+</a>
+<!-- 7. ตั้งค่าระบบ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#settings">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-label-md font-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer -->
+<div class="pt-4 border-t border-on-surface-variant/20 flex flex-col gap-1.5">
+<div class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-on-surface-variant/20 transition-all cursor-pointer">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-outline-variant text-[24px]">account_circle</span>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md text-surface">ผู้จัดการ สมศักดิ์</span>
+<span class="text-body-sm font-body-sm text-outline-variant text-[11px]">แอดมินดูแลหอพัก</span>
+</div>
+</div>
+<button class="text-outline-variant hover:text-error transition-colors p-1" title="ออกจากระบบ">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+<div class="flex-1 ml-[260px] min-h-screen flex flex-col">
+<!-- ==================== SHARED COMPONENT: TopNavBar ==================== -->
+<header class="sticky top-0 right-0 z-30 w-full bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant/40 dark:border-outline/20 shadow-sm">
+<div class="flex justify-between items-center h-16 px-space-xl max-w-full">
+<!-- Breadcrumb / Facility Context -->
+<div class="flex items-center gap-3">
+<span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface">ศิริสุข เพลส (Sirisuk Place)</span>
+<div class="hidden md:flex items-center gap-2 ml-4 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant/40">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+<span class="text-primary dark:text-inverse-primary font-title-md text-label-md">มีนาคม 2568</span>
+<span class="text-outline-variant text-label-md">|</span>
+<span class="text-on-surface-variant dark:text-outline-variant text-label-md">รอบบิลปัจจุบัน</span>
+</div>
+</div>
+<!-- Trailing Actions Cluster -->
+<div class="flex items-center gap-3">
+<!-- Notification & Icon Actions -->
+<div class="flex items-center gap-1 border-r border-outline-variant/40 pr-3">
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors relative" title="การแจ้งเตือน">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" title="รีเฟรชข้อมูล">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" title="คู่มือการใช้งาน">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</button>
+</div>
+<!-- LINE Sync Button -->
+<button class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface border border-outline-variant/50 font-label-md text-label-md active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[#06C755] text-[18px]">sync</span>
+<span>ซิงค์ข้อมูล LINE</span>
+</button>
+<!-- Primary Header Action -->
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary-container hover:bg-blue-600 text-on-primary font-label-md text-label-md shadow-sm active:scale-[0.98] transition-all" onclick="openModal()">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+<span>สร้างบิลประจำเดือน</span>
+</button>
+<!-- Profile Badge -->
+<div class="w-9 h-9 rounded-full bg-surface-container-high border border-outline-variant/50 flex items-center justify-center font-bold text-primary text-label-md cursor-pointer ml-1" title="รูปโปรไฟล์ ผู้จัดการ สมศักดิ์">
+            สศ
+          </div>
+</div>
+</div>
+</header>
+<!-- ==================== BODY WORKSPACE / CANVAS ==================== -->
+<main class="flex-1 p-space-xl max-w-[1440px] w-full mx-auto space-y-6">
+<!-- Header Section with Route Details -->
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-headline-lg font-headline-lg text-on-surface">บิลและใบแจ้งหนี้</h1>
+<!-- Demo Data Badge -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+              ข้อมูลตัวอย่าง (Demo Data)
+            </span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1">
+            ออกใบแจ้งหนี้ประจำเดือน ตรวจสอบยอด และติดตามสถานะการชำระเงินของหอพัก 19 ยูนิต
+          </p>
+</div>
+<div class="flex items-center gap-3">
+<!-- Month Selector -->
+<div class="relative">
+<select class="appearance-none bg-surface-container-lowest border border-outline-variant/60 rounded-xl px-4 py-2.5 pr-10 text-on-surface font-title-md text-label-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container cursor-pointer">
+<option selected="" value="2024-10">งวดเดือน: ตุลาคม 2567</option>
+<option value="2024-09">งวดเดือน: กันยายน 2567</option>
+<option value="2024-08">งวดเดือน: สิงหาคม 2567</option>
+<option value="2024-11">งวดเดือน: พฤศจิกายน 2567 (รอบถัดไป)</option>
+</select>
+<span class="material-symbols-outlined text-outline pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[18px]">
+              expand_more
+            </span>
+</div>
+<!-- Export/Print Action -->
+<button class="p-2.5 rounded-xl border border-outline-variant/60 bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-all flex items-center justify-center shadow-sm" title="ส่งออกรายงาน Excel">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</section>
+<!-- ==================== 4 SUMMARY CARDS (BLUEPRINT RULES) ==================== -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Card 1: ยอดเรียกเก็บรวม (Total Billed) -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">ยอดเรียกเก็บรวม</span>
+<p class="text-[12px] text-outline font-body-sm">Total Billed</p>
+</div>
+<div class="w-10 h-10 rounded-xl bg-blue-50 text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+</div>
+<div class="mt-4">
+<div class="text-[28px] font-bold text-on-background tracking-tight">฿84,500</div>
+<div class="flex items-center gap-1.5 mt-1 text-body-sm text-on-surface-variant">
+<span class="font-semibold text-primary">19 บิล</span>
+<span>(ครบทุกห้องในระบบ)</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full mt-4 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full w-full"></div>
+</div>
+</div>
+<!-- Card 2: รับชำระแล้ว (Collected) -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">รับชำระแล้ว</span>
+<p class="text-[12px] text-outline font-body-sm">Collected</p>
+</div>
+<div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">check_circle</span>
+</div>
+</div>
+<div class="mt-4">
+<div class="text-[28px] font-bold text-emerald-700 tracking-tight">฿62,300</div>
+<div class="flex items-center gap-2 mt-1 text-body-sm">
+<span class="font-semibold text-emerald-800">14 บิล</span>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold">73.7%</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full mt-4 overflow-hidden">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 73.7%;"></div>
+</div>
+</div>
+<!-- Card 3: ค้างชำระ (Pending) -->
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">ค้างชำระ</span>
+<p class="text-[12px] text-outline font-body-sm">Pending Collection</p>
+</div>
+<div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">hourglass_top</span>
+</div>
+</div>
+<div class="mt-4">
+<div class="text-[28px] font-bold text-amber-700 tracking-tight">฿22,200</div>
+<div class="flex items-center gap-1.5 mt-1 text-body-sm text-amber-800">
+<span class="font-semibold">5 บิล</span>
+<span class="text-on-surface-variant">(รอชำระ + เกินกำหนด)</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full mt-4 overflow-hidden">
+<div class="bg-amber-400 h-full rounded-full" style="width: 26.3%;"></div>
+</div>
+</div>
+<!-- Card 4: เกินกำหนด (Overdue) -->
+<div class="bg-surface-container-lowest border border-red-200 rounded-2xl p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div>
+<span class="text-label-md font-label-md text-error font-medium">เกินกำหนด</span>
+<p class="text-[12px] text-red-400 font-body-sm">Overdue Action Required</p>
+</div>
+<div class="w-10 h-10 rounded-xl bg-rose-50 text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">error</span>
+</div>
+</div>
+<div class="mt-4">
+<div class="text-[28px] font-bold text-error tracking-tight">฿9,200</div>
+<div class="flex items-center gap-1.5 mt-1 text-body-sm text-error">
+<span class="font-bold">2 บิล:</span>
+<span class="text-on-surface-variant text-[11px]">ห้อง 205 (10 ต.ค.), ห้อง 103</span>
+</div>
+</div>
+<!-- Blueprint Explicit Caption Rule -->
+<p class="text-[10px] text-outline mt-3 leading-tight italic">
+            *เป็นส่วนหนึ่งของยอดค้างชำระ ไม่นับซ้ำ*
+          </p>
+</div>
+</section>
+<!-- ==================== SEARCH & STATUS FILTER BAR ==================== -->
+<section class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+<!-- Filter Tabs Cluster -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 custom-scrollbar text-label-md">
+<!-- Filter: ทั้งหมด (19) -->
+<button class="px-3.5 py-1.5 rounded-xl bg-on-background text-on-primary font-semibold shrink-0 shadow-sm transition-all">
+            ทั้งหมด (19)
+          </button>
+<!-- Filter: ชำระแล้ว (14) -->
+<button class="px-3.5 py-1.5 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface shrink-0 transition-all flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            ชำระแล้ว (14)
+          </button>
+<!-- Filter: รอตรวจสอบสลิป (3) -->
+<button class="px-3.5 py-1.5 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface shrink-0 transition-all flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-sky-500"></span>
+            รอตรวจสอบสลิป (3)
+          </button>
+<!-- Filter: รอชำระ (2) -->
+<button class="px-3.5 py-1.5 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface shrink-0 transition-all flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            รอชำระ (2)
+          </button>
+<!-- Filter: เกินกำหนด (2) -->
+<button class="px-3.5 py-1.5 rounded-xl text-error bg-red-50 hover:bg-red-100 shrink-0 font-medium transition-all flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-rose-500"></span>
+            เกินกำหนด (2)
+          </button>
+<!-- Filter: ยกเลิก/ร่าง (0) -->
+<button class="px-3.5 py-1.5 rounded-xl text-outline hover:bg-surface-container shrink-0 transition-all">
+            ยกเลิก/ร่าง (0)
+          </button>
+</div>
+<!-- Search and Action Controls -->
+<div class="flex items-center gap-3">
+<div class="relative w-full sm:w-72">
+<span class="material-symbols-outlined text-outline absolute left-3 top-1/2 -translate-y-1/2 text-[18px]">search</span>
+<input class="w-full pl-9 pr-3 py-2 bg-surface-container-low border border-outline-variant/60 rounded-xl text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container" placeholder="ค้นหาเลขห้อง, ผู้เช่า, เลขบิล..." type="text"/>
+</div>
+<button class="p-2 border border-outline-variant/60 rounded-xl text-on-surface hover:bg-surface-container transition-all flex items-center gap-1 text-label-md px-3 shrink-0">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span class="hidden sm:inline">คัดกรอง</span>
+</button>
+</div>
+</section>
+<!-- ==================== BILLING TABLE ==================== -->
+<section class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/60 border-b border-outline-variant/40 text-on-surface-variant font-label-md text-label-md">
+<th class="py-3 px-4 font-semibold">เลขบิล</th>
+<th class="py-3 px-4 font-semibold">ห้อง</th>
+<th class="py-3 px-4 font-semibold">ผู้เช่า</th>
+<th class="py-3 px-4 font-semibold">งวด</th>
+<th class="py-3 px-4 font-semibold text-right">ค่าเช่าห้อง</th>
+<th class="py-3 px-4 font-semibold text-right">ค่าน้ำ</th>
+<th class="py-3 px-4 font-semibold text-right">ค่าไฟ (หน่วย x อัตรา)</th>
+<th class="py-3 px-4 font-semibold text-right">ยอดรวมสุทธิ</th>
+<th class="py-3 px-4 font-semibold">วันครบกำหนด</th>
+<th class="py-3 px-4 font-semibold text-center">สถานะบิล</th>
+<th class="py-3 px-4 font-semibold text-center">จัดการ / แจ้งเตือน</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 text-body-md font-body-md text-on-surface">
+<!-- HIGHLIGHT ROW 1: ห้อง 205 (อภิสิทธิ์) - OVERDUE -->
+<tr class="bg-rose-50/40 hover:bg-rose-50/70 transition-colors">
+<td class="py-4 px-4 font-medium text-primary">
+<span class="font-mono text-[13px] font-semibold">INV-2410-205</span>
+</td>
+<td class="py-4 px-4">
+<div class="inline-flex items-center justify-center w-10 h-7 rounded-lg bg-rose-100 text-error font-bold font-title-md">
+                    205
+                  </div>
+</td>
+<td class="py-4 px-4">
+<div class="font-semibold text-on-surface">อภิสิทธิ์ วงศ์สวัสดิ์</div>
+<div class="text-[12px] text-outline">081-992-XXXX</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant text-[13px]">ต.ค. 2567</td>
+<td class="py-4 px-4 text-right font-medium">฿4,200</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">฿150</td>
+<td class="py-4 px-4 text-right">
+<div class="font-medium">฿1,184</div>
+<div class="text-[11px] text-outline">148u × ฿8</div>
+</td>
+<td class="py-4 px-4 text-right">
+<span class="text-[16px] font-bold text-error">฿5,534</span>
+</td>
+<td class="py-4 px-4">
+<div class="text-error font-semibold flex items-center gap-1 text-[13px]">
+<span class="material-symbols-outlined text-[16px]">event_busy</span>
+                    10 ต.ค. 67
+                  </div>
+<span class="text-[11px] text-error font-medium">(เลยกำหนด 14 วัน)</span>
+</td>
+<td class="py-4 px-4 text-center">
+<!-- Red Badge / Overdue -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-100 text-error text-[11px] font-bold tracking-wide uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                    เกินกำหนด
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="flex items-center justify-center gap-1.5">
+<!-- LINE Urge Alert Button -->
+<button class="px-2.5 py-1.5 rounded-lg bg-[#06C755] hover:bg-[#05b34c] text-white text-[12px] font-semibold flex items-center gap-1 shadow-sm active:scale-95 transition-all" title="ส่งการแจ้งเตือนทวงถามทาง LINE ทันที">
+<span class="material-symbols-outlined text-[16px]">chat</span>
+<span>ส่งเตือน LINE</span>
+</button>
+<!-- View Details Modal Trigger -->
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all" onclick="openModal()" title="ดูรายละเอียดใบแจ้งหนี้">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- HIGHLIGHT ROW 2: ห้อง 102 (วริศรา) - VERIFYING -->
+<tr class="bg-sky-50/30 hover:bg-sky-50/60 transition-colors">
+<td class="py-4 px-4 font-medium text-primary">
+<span class="font-mono text-[13px] font-semibold">INV-2410-102</span>
+</td>
+<td class="py-4 px-4">
+<div class="inline-flex items-center justify-center w-10 h-7 rounded-lg bg-sky-100 text-sky-800 font-bold font-title-md">
+                    102
+                  </div>
+</td>
+<td class="py-4 px-4">
+<div class="font-semibold text-on-surface">วริศรา ธนรัตน์</div>
+<div class="text-[12px] text-outline">089-441-XXXX</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant text-[13px]">ต.ค. 2567</td>
+<td class="py-4 px-4 text-right font-medium">฿3,800</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">฿150</td>
+<td class="py-4 px-4 text-right">
+<div class="font-medium">฿490</div>
+<div class="text-[11px] text-outline">61u × ฿8</div>
+</td>
+<td class="py-4 px-4 text-right">
+<span class="text-[16px] font-bold text-on-surface">฿4,440</span>
+</td>
+<td class="py-4 px-4">
+<div class="text-on-surface text-[13px]">31 ต.ค. 67</div>
+<span class="text-[11px] text-outline font-normal">(ปกติ)</span>
+</td>
+<td class="py-4 px-4 text-center">
+<!-- Orange/Amber Badge: Verifying -->
+<a class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 text-[11px] font-bold tracking-wide transition-all" href="#slips" title="แนบสลิปแล้ว คลิกเพื่อตรวจสลิป">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    รอตรวจสลิป
+                  </a>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="flex items-center justify-center gap-1.5">
+<a class="px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary text-[12px] font-semibold flex items-center gap-1 transition-all border border-primary/20" href="#slips">
+<span class="material-symbols-outlined text-[16px]">fact_check</span>
+<span>ตรวจสลิป</span>
+</a>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all" onclick="openModal()">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 3: ห้อง 101 - PAID (GREEN) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-4 font-mono text-[13px] text-on-surface-variant">INV-2410-101</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center justify-center w-10 h-7 rounded-lg bg-slate-100 text-on-surface font-bold text-[14px]">101</span>
+</td>
+<td class="py-4 px-4">
+<div class="font-medium text-on-surface">กฤษฎา บุญยืน</div>
+<div class="text-[12px] text-outline">082-111-XXXX</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant text-[13px]">ต.ค. 2567</td>
+<td class="py-4 px-4 text-right">฿3,800</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">฿150</td>
+<td class="py-4 px-4 text-right">
+<div>฿560</div>
+<div class="text-[11px] text-outline">70u × ฿8</div>
+</td>
+<td class="py-4 px-4 text-right font-semibold text-on-surface">฿4,510</td>
+<td class="py-4 px-4 text-[13px] text-on-surface-variant">31 ต.ค. 67</td>
+<td class="py-4 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    ชำระแล้ว
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="flex items-center justify-center gap-1 text-on-surface-variant">
+<span class="text-[12px] text-emerald-600 font-medium">LINE ใบเสร็จแล้ว</span>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all" onclick="openModal()">
+<span class="material-symbols-outlined text-[20px]">receipt</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 4: ห้อง 103 - OVERDUE (RED) -->
+<tr class="bg-rose-50/20 hover:bg-rose-50/50 transition-colors">
+<td class="py-4 px-4 font-mono text-[13px] text-on-surface-variant">INV-2410-103</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center justify-center w-10 h-7 rounded-lg bg-rose-100 text-error font-bold text-[14px]">103</span>
+</td>
+<td class="py-4 px-4">
+<div class="font-medium text-on-surface">ชัยพร เมธาสิทธิ์</div>
+<div class="text-[12px] text-outline">084-222-XXXX</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant text-[13px]">ต.ค. 2567</td>
+<td class="py-4 px-4 text-right">฿3,200</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">฿150</td>
+<td class="py-4 px-4 text-right">
+<div>฿316</div>
+<div class="text-[11px] text-outline">39.5u × ฿8</div>
+</td>
+<td class="py-4 px-4 text-right font-bold text-error">฿3,666</td>
+<td class="py-4 px-4">
+<div class="text-error font-medium text-[13px]">15 ต.ค. 67</div>
+<span class="text-[11px] text-error font-normal">(เลย 9 วัน)</span>
+</td>
+<td class="py-4 px-4 text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-100 text-error text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                    เกินกำหนด
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="flex items-center justify-center gap-1.5">
+<button class="px-2.5 py-1.5 rounded-lg bg-[#06C755] hover:bg-[#05b34c] text-white text-[12px] font-semibold flex items-center gap-1 shadow-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[16px]">chat</span>
+<span>ส่งเตือน LINE</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all" onclick="openModal()">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 5: ห้อง 201 - PENDING (YELLOW) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-4 font-mono text-[13px] text-on-surface-variant">INV-2410-201</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center justify-center w-10 h-7 rounded-lg bg-slate-100 text-on-surface font-bold text-[14px]">201</span>
+</td>
+<td class="py-4 px-4">
+<div class="font-medium text-on-surface">มนัสวี เกษมสันต์</div>
+<div class="text-[12px] text-outline">087-333-XXXX</div>
+</td>
+<td class="py-4 px-4 text-on-surface-variant text-[13px]">ต.ค. 2567</td>
+<td class="py-4 px-4 text-right">฿4,200</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">฿150</td>
+<td class="py-4 px-4 text-right">
+<div>฿640</div>
+<div class="text-[11px] text-outline">80u × ฿8</div>
+</td>
+<td class="py-4 px-4 text-right font-semibold text-on-surface">฿4,990</td>
+<td class="py-4 px-4 text-[13px] text-on-surface">31 ต.ค. 67</td>
+<td class="py-4 px-4 text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    รอชำระ
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<div class="flex items-center justify-center gap-1.5">
+<button class="px-2.5 py-1.5 rounded-lg border border-outline-variant hover:bg-surface-container text-on-surface text-[12px] font-medium flex items-center gap-1 transition-all">
+<span class="material-symbols-outlined text-[16px] text-[#06C755]">share</span>
+<span>ส่งบิลซ้ำ</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all" onclick="openModal()">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Footer -->
+<div class="px-6 py-3.5 bg-surface-container-low/40 border-t border-outline-variant/40 flex items-center justify-between text-body-sm text-on-surface-variant">
+<div>
+            แสดง <span class="font-semibold text-on-surface">1 - 5</span> จากทั้งหมด <span class="font-semibold text-on-surface">19 ยูนิต</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-lowest text-outline disabled:opacity-50" disabled="">
+              ก่อนหน้า
+            </button>
+<button class="px-3 py-1.5 rounded-lg bg-primary-container text-on-primary font-semibold text-label-md">1</button>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container text-on-surface">2</button>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container text-on-surface">3</button>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container text-on-surface">
+              ถัดไป
+            </button>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- ==================== MODAL: PREVIEW INVOICE & PROMPTPAY QR ==================== -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-background/50 backdrop-blur-sm hidden transition-opacity duration-200" id="invoiceModal">
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/50 max-w-lg w-full shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+<!-- Modal Header -->
+<div class="px-6 py-4 bg-surface-container border-b border-outline-variant/40 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[24px]">receipt_long</span>
+<div>
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">ตัวอย่างใบแจ้งหนี้ (Invoice Preview)</h3>
+<p class="text-[12px] text-on-surface-variant font-mono">เลขที่ INV-2410-205 • ประจำเดือน ตุลาคม 2567</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-lg hover:bg-surface-variant flex items-center justify-center text-outline hover:text-on-surface transition-colors" onclick="closeModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Modal Body (Printable Paper Look) -->
+<div class="p-6 overflow-y-auto space-y-5 custom-scrollbar text-on-surface">
+<!-- Dormitory & Resident Header Box -->
+<div class="flex justify-between items-start border-b border-outline-variant/30 pb-4">
+<div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">ศิริสุข เพลส</div>
+<div class="text-body-sm text-outline mt-0.5">124/8 ถ.พหลโยธิน แขวงลาดยาว เขตจตุจักร กทม. 10900</div>
+<div class="text-[12px] text-outline">LINE OA: @sirisukplace</div>
+</div>
+<div class="text-right">
+<span class="inline-block px-3 py-1 rounded-lg bg-rose-100 text-error font-bold text-title-md">
+              ห้อง 205
+            </span>
+<div class="text-body-sm font-semibold text-on-surface mt-1">คุณอภิสิทธิ์ วงศ์สวัสดิ์</div>
+<div class="text-[12px] text-outline">โทร 081-992-XXXX</div>
+</div>
+</div>
+<!-- Breakdown Table -->
+<div class="rounded-xl border border-outline-variant/40 overflow-hidden">
+<table class="w-full text-left text-body-md">
+<thead class="bg-surface-container-low text-on-surface-variant font-semibold text-[13px]">
+<tr>
+<th class="py-2.5 px-3">รายการแยกหมวด</th>
+<th class="py-2.5 px-3 text-right">จำนวนหน่วย</th>
+<th class="py-2.5 px-3 text-right">อัตรา</th>
+<th class="py-2.5 px-3 text-right">จำนวนเงิน (บาท)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 text-[13px]">
+<tr>
+<td class="py-2.5 px-3 font-medium">1. ค่าเช่าห้องพัก (ห้องแอร์มาตรฐาน)</td>
+<td class="py-2.5 px-3 text-right text-outline">1 งวด</td>
+<td class="py-2.5 px-3 text-right text-outline">4,200.00</td>
+<td class="py-2.5 px-3 text-right font-medium">4,200.00</td>
+</tr>
+<tr>
+<td class="py-2.5 px-3 font-medium">2. ค่าน้ำประปา (เหมาจ่าย)</td>
+<td class="py-2.5 px-3 text-right text-outline">1 คน</td>
+<td class="py-2.5 px-3 text-right text-outline">150.00</td>
+<td class="py-2.5 px-3 text-right font-medium">150.00</td>
+</tr>
+<tr>
+<td class="py-2.5 px-3 font-medium">
+<div>3. ค่ากระแสไฟฟ้า</div>
+<div class="text-[11px] text-outline font-mono">มิเตอร์: 1,320 - 1,172 = 148 หน่วย</div>
+</td>
+<td class="py-2.5 px-3 text-right text-outline">148 หน่วย</td>
+<td class="py-2.5 px-3 text-right text-outline">8.00</td>
+<td class="py-2.5 px-3 text-right font-medium">1,184.00</td>
+</tr>
+<tr class="bg-slate-50 font-bold text-on-surface text-[14px]">
+<td class="py-3 px-3 text-right" colspan="3">ยอดรวมสุทธิที่ต้องชำระ:</td>
+<td class="py-3 px-3 text-right text-primary text-[17px]">฿5,534.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Payment Terms & PromptPay QR Component -->
+<div class="bg-surface-container-low/70 rounded-xl p-4 border border-outline-variant/40 flex items-center justify-between gap-4">
+<div class="space-y-1">
+<span class="text-[11px] font-bold text-error uppercase tracking-wider">วันครบกำหนดชำระ: 10 ตุลาคม 2567</span>
+<div class="text-title-md font-bold text-on-surface">สแกนชำระผ่าน PromptPay</div>
+<div class="text-body-sm text-outline">พร้อมเพย์: 081-456-7890 (หอพัก ศิริสุข เพลส)</div>
+<p class="text-[11px] text-on-surface-variant italic pt-1">
+              *เมื่อโอนแล้ว ระบบจะตรวจสอบสลิปอัตโนมัติผ่าน LINE OA*
+            </p>
+</div>
+<!-- PromptPay QR Simulated Canvas Box -->
+<div class="w-24 h-24 bg-white border border-outline-variant rounded-lg p-1.5 flex flex-col items-center justify-center shrink-0 shadow-sm text-center">
+<div class="w-full h-full bg-slate-900 rounded flex flex-col items-center justify-center text-white p-1">
+<span class="material-symbols-outlined text-[32px] text-white">qr_code_2</span>
+<span class="text-[8px] font-bold tracking-tighter uppercase">PromptPay</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Footer Actions -->
+<div class="px-6 py-4 bg-surface-container border-t border-outline-variant/40 flex items-center justify-between gap-3">
+<button class="px-4 py-2 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md transition-all" onclick="closeModal()">
+          ปิดหน้าต่าง
+        </button>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-2 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-all">
+<span class="material-symbols-outlined text-[18px]">print</span>
+<span>พิมพ์บิล</span>
+</button>
+<!-- Mandatory Blueprint Button: ส่งบิลทาง LINE ให้ผู้เช่า -->
+<button class="px-4 py-2 rounded-xl bg-[#06C755] hover:bg-[#05b34c] text-white font-label-md text-label-md font-semibold flex items-center gap-2 shadow-sm active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">send</span>
+<span>ส่งบิลทาง LINE ให้ผู้เช่า</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    function openModal() {
+      const modal = document.getElementById('invoiceModal');
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('invoiceModal');
+      modal.classList.add('hidden');
+    }
+
+    // Close modal on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Close on backdrop click
+    document.getElementById('invoiceModal').addEventListener('click', (e) => {
+      if (e.target.id === 'invoiceModal') closeModal();
+    });
+  </script>
+</body></html>

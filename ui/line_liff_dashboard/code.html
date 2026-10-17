@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>หน้าหลักผู้เช่า - Sirisuk Place</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter & Noto Sans Thai -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+Thai:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "background": "#f8f9ff",
+            "on-secondary": "#ffffff",
+            "surface": "#f8f9ff",
+            "on-secondary-container": "#5c647a",
+            "tertiary-container": "#0073ae",
+            "secondary-fixed-dim": "#bec6e0",
+            "tertiary-fixed": "#cce5ff",
+            "error": "#ba1a1a",
+            "inverse-primary": "#b4c5ff",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "on-tertiary-container": "#e7f2ff",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "surface-variant": "#d3e4fe",
+            "surface-tint": "#0053db",
+            "on-error-container": "#93000a",
+            "secondary-container": "#dae2fd",
+            "on-error": "#ffffff",
+            "on-background": "#0b1c30",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "error-container": "#ffdad6",
+            "surface-dim": "#cbdbf5",
+            "on-tertiary-fixed-variant": "#004b73",
+            "on-primary-fixed-variant": "#003ea8",
+            "surface-container-high": "#dce9ff",
+            "surface-container-low": "#eff4ff",
+            "on-surface-variant": "#434655",
+            "surface-bright": "#f8f9ff",
+            "on-primary-fixed": "#00174b",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container": "#e5eeff",
+            "secondary-fixed": "#dae2fd",
+            "on-tertiary-fixed": "#001d31",
+            "on-secondary-fixed": "#131b2e",
+            "on-surface": "#0b1c30",
+            "primary-container": "#2563eb",
+            "outline-variant": "#c3c6d7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "primary": "#004ac6",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-secondary-fixed-variant": "#3f465c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter-desktop": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin-desktop": "2rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-lg-mobile": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "label-sm": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "label-md": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "body-sm": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-xl-mobile": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "body-lg": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "body-md": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "title-md": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-md": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "title-lg": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-lg": ["Inter", "Noto Sans Thai", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 1rem);
+    }
+    .pt-safe {
+      padding-top: env(safe-area-inset-top, 0.5rem);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen selection:bg-secondary-container selection:text-primary">
+<!-- Desktop Notification Rail / Centered Mobile Viewport Frame -->
+<div class="mx-auto w-full max-w-md bg-surface min-h-screen flex flex-col pb-28 relative shadow-xl">
+<!-- TOP APP BAR (Shared Components JSON Anchor) -->
+<header class="sticky top-0 z-40 flex items-center justify-between w-full px-margin py-space-sm bg-surface-container-lowest dark:bg-inverse-surface shadow-sm dark:shadow-none pt-safe">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary" data-icon="apartment">apartment</span>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary leading-none">Sirisuk Place</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant dark:text-inverse-on-surface mt-0.5">ศิริสุข เพลส</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<!-- Demo Data Chip -->
+<span class="bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm px-2 py-0.5 rounded-full border border-outline-variant">
+          ข้อมูลตัวอย่าง
+        </span>
+<!-- Context Action Room badge -->
+<div class="bg-primary-container text-on-primary font-label-md text-label-md px-2.5 py-1 rounded-lg flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[16px]" data-icon="meeting_room">meeting_room</span>
+<span>ห้อง 205</span>
+</div>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT CANVAS -->
+<main class="flex-1 px-margin pt-space-md space-y-space-md">
+<!-- TENANT PROFILE SUMMARY HEADER -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-outline-variant shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-full bg-secondary-container text-primary flex items-center justify-center font-bold text-title-md">
+            อ
+          </div>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-title-md text-title-md text-on-surface">คุณอภิสิทธิ์ วงศ์สวัสดิ์</h1>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">สัญญาเช่าห้อง 205 (ชั้น 2) • ประเภท 1 ห้องนอน</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            สถานะปกติ
+          </span>
+</div>
+</section>
+<!-- HERO OUTSTANDING BALANCE CARD -->
+<section class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden">
+<!-- Warning Status Header Strip -->
+<div class="bg-rose-50 border-b border-rose-200 px-space-md py-2 flex items-center justify-between text-rose-800">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-rose-600 text-body-lg" data-icon="warning">warning</span>
+<span class="font-label-md text-label-md font-semibold text-rose-900">เกินกำหนดชำระแล้ว 4 วัน</span>
+</div>
+<span class="font-label-sm text-label-sm bg-rose-200/60 text-rose-900 px-2 py-0.5 rounded-md font-medium">ครบกำหนด 10 ต.ค. 67</span>
+</div>
+<div class="p-space-lg space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant">ยอดค้างชำระปัจจุบัน (งวด ต.ค. 2567)</p>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-headline-xl-mobile text-headline-xl-mobile font-bold text-on-surface tracking-tight">฿4,600</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">บาท</span>
+</div>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center px-2 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-label-sm text-label-sm font-medium">
+                รอชำระเงิน
+              </span>
+</div>
+</div>
+<!-- Micro Breakdown Pill Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/60 text-center">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ค่าเช่าห้อง</p>
+<p class="font-title-md text-title-md font-semibold text-on-surface mt-0.5">฿3,200</p>
+</div>
+<div class="border-x border-outline-variant/60">
+<p class="font-label-sm text-label-sm text-on-surface-variant">ค่าไฟฟ้า (148u)</p>
+<p class="font-title-md text-title-md font-semibold text-on-surface mt-0.5">฿1,184</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ค่าน้ำประปา</p>
+<p class="font-title-md text-title-md font-semibold text-on-surface mt-0.5">฿216</p>
+</div>
+</div>
+<!-- Thumb-Friendly Large Primary Action Button -->
+<a class="w-full h-12 bg-primary hover:bg-primary-container active:scale-[0.99] transition-all rounded-xl text-on-primary font-title-md text-title-md flex items-center justify-center gap-2 shadow-sm font-semibold" href="#pay">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+<span>ดูบิลและชำระเงิน</span>
+</a>
+</div>
+</section>
+<!-- QUICK ACTIONS GRID (4 Actions) -->
+<section class="space-y-2">
+<h2 class="font-label-md text-label-md text-on-surface-variant px-1 font-semibold uppercase tracking-wider">
+          ทางลัดด่วน (Quick Actions)
+        </h2>
+<div class="grid grid-cols-4 gap-2.5">
+<!-- Item 1: Meter History -->
+<a class="flex flex-col items-center justify-center p-3 bg-surface-container-lowest border border-outline-variant rounded-2xl active:scale-95 transition-all text-center hover:bg-surface-container-low shadow-sm" href="#meter">
+<div class="w-10 h-10 rounded-xl bg-secondary-container/60 text-primary flex items-center justify-center mb-1.5">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+</div>
+<span class="font-label-sm text-label-sm font-medium text-on-surface">มิเตอร์ไฟ-น้ำ</span>
+</a>
+<!-- Item 2: Documents & Contract -->
+<a class="flex flex-col items-center justify-center p-3 bg-surface-container-lowest border border-outline-variant rounded-2xl active:scale-95 transition-all text-center hover:bg-surface-container-low shadow-sm" href="#docs">
+<div class="w-10 h-10 rounded-xl bg-secondary-container/60 text-primary flex items-center justify-center mb-1.5">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<span class="font-label-sm text-label-sm font-medium text-on-surface">สัญญาเช่า</span>
+</a>
+<!-- Item 3: Maintenance Report -->
+<a class="flex flex-col items-center justify-center p-3 bg-surface-container-lowest border border-outline-variant rounded-2xl active:scale-95 transition-all text-center hover:bg-surface-container-low shadow-sm" href="#repair">
+<div class="w-10 h-10 rounded-xl bg-secondary-container/60 text-primary flex items-center justify-center mb-1.5">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+</div>
+<span class="font-label-sm text-label-sm font-medium text-on-surface">แจ้งซ่อม</span>
+</a>
+<!-- Item 4: Contact Landlord / LINE -->
+<a class="flex flex-col items-center justify-center p-3 bg-surface-container-lowest border border-outline-variant rounded-2xl active:scale-95 transition-all text-center hover:bg-surface-container-low shadow-sm" href="tel:0812345678">
+<div class="w-10 h-10 rounded-xl bg-secondary-container/60 text-primary flex items-center justify-center mb-1.5">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</div>
+<span class="font-label-sm text-label-sm font-medium text-on-surface">ติดต่อหอพัก</span>
+</a>
+</div>
+</section>
+<!-- COMPACT ELECTRICITY USAGE TREND (Bento-style chart) -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-outline-variant shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="bolt">bolt</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">การใช้ไฟฟ้า 3 เดือนย้อนหลัง</h3>
+</div>
+<a class="font-label-sm text-label-sm text-primary flex items-center hover:underline font-semibold" href="#meter-details">
+            รายละเอียด <span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- 3-Month Bar Visualization -->
+<div class="pt-2 pb-1">
+<div class="grid grid-cols-3 gap-3 items-end h-28 px-4 border-b border-outline-variant/40 pb-2">
+<!-- Aug -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium mb-1">110 หน่วย</span>
+<div class="w-full bg-secondary-container rounded-t-lg transition-all" style="height: 60%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1.5 font-medium">ส.ค.</span>
+</div>
+<!-- Sep -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium mb-1">125 หน่วย</span>
+<div class="w-full bg-secondary-container rounded-t-lg transition-all" style="height: 72%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-1.5 font-medium">ก.ย.</span>
+</div>
+<!-- Oct (Active) -->
+<div class="flex flex-col items-center h-full justify-end group">
+<span class="font-label-sm text-label-sm text-primary font-bold mb-1">148 หน่วย</span>
+<div class="w-full bg-primary rounded-t-lg transition-all shadow-sm" style="height: 90%;"></div>
+<span class="font-label-sm text-label-sm text-primary font-bold mt-1.5">ต.ค. (ล่าสุด)</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl flex items-center justify-between text-on-surface-variant text-body-sm font-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-tertiary" data-icon="info">info</span>
+<span>งวดล่าสุด <strong>148 หน่วย (฿1,184)</strong></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">อัตรา 8 บาท/หน่วย</span>
+</div>
+</section>
+<!-- ACTIVE MAINTENANCE TICKET TRACKING -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-outline-variant shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="engineering">engineering</span>
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">งานแจ้งซ่อมที่ติดตามอยู่</h3>
+</div>
+<span class="font-label-sm text-label-sm bg-secondary-container text-on-secondary-fixed px-2 py-0.5 rounded-full font-semibold">1 รายการ</span>
+</div>
+<div class="p-3 bg-surface-container-low border border-outline-variant rounded-xl flex flex-col gap-2">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary mt-0.5 border border-outline-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="ac_unit">ac_unit</span>
+</div>
+<div>
+<p class="font-title-md text-title-md font-semibold text-on-surface leading-snug">แอร์มีน้ำหยด (ห้อง 205)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">แจ้งเมื่อ: วันนี้ 11:30 น. • หมายเลข #TK-8821</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/60">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-semibold text-amber-800">รับเรื่องแล้ว กำลังส่งช่างเข้าตรวจ</span>
+</div>
+<a class="font-label-sm text-label-sm text-primary hover:underline font-semibold flex items-center" href="#maintenance-detail">
+              ดูความคืบหน้า <span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+</div>
+</section>
+<!-- RECENT INVOICES LIST -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-outline-variant shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">รายการบิลล่าสุด (Recent Invoices)</h3>
+<a class="font-label-sm text-label-sm text-primary hover:underline font-semibold" href="#all-bills">ดูประวัติทั้งหมด</a>
+</div>
+<div class="space-y-2.5">
+<!-- Item 1: Oct 2567 (Overdue / Pending) -->
+<div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center justify-between hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center border border-rose-200">
+<span class="material-symbols-outlined" data-icon="receipt">receipt</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md font-semibold text-on-surface">งวด ต.ค. 2567</span>
+<span class="px-2 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200 text-[10px] font-bold">เกินกำหนด</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ครบกำหนด 10 ต.ค. 67</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-title-md text-title-md font-bold text-on-surface">฿4,600</p>
+<span class="font-label-sm text-label-sm text-primary hover:underline font-semibold cursor-pointer">ชำระเงิน →</span>
+</div>
+</div>
+<!-- Item 2: Sep 2567 (Paid) -->
+<div class="p-3 bg-surface-container-lowest border border-outline-variant rounded-xl flex items-center justify-between opacity-85 hover:opacity-100 transition-all">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md font-medium text-on-surface">งวด ก.ย. 2567</span>
+<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-semibold">ชำระแล้ว</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ชำระเมื่อ 05 ก.ย. 67 • โอนผ่าน QR</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-title-md text-title-md font-semibold text-on-surface">฿4,420</p>
+<a class="font-label-sm text-label-sm text-secondary hover:underline" href="#receipt">ดูใบเสร็จ</a>
+</div>
+</div>
+</div>
+</section>
+<!-- CONTACT & OFFICE HOURS FOOTNOTE -->
+<footer class="pt-2 text-center text-on-surface-variant font-body-sm text-body-sm pb-4">
+<p>นิติคอนโด/ผู้ดูแลหอ: 08:30 - 18:00 น. โทร 02-999-8888</p>
+<p class="text-[11px] text-outline mt-1">Sirisuk Place Resident Portal • v1.4.0</p>
+</footer>
+</main>
+<!-- BOTTOM NAVIGATION BAR (Shared Components JSON Anchor) -->
+<!-- Destination count: 4, Labels: หน้าหลัก, มิเตอร์, เอกสาร, แจ้งซ่อม -->
+<!-- Active Tab: หน้าหลัก (Semantic intent: Tenant Homepage) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex items-center justify-around px-space-xs py-space-xs bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline pb-safe max-w-md left-1/2 -translate-x-1/2 shadow-md dark:shadow-none">
+<!-- Tab 1: หน้าหลัก (Active) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-label-sm text-label-sm py-1 px-3 bg-secondary-container dark:bg-on-secondary-container rounded-full active:scale-95 transition-transform duration-150" href="/liff">
+<span class="material-symbols-outlined text-[22px]" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm">หน้าหลัก</span>
+</a>
+<!-- Tab 2: มิเตอร์ (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline font-label-sm text-label-sm py-1 px-3 hover:bg-surface-container-low dark:hover:bg-surface-container active:scale-95 transition-transform duration-150" href="/liff/meter">
+<span class="material-symbols-outlined text-[22px]" data-icon="speed">speed</span>
+<span class="font-label-sm text-label-sm">มิเตอร์</span>
+</a>
+<!-- Tab 3: เอกสาร (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline font-label-sm text-label-sm py-1 px-3 hover:bg-surface-container-low dark:hover:bg-surface-container active:scale-95 transition-transform duration-150" href="/liff/documents">
+<span class="material-symbols-outlined text-[22px]" data-icon="description">description</span>
+<span class="font-label-sm text-label-sm">เอกสาร</span>
+</a>
+<!-- Tab 4: แจ้งซ่อม (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline font-label-sm text-label-sm py-1 px-3 hover:bg-surface-container-low dark:hover:bg-surface-container active:scale-95 transition-transform duration-150" href="/liff/maintenance">
+<span class="material-symbols-outlined text-[22px]" data-icon="build">build</span>
+<span class="font-label-sm text-label-sm">แจ้งซ่อม</span>
+</a>
+</nav>
+</div>
+<script>
+    // Lightweight interactivity for tactile demo touch feedback
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('click', (e) => {
+        if(el.getAttribute('href') && el.getAttribute('href').startsWith('#')) {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
+</body></html>

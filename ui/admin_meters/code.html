@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>บันทึกมิเตอร์ - ศิริสุข เพลส</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#e7f2ff",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary": "#004ac6",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "on-primary-container": "#eeefff",
+            "on-tertiary-fixed": "#001d31",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#5c647a",
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-surface": "#213145",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#e5eeff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2563eb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#00174b",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "secondary-container": "#dae2fd",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary-container": "#0073ae",
+            "surface": "#f8f9ff",
+            "outline": "#737686",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-primary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-tertiary-fixed-variant": "#004b73"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "label-sm": ["Inter"],
+            "title-lg": ["Inter"],
+            "title-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased flex min-h-screen overflow-x-hidden selection:bg-primary-container selection:text-surface-container-lowest">
+<!-- Desktop Sidebar Navigation -->
+<aside class="fixed top-0 left-0 h-full w-[260px] z-40 bg-on-background dark:bg-inverse-surface border-r border-on-surface-variant/20 dark:border-outline/20 flex flex-col justify-between p-space-md shadow-none select-none">
+<div>
+<!-- Brand & Property Anchor -->
+<div class="px-2 py-3 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-surface-container-lowest flex items-center justify-center font-title-lg font-bold shadow-sm">
+            ส
+          </div>
+<div>
+<h1 class="text-title-lg font-title-lg font-bold text-surface dark:text-surface-bright leading-tight">ศิริสุข เพลส</h1>
+<p class="text-body-sm font-body-sm text-outline-variant flex items-center gap-1.5 mt-0.5">
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+              LINE OA เชื่อมต่อแล้ว (19 ยูนิต)
+            </p>
+</div>
+</div>
+</div>
+<!-- Quick Action / CTA -->
+<div class="px-1 mb-5">
+<button class="w-full h-10 bg-primary hover:bg-primary-container text-surface-container-lowest rounded-xl font-label-md text-label-md flex items-center justify-center gap-2 transition-colors duration-150 active:scale-[0.98] shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+<span>เพิ่มผู้เช่าใหม่</span>
+</button>
+</div>
+<!-- Navigation Tabs -->
+<nav aria-label="แถบการนำทางหลัก" class="space-y-1">
+<!-- 0: ภาพรวม -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">ภาพรวม</span>
+</a>
+<!-- 1: ห้องพักและสัญญา -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="apartment">apartment</span>
+<span class="text-label-md font-label-md">ห้องพักและสัญญา</span>
+</a>
+<!-- 2: จดมิเตอร์ (Active Tab) -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary-container/20 text-tertiary-fixed font-title-md border-l-4 border-primary-container dark:border-inverse-primary" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl" data-icon="speed" data-weight="fill" style="font-variation-settings: 'FILL' 1;">speed</span>
+<span class="text-label-md font-label-md">จดมิเตอร์</span>
+</div>
+<!-- Badge ส้ม 2 ค้าง -->
+<span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-label-sm font-label-sm px-2 py-0.5 rounded-full flex items-center gap-1 font-semibold">
+            2 ค้าง
+          </span>
+</a>
+<!-- 3: บิลและใบแจ้งหนี้ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-md font-label-md">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- 4: ตรวจสลิป LINE -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="receipt">receipt</span>
+<span class="text-label-md font-label-md">ตรวจสลิป LINE</span>
+</a>
+<!-- 5: งานซ่อมบำรุง -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="handyman">handyman</span>
+<span class="text-label-md font-label-md">งานซ่อมบำรุง</span>
+</a>
+<!-- 6: ตั้งค่าระบบ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="settings">settings</span>
+<span class="text-label-md font-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Footer Profile & Session Control -->
+<div class="border-t border-on-surface-variant/20 pt-4 space-y-1">
+<div class="flex items-center justify-between px-3 py-2 text-outline-variant rounded-lg">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-2xl text-secondary-fixed" data-icon="account_circle">account_circle</span>
+<span class="text-body-sm font-body-sm text-surface truncate max-w-[130px]">ผู้จัดการ สมศักดิ์</span>
+</div>
+<button class="text-outline-variant hover:text-error transition-colors p-1 rounded-md" title="ออกจากระบบ">
+<span class="material-symbols-outlined text-lg" data-icon="logout">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Administrative Content Region -->
+<div class="flex-1 pl-[260px] flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-30 w-full bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant/40 dark:border-outline/20 shadow-sm">
+<div class="flex justify-between items-center h-16 px-space-xl max-w-full">
+<!-- Breadcrumb & Cycle Anchor -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-label-md font-label-md">
+<span class="text-on-surface-variant dark:text-outline-variant">ศิริสุข เพลส (Sirisuk Place)</span>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary dark:text-inverse-primary font-title-md border-b-2 border-primary pb-0.5">มีนาคม 2568</span>
+<span class="material-symbols-outlined text-sm text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface-variant">รอบบิลปัจจุบัน</span>
+</div>
+</div>
+<!-- Utility Trailing Group -->
+<div class="flex items-center gap-3">
+<!-- Quick Search -->
+<div class="relative hidden lg:block w-64">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-secondary text-lg" data-icon="search">search</span>
+<input class="w-full h-9 pl-9 pr-3 rounded-xl bg-surface text-body-sm font-body-sm text-on-surface placeholder:text-secondary border border-outline-variant/60 focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="ค้นหาห้องพัก หรือผู้เช่า..." type="text"/>
+</div>
+<button class="h-9 px-3 rounded-xl border border-outline-variant text-on-surface text-label-md font-label-md flex items-center gap-1.5 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-base text-secondary" data-icon="sync">sync</span>
+<span>ซิงค์ข้อมูล LINE</span>
+</button>
+<button class="h-9 px-4 rounded-xl bg-primary hover:bg-primary-container text-surface-container-lowest font-label-md text-label-md flex items-center gap-1.5 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-base" data-icon="add_circle">add_circle</span>
+<span>สร้างบิลประจำเดือน</span>
+</button>
+<div class="flex items-center pl-2 border-l border-outline-variant/40 gap-1 text-on-surface-variant">
+<button class="p-1.5 rounded-lg hover:bg-surface-container transition-colors relative" title="การแจ้งเตือน">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="w-2 h-2 rounded-full bg-error absolute top-1.5 right-1.5"></span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container transition-colors" title="รีเฟรช">
+<span class="material-symbols-outlined text-xl" data-icon="refresh">refresh</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container transition-colors" title="คู่มือการใช้งาน">
+<span class="material-symbols-outlined text-xl" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Operational Canvas / Work Area -->
+<main class="flex-1 p-space-xl max-w-[1440px] w-full mx-auto pb-32">
+<!-- Page Header Banner -->
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-headline-lg font-headline-lg text-on-surface">บันทึกมิเตอร์</h1>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/50 text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-base" data-icon="calendar_month">calendar_month</span>
+              ประจำงวด ตุลาคม 2567
+            </span>
+</div>
+<p class="text-body-md font-body-md text-secondary mt-1">
+            จดเลขมิเตอร์น้ำ-ไฟประจำงวด ตรวจสอบผลต่าง และคำนวณหน่วยก่อนออกบิล
+          </p>
+</div>
+<div class="flex items-center gap-2.5">
+<button class="h-10 px-4 rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container text-label-md font-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="save">save</span>
+            บันทึกข้อมูลชั่วคราว
+          </button>
+<button class="h-10 px-4 rounded-xl bg-primary hover:bg-primary-container text-surface-container-lowest font-label-md text-label-md flex items-center gap-2 shadow-sm transition-transform active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="add_circle">add_circle</span>
+            + จดมิเตอร์ด่วน
+          </button>
+</div>
+</section>
+<!-- Status Summary Metric Cards (Bento Triad) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<!-- Card 1: บันทึกเสร็จแล้ว (แถบเขียว) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-emerald-200 p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
+<div>
+<div class="flex items-center justify-between text-secondary mb-2">
+<span class="text-label-md font-label-md flex items-center gap-1.5 text-emerald-800">
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                บันทึกเสร็จแล้ว
+              </span>
+<span class="material-symbols-outlined text-emerald-600" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-xl font-headline-xl text-on-surface">17</span>
+<span class="text-title-md font-title-md text-secondary">/ 19 ยูนิต</span>
+</div>
+</div>
+<!-- Progress Indicator -->
+<div class="mt-4">
+<div class="flex justify-between text-label-sm font-label-sm text-secondary mb-1">
+<span>ความคืบหน้างวดนี้</span>
+<span class="font-semibold text-emerald-700">89.4%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 89.4%"></div>
+</div>
+</div>
+</div>
+<!-- Card 2: ยังไม่บันทึก (แถบส้มเตือนชัดเจน) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-amber-300 p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-1.5 bg-amber-500"></div>
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md flex items-center gap-1.5 text-amber-800 font-semibold">
+<span class="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                ยังไม่บันทึก
+              </span>
+<span class="material-symbols-outlined text-amber-600" data-icon="pending">pending</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-xl font-headline-xl text-amber-600">2</span>
+<span class="text-title-md font-title-md text-secondary">ยูนิตคงค้าง</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-amber-100 flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-secondary">ห้องที่ยังไม่จด:</span>
+<div class="flex gap-1.5">
+<span class="px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-700 font-label-sm font-semibold">ห้อง 304</span>
+<span class="px-2 py-0.5 rounded-md bg-amber-50 border border-amber-200 text-amber-700 font-label-sm font-semibold">ห้อง 305</span>
+</div>
+</div>
+</div>
+<!-- Card 3: ตรวจสอบความผิดปกติ -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-lg shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 left-0 right-0 h-1.5 bg-primary"></div>
+<div>
+<div class="flex items-center justify-between text-secondary mb-2">
+<span class="text-label-md font-label-md flex items-center gap-1.5 text-on-surface">
+<span class="inline-block w-2 h-2 rounded-full bg-primary"></span>
+                ตรวจสอบความผิดปกติ
+              </span>
+<span class="material-symbols-outlined text-secondary" data-icon="verified">verified</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-xl font-headline-xl text-on-surface">0</span>
+<span class="text-title-md font-title-md text-secondary">รายการ</span>
+</div>
+</div>
+<p class="mt-4 text-body-sm font-body-sm text-emerald-600 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="check">check</span>
+            ไม่พบเลขมิเตอร์ติดลบ หรือการใช้ไฟผิดปกติ (+300%)
+          </p>
+</div>
+</section>
+<!-- Filter Controls & Batch Toolbar -->
+<section class="bg-surface-container-lowest rounded-2xl border border-outline-variant/50 p-space-md mb-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+<!-- Room Search Input -->
+<div class="relative w-full sm:w-56">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-secondary text-lg" data-icon="search">search</span>
+<input class="w-full h-10 pl-9 pr-3 rounded-xl bg-surface border border-outline-variant text-body-sm font-body-sm text-on-surface placeholder:text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="ค้นหาเลขห้อง (เช่น 101, 304)" type="text"/>
+</div>
+<!-- Floor Segmented Filters -->
+<div class="inline-flex rounded-xl p-1 bg-surface-container border border-outline-variant/40" role="group">
+<button class="px-3 py-1.5 rounded-lg text-label-md font-label-md bg-surface-container-lowest text-on-surface font-semibold shadow-xs">ทั้งหมด</button>
+<button class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-secondary hover:text-on-surface">ชั้นล่าง</button>
+<button class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-secondary hover:text-on-surface">ชั้น 1</button>
+<button class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-secondary hover:text-on-surface">ชั้น 2</button>
+<button class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-secondary hover:text-on-surface">ชั้น 3</button>
+</div>
+<!-- Status Dropdown Filter -->
+<div class="relative">
+<select class="h-10 pl-3 pr-8 rounded-xl bg-surface border border-outline-variant text-body-sm font-body-sm text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer">
+<option value="all">สถานะทั้งหมด (19)</option>
+<option value="recorded">บันทึกแล้ว (17)</option>
+<option selected="" value="pending">ยังไม่จด / ค้างบันทึก (2)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-secondary text-base pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Micro Helper / Validation Hint -->
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-secondary bg-surface-container-low px-3 py-1.5 rounded-xl border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-base" data-icon="info">info</span>
+<span>ระบบคำนวณอัตโนมัติ: <strong class="text-on-surface">เลขใหม่ต้องมากกว่าเลขเดิมเสมอ</strong></span>
+</div>
+</section>
+<!-- Data Entry Table: Records & Auto-Calculation Canvas -->
+<section class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-sm overflow-hidden mb-6">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant/40 text-secondary text-label-md font-label-md">
+<th class="py-3.5 px-4 w-28">ห้อง</th>
+<th class="py-3.5 px-4">มิเตอร์ไฟฟ้า (ครั้งก่อน)</th>
+<th class="py-3.5 px-4 w-44">มิเตอร์ไฟฟ้า (ครั้งนี้)</th>
+<th class="py-3.5 px-4">หน่วยใช้จริง</th>
+<th class="py-3.5 px-4">ภาพถ่ายมิเตอร์</th>
+<th class="py-3.5 px-4">มิเตอร์น้ำ</th>
+<th class="py-3.5 px-4">ผู้บันทึก/เวลา</th>
+<th class="py-3.5 px-4">สถานะ</th>
+<th class="py-3.5 px-4 text-center">จัดการ</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30 text-body-md font-body-md">
+<!-- Row 1: ห้อง 101 (บันทึกเสร็จ - 85 หน่วย) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="font-title-md font-bold text-on-surface">101</span>
+<span class="text-label-sm font-label-sm text-secondary bg-surface-container px-1.5 py-0.5 rounded">1F</span>
+</div>
+<span class="text-body-sm font-body-sm text-secondary">ณัฐพงษ์ ศ.</span>
+</td>
+<td class="py-4 px-4 font-mono text-on-surface-variant font-medium">1,240</td>
+<td class="py-4 px-4">
+<input class="w-32 h-10 px-3 rounded-xl border border-outline-variant bg-surface text-on-surface font-mono font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 text-right" readonly="" type="number" value="1325"/>
+</td>
+<td class="py-4 px-4">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono font-bold">
+<span>+85</span>
+<span class="text-label-sm font-label-sm font-normal">หน่วย</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="relative group cursor-pointer inline-flex items-center gap-1.5 text-primary text-label-md font-label-md bg-surface-container px-2.5 py-1.5 rounded-lg border border-outline-variant/40 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="image">image</span>
+<span>ดูรูปถ่าย (1)</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-secondary-container text-on-secondary-container text-label-sm font-label-sm">
+                    เหมาจ่าย 150฿
+                  </span>
+</td>
+<td class="py-4 px-4">
+<div class="text-body-sm font-body-sm text-on-surface">สมศักดิ์ (แอดมิน)</div>
+<div class="text-label-sm font-label-sm text-secondary">28 ต.ค. 09:15</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-label-sm font-label-sm border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    บันทึกแล้ว
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-secondary hover:text-primary transition-colors" title="แก้ไขตัวเลข">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: ห้อง 205 (บันทึกเสร็จ - 148 หน่วย) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="font-title-md font-bold text-on-surface">205</span>
+<span class="text-label-sm font-label-sm text-secondary bg-surface-container px-1.5 py-0.5 rounded">2F</span>
+</div>
+<span class="text-body-sm font-body-sm text-secondary">วิภาดา ร.</span>
+</td>
+<td class="py-4 px-4 font-mono text-on-surface-variant font-medium">2,150</td>
+<td class="py-4 px-4">
+<input class="w-32 h-10 px-3 rounded-xl border border-outline-variant bg-surface text-on-surface font-mono font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 text-right" readonly="" type="number" value="2298"/>
+</td>
+<td class="py-4 px-4">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono font-bold">
+<span>+148</span>
+<span class="text-label-sm font-label-sm font-normal">หน่วย</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="inline-flex items-center gap-1.5 text-primary text-label-md font-label-md bg-surface-container px-2.5 py-1.5 rounded-lg border border-outline-variant/40 hover:bg-surface-container-high cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="image">image</span>
+<span>ดูรูปถ่าย (1)</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-secondary-container text-on-secondary-container text-label-sm font-label-sm">
+                    เหมาจ่าย 150฿
+                  </span>
+</td>
+<td class="py-4 px-4">
+<div class="text-body-sm font-body-sm text-on-surface">สมศักดิ์ (แอดมิน)</div>
+<div class="text-label-sm font-label-sm text-secondary">28 ต.ค. 09:34</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-label-sm font-label-sm border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    บันทึกแล้ว
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-secondary hover:text-primary transition-colors" title="แก้ไขตัวเลข">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: ห้อง 304 (รอดำเนินการ - ช่องกรอกว่าง + อัปโหลด) -->
+<tr class="bg-amber-50/40 hover:bg-amber-50/80 transition-colors border-l-4 border-l-amber-500">
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="font-title-md font-bold text-on-surface">304</span>
+<span class="text-label-sm font-label-sm text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-semibold">3F</span>
+</div>
+<span class="text-body-sm font-body-sm text-secondary">กิตติศักดิ์ พ.</span>
+</td>
+<td class="py-4 px-4 font-mono font-semibold text-on-surface">1,890</td>
+<td class="py-4 px-4">
+<div class="relative">
+<input class="w-32 h-10 px-3 rounded-xl border-2 border-amber-400 bg-surface-container-lowest text-on-surface font-mono font-bold focus:border-primary focus:ring-4 focus:ring-primary/20 text-right placeholder:text-outline placeholder:font-normal" id="input-304" oninput="calcMeter(304, 1890)" placeholder="กรอกเลขใหม่" type="number"/>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant/60 text-secondary font-mono" id="preview-304">
+<span class="text-label-sm font-label-sm italic">รอเลขใหม่</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<label class="cursor-pointer inline-flex items-center gap-1.5 text-label-md font-label-md text-primary bg-surface-container-lowest border border-dashed border-primary px-3 py-1.5 rounded-xl hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="add_a_photo">add_a_photo</span>
+<span>แนบรูป</span>
+<input class="hidden" type="file"/>
+</label>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-secondary-container text-on-secondary-container text-label-sm font-label-sm">
+                    เหมาจ่าย 150฿
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-body-sm font-body-sm text-secondary">- ยังไม่ระบุ -</span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-label-sm font-label-sm font-semibold border border-amber-300">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+                    รอดำเนินการ
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="px-2.5 py-1 rounded-lg bg-primary hover:bg-primary-container text-surface-container-lowest text-label-sm font-label-sm font-medium transition-colors shadow-xs">
+                    บันทึก
+                  </button>
+</td>
+</tr>
+<!-- Row 4: ห้อง 305 (รอดำเนินการ - ช่องกรอกว่าง + อัปโหลด) -->
+<tr class="bg-amber-50/40 hover:bg-amber-50/80 transition-colors border-l-4 border-l-amber-500">
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="font-title-md font-bold text-on-surface">305</span>
+<span class="text-label-sm font-label-sm text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded font-semibold">3F</span>
+</div>
+<span class="text-body-sm font-body-sm text-secondary">ธนธรณ์ ม.</span>
+</td>
+<td class="py-4 px-4 font-mono font-semibold text-on-surface">1,420</td>
+<td class="py-4 px-4">
+<div class="relative">
+<input class="w-32 h-10 px-3 rounded-xl border-2 border-amber-400 bg-surface-container-lowest text-on-surface font-mono font-bold focus:border-primary focus:ring-4 focus:ring-primary/20 text-right placeholder:text-outline placeholder:font-normal" id="input-305" oninput="calcMeter(305, 1420)" placeholder="กรอกเลขใหม่" type="number"/>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant/60 text-secondary font-mono" id="preview-305">
+<span class="text-label-sm font-label-sm italic">รอเลขใหม่</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<label class="cursor-pointer inline-flex items-center gap-1.5 text-label-md font-label-md text-primary bg-surface-container-lowest border border-dashed border-primary px-3 py-1.5 rounded-xl hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="add_a_photo">add_a_photo</span>
+<span>แนบรูป</span>
+<input class="hidden" type="file"/>
+</label>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-secondary-container text-on-secondary-container text-label-sm font-label-sm">
+                    เหมาจ่าย 150฿
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-body-sm font-body-sm text-secondary">- ยังไม่ระบุ -</span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-label-sm font-label-sm font-semibold border border-amber-300">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+                    รอดำเนินการ
+                  </span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="px-2.5 py-1 rounded-lg bg-primary hover:bg-primary-container text-surface-container-lowest text-label-sm font-label-sm font-medium transition-colors shadow-xs">
+                    บันทึก
+                  </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Inline Pagination & Registry Footnote -->
+<div class="px-space-md py-3 bg-surface border-t border-outline-variant/40 flex flex-col sm:flex-row items-center justify-between text-body-sm font-body-sm text-secondary gap-2">
+<div>แสดง 4 จากทั้งหมด 19 รายการ (กำลังแสดงตัวกรองตาม Blueprint)</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-on-surface">หน้า 1 จาก 1</span>
+<div class="inline-flex gap-1">
+<button class="w-8 h-8 rounded-lg border border-outline-variant bg-surface-container-lowest flex items-center justify-center text-outline disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-base" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg border border-outline-variant bg-surface-container-lowest flex items-center justify-center text-outline disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-base" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Micro Validation Banner Card -->
+<section class="bg-surface-container-low border border-primary/20 rounded-2xl p-space-md flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="shield">shield</span>
+<div>
+<h2 class="text-title-md font-title-md text-on-surface">ข้อกำหนดและการตรวจสอบความถูกต้อง (System Rules)</h2>
+<p class="text-body-sm font-body-sm text-secondary mt-0.5">
+            1. เลขมิเตอร์ครั้งใหม่ต้องมากกว่าเลขเดิมเสมอ หากมีการเปลี่ยนมิเตอร์โปรดติดต่อผู้ดูแลระบบเพื่อรีเซ็ตเลขรอบศูนย์<br/>
+            2. ข้อมูลการใช้ไฟจะถูกนำไปคำนวณในอัตรา 8 บาท/หน่วย และค่าน้ำแบบเหมาจ่ายอัตรา 150 บาท/ห้อง ในขั้นตอนการออกบิล
+          </p>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Summary Bar: Final Operation Confirmation -->
+<footer class="fixed bottom-0 right-0 left-[260px] z-30 bg-surface-container-lowest border-t border-outline-variant/40 shadow-xl px-space-xl py-3.5 flex flex-col sm:flex-row items-center justify-between gap-4 backdrop-blur-md bg-opacity-95">
+<div class="flex items-center gap-6">
+<div>
+<div class="text-label-sm font-label-sm text-secondary">สถานะการบันทึกงวดปัจจุบัน</div>
+<div class="flex items-center gap-2">
+<span class="font-title-lg font-bold text-on-surface">17 / 19 ห้อง</span>
+<span class="text-body-sm font-body-sm text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md font-medium">เหลือ 2 ห้อง (304, 305)</span>
+</div>
+</div>
+<div class="hidden md:block h-8 w-px bg-outline-variant/60"></div>
+<div class="hidden md:flex flex-col">
+<span class="text-label-sm font-label-sm text-secondary">รวมปริมาณการใช้ไฟฟ้าที่บันทึกแล้ว</span>
+<span class="font-title-md font-semibold text-primary">2,340 หน่วย (~18,720 ฿)</span>
+</div>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+<button class="h-11 px-5 rounded-xl border border-outline-variant bg-surface text-on-surface hover:bg-surface-container text-label-md font-label-md transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-secondary" data-icon="refresh">refresh</span>
+          รีเซ็ตข้อมูลทั้งหมด
+        </button>
+<button class="h-11 px-6 rounded-xl bg-primary hover:bg-primary-container text-surface-container-lowest font-title-md text-title-md flex items-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-xl" data-icon="assignment_turned_in">assignment_turned_in</span>
+          บันทึกและส่งข้อมูลไปออกบิล (Save &amp; Proceed to Billing)
+        </button>
+</div>
+</footer>
+</div>
+<!-- Inline Auto-calc and Validation Script -->
+<script>
+    function calcMeter(roomId, prevVal) {
+      const input = document.getElementById(`input-${roomId}`);
+      const preview = document.getElementById(`preview-${roomId}`);
+      const currentVal = parseFloat(input.value);
+
+      if (isNaN(currentVal) || input.value === '') {
+        preview.className = "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant/60 text-secondary font-mono";
+        preview.innerHTML = `<span class="text-label-sm font-label-sm italic">รอเลขใหม่</span>`;
+        input.classList.remove('border-error', 'text-error');
+        input.classList.add('border-amber-400');
+        return;
+      }
+
+      if (currentVal < prevVal) {
+        // Validation Error: เลขใหม่ต้องมากกว่าเลขเดิมเสมอ
+        preview.className = "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-error-container text-on-error-container font-mono font-bold";
+        preview.innerHTML = `
+          <span class="material-symbols-outlined text-sm">warning</span>
+          <span class="text-label-sm font-label-sm">น้อยกว่าเดิม</span>
+        `;
+        input.classList.add('border-error', 'text-error');
+        input.classList.remove('border-amber-400', 'border-emerald-500');
+      } else {
+        const diff = currentVal - prevVal;
+        preview.className = "inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-300 text-emerald-800 font-mono font-bold";
+        preview.innerHTML = `
+          <span>+${diff}</span>
+          <span class="text-label-sm font-label-sm font-normal">หน่วย</span>
+        `;
+        input.classList.remove('border-error', 'text-error', 'border-amber-400');
+        input.classList.add('border-emerald-500');
+      }
+    }
+  </script>
+</body></html>

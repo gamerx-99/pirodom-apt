@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>สัญญาเช่าและเชิญผู้เช่า | ศิริสุข เพลส (Sirisuk Place)</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+Thai:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#e7f2ff",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary": "#004ac6",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "on-primary-container": "#eeefff",
+            "on-tertiary-fixed": "#001d31",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#5c647a",
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-surface": "#213145",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#e5eeff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2563eb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#00174b",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "secondary-container": "#dae2fd",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary-container": "#0073ae",
+            "surface": "#f8f9ff",
+            "outline": "#737686",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-primary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-tertiary-fixed-variant": "#004b73"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-xl-mobile": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "label-sm": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "title-lg": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "title-md": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-xl": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "body-sm": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "label-md": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-lg-mobile": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "body-lg": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "body-md": ["Inter", "Noto Sans Thai", "sans-serif"],
+            "headline-md": ["Inter", "Noto Sans Thai", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    body {
+      font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+    }
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased h-full flex overflow-hidden">
+<!-- ============================================================ -->
+<!-- 1. FIXED OPERATIONAL SIDEBAR (Brand Anchors JSON)             -->
+<!-- ============================================================ -->
+<aside class="fixed top-0 left-0 h-full w-[260px] z-40 bg-on-background dark:bg-inverse-surface border-r border-on-surface-variant/20 dark:border-outline/20 flex flex-col justify-between p-space-md select-none">
+<!-- Top Area: Brand & Navigation Items -->
+<div class="flex flex-col gap-6">
+<!-- Brand Logo Header -->
+<div class="flex items-center gap-3 px-2 pt-1">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm ring-2 ring-primary-container/20">
+<span class="material-symbols-outlined text-2xl" data-icon="apartment">apartment</span>
+</div>
+<div class="flex flex-col">
+<span class="text-title-lg font-title-lg font-bold text-surface dark:text-surface-bright tracking-tight leading-tight">ศิริสุข เพลส</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span class="text-body-sm font-body-sm text-outline-variant">LINE OA เชื่อมต่อแล้ว (19 ยูนิต)</span>
+</div>
+</div>
+</div>
+<!-- Quick Action CTA -->
+<button class="w-full h-10 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-title-md text-sm flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg" data-icon="person_add">person_add</span>
+<span>เพิ่มผู้เช่าใหม่</span>
+</button>
+<!-- Navigation Tabs (7 tabs defined in JSON) -->
+<!-- Tab 2: 'ห้องพักและสัญญา' is ACTIVE -->
+<nav class="flex flex-col gap-1">
+<!-- 1: ภาพรวม -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">ภาพรวม</span>
+</a>
+<!-- 2: ห้องพักและสัญญา (ACTIVE) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-container/20 text-tertiary-fixed font-title-md border-l-4 border-primary-container dark:border-inverse-primary active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl text-primary-fixed" data-icon="apartment" style="font-variation-settings: 'FILL' 1;">apartment</span>
+<span class="text-label-md font-label-md">ห้องพักและสัญญา</span>
+</a>
+<!-- 3: จดมิเตอร์ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="speed">speed</span>
+<span class="text-label-md font-label-md">จดมิเตอร์</span>
+</a>
+<!-- 4: บิลและใบแจ้งหนี้ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-md font-label-md">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- 5: ตรวจสลิป LINE -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="receipt">receipt</span>
+<span class="text-label-md font-label-md">ตรวจสลิป LINE</span>
+</a>
+<!-- 6: งานซ่อมบำรุง -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="handyman">handyman</span>
+<span class="text-label-md font-label-md">งานซ่อมบำรุง</span>
+</a>
+<!-- 7: ตั้งค่าระบบ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="settings">settings</span>
+<span class="text-label-md font-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Footer Area: Manager Profile & Logout -->
+<div class="pt-4 border-t border-on-surface-variant/20 flex flex-col gap-1">
+<div class="flex items-center justify-between px-2 py-2 rounded-lg text-surface hover:bg-on-surface-variant/20 transition-colors">
+<div class="flex items-center gap-2.5 overflow-hidden">
+<span class="material-symbols-outlined text-2xl text-primary-fixed" data-icon="account_circle">account_circle</span>
+<div class="flex flex-col truncate">
+<span class="text-label-md font-label-md text-surface truncate">ผู้จัดการ สมศักดิ์</span>
+<span class="text-body-sm font-body-sm text-outline-variant text-[11px]">เจ้าของหอพัก</span>
+</div>
+</div>
+<button class="text-outline-variant hover:text-rose-400 p-1 rounded transition-colors" title="ออกจากระบบ">
+<span class="material-symbols-outlined text-lg" data-icon="logout">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ============================================================ -->
+<!-- 2. MAIN VIEWPORT & STICKY TOP APP BAR                         -->
+<!-- ============================================================ -->
+<div class="flex-1 pl-[260px] flex flex-col h-full overflow-hidden bg-background">
+<!-- TopNavBar (Matches JSON Blueprint) -->
+<header class="sticky top-0 right-0 z-30 w-full bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant/40 dark:border-outline/20 shadow-sm flex justify-between items-center h-16 px-space-xl">
+<!-- Breadcrumb / Section Context -->
+<div class="flex items-center gap-3">
+<span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface flex items-center gap-2">
+<span>ศิริสุข เพลส (Sirisuk Place)</span>
+</span>
+<span class="text-outline-variant">/</span>
+<div class="flex items-center gap-4 text-sm">
+<span class="text-primary dark:text-inverse-primary font-title-md border-b-2 border-primary pb-0.5">มีนาคม 2568</span>
+<span class="text-on-surface-variant dark:text-outline-variant hover:text-on-surface transition-colors cursor-pointer">รอบบิลปัจจุบัน</span>
+</div>
+</div>
+<!-- Trailing Controls & Search -->
+<div class="flex items-center gap-3">
+<!-- Search bar on right -->
+<div class="relative w-64 hidden xl:block">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg" data-icon="search">search</span>
+<input class="w-full h-9 pl-9 pr-4 rounded-xl bg-surface border border-outline-variant/60 text-xs text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="ค้นหาเลขห้อง, ชื่อ, สัญญา..." type="text"/>
+</div>
+<button class="h-9 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-label-md font-label-md flex items-center gap-1.5 transition-colors duration-150">
+<span class="material-symbols-outlined text-base text-emerald-600" data-icon="sync">sync</span>
+<span>ซิงค์ข้อมูล LINE</span>
+</button>
+<button class="h-9 px-4 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-label-md font-title-md flex items-center gap-1.5 shadow-sm transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="post_add">post_add</span>
+<span>สร้างบิลประจำเดือน</span>
+</button>
+<div class="h-5 w-[1px] bg-outline-variant/60 mx-1"></div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-2 rounded-lg hover:bg-surface-container transition-colors relative" title="การแจ้งเตือน">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button class="p-2 rounded-lg hover:bg-surface-container transition-colors" title="รีเฟรช">
+<span class="material-symbols-outlined text-xl" data-icon="refresh">refresh</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-surface-container transition-colors" title="คู่มือการใช้งาน">
+<span class="material-symbols-outlined text-xl" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Main Operational Canvas -->
+<main class="flex-1 overflow-y-auto px-space-xl py-space-lg space-y-6">
+<!-- ============================================================ -->
+<!-- 3. PAGE TITLE & DUAL PRIMARY ACTIONS                         -->
+<!-- ============================================================ -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2">
+<div>
+<div class="flex items-center gap-2 text-label-md text-secondary mb-1">
+<span>การบริหารอสังหาฯ</span>
+<span class="text-outline-variant">•</span>
+<span class="font-medium text-primary">Route: /admin/leases</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">สัญญาเช่าและเชิญผู้เช่า</h1>
+<p class="text-body-md font-body-md text-secondary mt-0.5">จัดการเงื่อนไขรายสัญญา ผู้เช่าร่วม และลิงก์เชิญเข้าระบบ LINE (19 ยูนิต ศิริสุข เพลส)</p>
+</div>
+<div class="flex items-center gap-2.5 flex-wrap">
+<button class="h-10 px-4 rounded-xl border border-primary text-primary hover:bg-surface-container font-title-md text-sm flex items-center gap-2 transition-all shadow-sm active:scale-[0.98]" onclick="openDrawer()">
+<span class="material-symbols-outlined text-lg" data-icon="qr_code_2">qr_code_2</span>
+<span>+ สร้างลิงก์เชิญผู้เช่า</span>
+</button>
+<button class="h-10 px-4 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-title-md text-sm flex items-center gap-2 transition-all shadow-sm active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg" data-icon="note_add">note_add</span>
+<span>+ สร้างสัญญาใหม่</span>
+</button>
+</div>
+</div>
+<!-- ============================================================ -->
+<!-- 4. METRIC KPI CARDS (Bento / Modern SaaS Style)              -->
+<!-- ============================================================ -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- 1: สัญญาทั้งหมด -->
+<div class="bg-surface-container-lowest rounded-2xl border border-slate-200/90 p-5 shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-secondary">สัญญาทั้งหมด</span>
+<span class="p-2 rounded-xl bg-surface-container text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="description">description</span>
+</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-xl font-headline-xl text-on-surface">16</span>
+<span class="text-body-sm font-body-sm text-secondary">จาก 19 ยูนิต</span>
+</div>
+<div class="mt-2 flex items-center gap-1.5 text-xs text-emerald-700">
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>อัตราครองห้อง 84.2%</span>
+</div>
+</div>
+<!-- 2: กำลังใช้งานอยู่ (Active) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-slate-200/90 p-5 shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-secondary">ใช้งานอยู่ (Active)</span>
+<span class="p-2 rounded-xl bg-emerald-50 text-emerald-600">
+<span class="material-symbols-outlined text-xl" data-icon="verified">verified</span>
+</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-xl font-headline-xl text-emerald-600">15</span>
+<span class="text-body-sm font-body-sm text-secondary">สัญญาปกติ</span>
+</div>
+<div class="mt-2 text-xs text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="check_circle">check_circle</span>
+<span>เชื่อม LINE LIFF ครบทุกห้อง</span>
+</div>
+</div>
+<!-- 3: สัญญาใกล้หมดอายุใน 30 วัน (Warning State) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-amber-300/80 p-5 shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="absolute -right-3 -top-3 w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center opacity-40"></div>
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-amber-900">ใกล้หมดอายุใน 30 วัน</span>
+<span class="p-2 rounded-xl bg-amber-100 text-amber-700">
+<span class="material-symbols-outlined text-xl" data-icon="notification_important">notification_important</span>
+</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-xl font-headline-xl text-amber-600">1</span>
+<span class="text-label-md font-label-md text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">ห้อง 301</span>
+</div>
+<div class="mt-2 text-xs text-amber-700 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span>สิ้นสุดสัญญา 30 พ.ย. 67</span>
+</div>
+</div>
+<!-- 4: จบสัญญาแล้ว -->
+<div class="bg-surface-container-lowest rounded-2xl border border-slate-200/90 p-5 shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-secondary">จบสัญญาแล้ว</span>
+<span class="p-2 rounded-xl bg-slate-100 text-secondary">
+<span class="material-symbols-outlined text-xl" data-icon="history">history</span>
+</span>
+</div>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-xl font-headline-xl text-secondary">3</span>
+<span class="text-body-sm font-body-sm text-secondary">ประวัติสัญญาเก่า</span>
+</div>
+<div class="mt-2 text-xs text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="archive">archive</span>
+<span>คืนเงินประกันเรียบร้อย</span>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- 5. SEARCH & FILTER TOOLBAR                                   -->
+<!-- ============================================================ -->
+<div class="bg-surface-container-lowest rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+<!-- Left: Search & Dropdowns -->
+<div class="flex flex-col sm:flex-row items-center gap-3 flex-1">
+<!-- Text Input Search -->
+<div class="relative w-full sm:w-80">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg" data-icon="search">search</span>
+<input class="w-full h-10 pl-9 pr-3 rounded-xl bg-surface border border-slate-300 text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="ค้นหาเลขห้อง หรือ ชื่อผู้เช่า..." type="text"/>
+</div>
+<!-- Unit Type Filter -->
+<div class="w-full sm:w-48">
+<select class="w-full h-10 px-3 rounded-xl bg-surface border border-slate-300 text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+<option value="all">ทุกประเภทยูนิต</option>
+<option value="residential">ที่พักอาศัย (18 ห้อง)</option>
+<option value="commercial">ร้านค้า (1 ยูนิต: S-01)</option>
+</select>
+</div>
+<!-- Status Filter -->
+<div class="w-full sm:w-48">
+<select class="w-full h-10 px-3 rounded-xl bg-surface border border-slate-300 text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+<option value="all">สถานะสัญญา: ทั้งหมด</option>
+<option selected="" value="active">กำลังใช้งาน (Active)</option>
+<option value="expiring">ใกล้หมดอายุ (&lt; 30 วัน)</option>
+<option value="ended">จบสัญญาแล้ว</option>
+</select>
+</div>
+</div>
+<!-- Right: View Mode & Export -->
+<div class="flex items-center gap-2 self-end lg:self-auto">
+<button class="h-10 px-3.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-secondary text-sm font-medium flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="file_download">file_download</span>
+<span>ส่งออก Excel</span>
+</button>
+<button class="h-10 px-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-secondary flex items-center justify-center transition-colors" title="รีเซ็ตตัวกรอง">
+<span class="material-symbols-outlined text-lg" data-icon="filter_alt_off">filter_alt_off</span>
+</button>
+</div>
+</div>
+<!-- ============================================================ -->
+<!-- 6. LEASE CONTRACTS TABLE                                     -->
+<!-- ============================================================ -->
+<div class="bg-surface-container-lowest rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="text-title-lg font-title-lg text-on-surface font-semibold">รายการสัญญาเช่า ศิริสุข เพลส</h2>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary-fixed text-on-primary-fixed">16 รายการ</span>
+</div>
+<span class="text-xs text-secondary">อัปเดตอัตโนมัติจากฐานข้อมูลกลาง</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse text-body-md">
+<thead>
+<tr class="bg-slate-50/80 border-b border-slate-200 text-xs font-semibold text-secondary uppercase tracking-wider">
+<th class="py-3.5 px-4 pl-6">ห้อง / ประเภทยูนิต</th>
+<th class="py-3.5 px-4">ผู้เช่าหลัก</th>
+<th class="py-3.5 px-4">ผู้เช่าร่วม</th>
+<th class="py-3.5 px-4">ระยะเวลาสัญญา</th>
+<th class="py-3.5 px-4">ค่าเช่า / เดือน</th>
+<th class="py-3.5 px-4">เงื่อนไขน้ำ-ไฟ</th>
+<th class="py-3.5 px-4">วันครบกำหนดชำระ</th>
+<th class="py-3.5 px-4">สถานะสัญญา</th>
+<th class="py-3.5 px-4 pr-6 text-right">จัดการ</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-normal text-on-surface">
+<!-- ROW 1: Commercial S-01 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-4 px-4 pl-6">
+<div class="flex items-center gap-2.5">
+<span class="w-9 h-9 rounded-xl bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-sm">
+                      S-01
+                    </span>
+<div>
+<div class="font-semibold text-on-surface">ร้านค้าชั้นล่าง</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-100 text-amber-800">
+                        Commercial
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="font-medium text-on-surface">บจก. ก้าวหน้าการค้า</div>
+<div class="text-xs text-secondary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px] text-emerald-600" data-icon="chat">chat</span>
+<span>ผูก LINE OA (คุณวินัย)</span>
+</div>
+</td>
+<td class="py-4 px-4 text-secondary text-sm">
+<span class="text-xs bg-slate-100 text-secondary px-2 py-0.5 rounded-full">ผู้จัดการร้าน 1 คน</span>
+</td>
+<td class="py-4 px-4 text-xs text-secondary">
+<div>1 ม.ค. 67 - 31 ธ.ค. 68</div>
+<span class="text-slate-400">(สัญญา 2 ปี)</span>
+</td>
+<td class="py-4 px-4">
+<span class="font-semibold text-on-surface">฿12,000</span>
+<div class="text-[11px] text-secondary">ประกัน ฿24,000</div>
+</td>
+<td class="py-4 px-4 text-xs">
+<div>ไฟ: ฿8 / หน่วย</div>
+<div class="text-secondary">น้ำ: ฿18 / หน่วย</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-100 text-on-surface font-medium text-xs">
+                    วันที่ 5 ของเดือน
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    ใช้งานอยู่ (Active)
+                  </span>
+</td>
+<td class="py-4 px-4 pr-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 text-secondary hover:text-primary hover:bg-slate-100 rounded-lg transition-colors" onclick="openDrawer()" title="ดูรายละเอียดสัญญา">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-primary hover:bg-slate-100 rounded-lg transition-colors" title="พิมพ์สัญญา">
+<span class="material-symbols-outlined text-lg" data-icon="print">print</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 2: Room 101 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-4 px-4 pl-6">
+<div class="flex items-center gap-2.5">
+<span class="w-9 h-9 rounded-xl bg-surface-container text-primary flex items-center justify-center font-bold text-sm">
+                      101
+                    </span>
+<div>
+<div class="font-semibold text-on-surface">ห้องพักมาตรฐาน</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700">
+                        Residential (ชั้น 1)
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="font-medium text-on-surface">นายภานุเดช รัตนศิลป์</div>
+<div class="text-xs text-secondary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px] text-emerald-600" data-icon="chat">chat</span>
+<span>LINE: Panudech.R</span>
+</div>
+</td>
+<td class="py-4 px-4 text-secondary text-sm">
+<span class="text-xs text-slate-400">- ไม่มี -</span>
+</td>
+<td class="py-4 px-4 text-xs text-secondary">
+<div>1 มิ.ย. 67 - 31 พ.ค. 68</div>
+<span class="text-slate-400">(สัญญา 1 ปี)</span>
+</td>
+<td class="py-4 px-4">
+<span class="font-semibold text-on-surface">฿4,200</span>
+<div class="text-[11px] text-secondary">ประกัน ฿8,400</div>
+</td>
+<td class="py-4 px-4 text-xs">
+<div>ไฟ: ฿7 / หน่วย</div>
+<div class="text-secondary">น้ำ: เหมา ฿100/คน</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container text-primary font-medium text-xs">
+                    วันสุดท้ายของเดือน
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    ใช้งานอยู่ (Active)
+                  </span>
+</td>
+<td class="py-4 px-4 pr-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 text-secondary hover:text-primary hover:bg-slate-100 rounded-lg transition-colors" onclick="openDrawer()" title="ดูรายละเอียดสัญญา">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-primary hover:bg-slate-100 rounded-lg transition-colors" title="พิมพ์สัญญา">
+<span class="material-symbols-outlined text-lg" data-icon="print">print</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 3: Room 205 (Target Slide-over Focus) -->
+<tr class="bg-blue-50/30 hover:bg-blue-50/60 transition-colors border-l-4 border-l-primary">
+<td class="py-4 px-4 pl-6">
+<div class="flex items-center gap-2.5">
+<span class="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center font-bold text-sm shadow-sm">
+                      205
+                    </span>
+<div>
+<div class="font-semibold text-on-surface">ห้องพักสตูดิโอวิวระเบียง</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-800">
+                        Residential (ชั้น 2)
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="font-medium text-on-surface">นางสาวกัญญา พงษ์สถิตย์</div>
+<div class="text-xs text-secondary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px] text-emerald-600" data-icon="chat">chat</span>
+<span>LINE: Kanya.P (ยืนยันแล้ว)</span>
+</div>
+</td>
+<td class="py-4 px-4 text-sm">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white border border-slate-200 text-xs text-on-surface">
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="group">group</span>
+<span>น.ส. นภัสสร (ผู้เช่าร่วม)</span>
+</span>
+</td>
+<td class="py-4 px-4 text-xs text-secondary">
+<div>11 ส.ค. 67 - 10 ส.ค. 68</div>
+<span class="text-primary font-medium">(เหลือ 5 เดือน)</span>
+</td>
+<td class="py-4 px-4">
+<span class="font-semibold text-on-surface">฿4,500</span>
+<div class="text-[11px] text-secondary">ประกัน ฿9,000</div>
+</td>
+<td class="py-4 px-4 text-xs">
+<div>ไฟ: ฿7 / หน่วย</div>
+<div class="text-secondary">น้ำ: ฿18 / หน่วย</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-blue-100 text-blue-900 font-semibold text-xs border border-blue-200">
+                    วันที่ 10 ของเดือน
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    ใช้งานอยู่ (Active)
+                  </span>
+</td>
+<td class="py-4 px-4 pr-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="px-2.5 py-1 rounded-lg bg-primary text-on-primary hover:bg-primary-container text-xs font-medium flex items-center gap-1 shadow-sm transition-all" onclick="openDrawer()" title="ดูรายละเอียดสัญญา">
+<span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+<span>ดูสัญญา</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- ROW 4: Room 301 (Expiring in 30 Days Warning) -->
+<tr class="bg-amber-50/20 hover:bg-amber-50/50 transition-colors">
+<td class="py-4 px-4 pl-6">
+<div class="flex items-center gap-2.5">
+<span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center font-bold text-sm">
+                      301
+                    </span>
+<div>
+<div class="font-semibold text-on-surface">ห้องพักหัวมุมชั้น 3</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700">
+                        Residential (ชั้น 3)
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="font-medium text-on-surface">นายชัยรัตน์ วงศ์สุวรรณ</div>
+<div class="text-xs text-secondary flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[13px] text-emerald-600" data-icon="chat">chat</span>
+<span>LINE: Chairat.W</span>
+</div>
+</td>
+<td class="py-4 px-4 text-secondary text-sm">
+<span class="text-xs text-slate-400">- ไม่มี -</span>
+</td>
+<td class="py-4 px-4 text-xs">
+<div class="font-semibold text-amber-700">1 ธ.ค. 66 - 30 พ.ย. 67</div>
+<span class="text-amber-600 font-medium">เหลือ 8 วันสุดท้าย</span>
+</td>
+<td class="py-4 px-4">
+<span class="font-semibold text-on-surface">฿4,000</span>
+<div class="text-[11px] text-secondary">ประกัน ฿8,000</div>
+</td>
+<td class="py-4 px-4 text-xs">
+<div>ไฟ: ฿7 / หน่วย</div>
+<div class="text-secondary">น้ำ: เหมา ฿100/คน</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-surface-container text-primary font-medium text-xs">
+                    วันสุดท้ายของเดือน
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    ใกล้หมดอายุ (30 พ.ย. 67)
+                  </span>
+</td>
+<td class="py-4 px-4 pr-6 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="px-2.5 py-1 rounded-lg border border-amber-500 text-amber-800 hover:bg-amber-100 text-xs font-medium flex items-center gap-1 transition-colors" title="ต่อสัญญา">
+<span class="material-symbols-outlined text-sm" data-icon="autorenew">autorenew</span>
+<span>ต่อสัญญา</span>
+</button>
+<button class="p-1.5 text-secondary hover:text-primary hover:bg-slate-100 rounded-lg transition-colors" onclick="openDrawer()" title="ดูรายละเอียดสัญญา">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination Notice -->
+<div class="px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-secondary gap-2">
+<span>แสดง 4 จากทั้งหมด 16 สัญญาที่ลงทะเบียนใน ศิริสุข เพลส</span>
+<div class="flex items-center gap-1">
+<button class="px-2.5 py-1 rounded border border-slate-300 bg-white text-secondary hover:bg-slate-50 disabled:opacity-50">ก่อนหน้า</button>
+<button class="px-2.5 py-1 rounded bg-primary text-white font-medium">1</button>
+<button class="px-2.5 py-1 rounded border border-slate-300 bg-white text-secondary hover:bg-slate-50">2</button>
+<button class="px-2.5 py-1 rounded border border-slate-300 bg-white text-secondary hover:bg-slate-50">ถัดไป</button>
+</div>
+</div>
+</div>
+<!-- ============================================================ -->
+<!-- 7. SECTION: LINE LIFF TENANT INVITATION PANEL                -->
+<!-- ============================================================ -->
+<section class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-600 text-2xl" data-icon="share">share</span>
+<span>คำเชิญผู้เช่าเข้า LINE LIFF &amp; ผูกห้องพัก</span>
+</h2>
+<p class="text-body-sm font-body-sm text-secondary">สร้างลิงก์และ QR Code แบบ Single-Use Token (อายุ 7 วัน) ให้ผู้เช่าสแกนเพื่อรับบิลและแจ้งชำระผ่าน LINE OA</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              ผูกสำเร็จแล้ว 15 จาก 16 สัญญา
+            </span>
+</div>
+</div>
+<!-- Cards Grid for Invitation Tokens -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Card 1: Pending Token (Room 203 - รอย้ายเข้า) -->
+<div class="bg-surface-container-lowest rounded-2xl border-2 border-primary/40 p-5 shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div class="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-bl-full pointer-events-none"></div>
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
+                  รอผู้เช่ากดรับ (Pending)
+                </span>
+<span class="text-[11px] text-secondary">หมดอายุใน 5 วัน</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center font-bold text-primary text-base">
+                  203
+                </div>
+<div>
+<div class="font-bold text-on-surface">ห้อง 203 (ชั้น 2)</div>
+<div class="text-xs text-secondary">ผู้เช่า: นายธนากร สดใส (รอย้ายเข้า)</div>
+</div>
+</div>
+<div class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-secondary break-all select-all flex items-center justify-between">
+<span class="truncate">https://liff.line.me/sirisuk-place/invite?tk=tok_203_a98f12c</span>
+<span class="material-symbols-outlined text-slate-400 text-sm ml-1" data-icon="lock">lock</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-2">
+<button class="flex-1 h-9 rounded-xl bg-primary text-on-primary hover:bg-primary-container text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm" onclick="copyInviteLink()">
+<span class="material-symbols-outlined text-base" data-icon="content_copy">content_copy</span>
+<span>คัดลอกลิงก์เชิญ</span>
+</button>
+<button class="h-9 px-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-secondary text-xs font-medium flex items-center justify-center gap-1 transition-colors" title="ดาวน์โหลด QR Code">
+<span class="material-symbols-outlined text-base" data-icon="download">download</span>
+<span>QR Code</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Active Linked Token (Room 205) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  ผูก LINE แล้ว (Active)
+                </span>
+<span class="text-[11px] text-emerald-700 font-medium">ผูกเมื่อ 11 ส.ค. 67</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-on-surface text-base">
+                  205
+                </div>
+<div>
+<div class="font-bold text-on-surface">ห้อง 205 (ชั้น 2)</div>
+<div class="text-xs text-secondary">ผู้เช่าหลัก: นางสาวกัญญา พงษ์สถิตย์</div>
+</div>
+</div>
+<div class="mt-4 p-3 rounded-xl bg-emerald-50/60 border border-emerald-100 text-xs text-emerald-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-600 text-base" data-icon="check_circle">check_circle</span>
+<span>เชื่อมต่อ LINE LIFF สำเร็จ (ส่งใบแจ้งหนี้อัตโนมัติ)</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+<span class="text-xs text-secondary">ผู้เช่าร่วม: 1 ท่านในกลุ่ม</span>
+<button class="text-xs text-primary hover:underline font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="person_add">person_add</span>
+<span>เชิญผู้เช่าร่วมเพิ่ม</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Expired / Revoked Token -->
+<div class="bg-surface-container-lowest rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col justify-between opacity-80 hover:opacity-100 transition-opacity">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-secondary border border-slate-200">
+                  หมดอายุ / เพิกถอนแล้ว
+                </span>
+<span class="text-[11px] text-secondary">หมดอายุ 12 ต.ค. 67</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-slate-500 text-base">
+                  104
+                </div>
+<div>
+<div class="font-bold text-on-surface">ห้อง 104 (ย้ายออกแล้ว)</div>
+<div class="text-xs text-secondary">สิ้นสุดสัญญาเมื่อ 30 ก.ย. 67</div>
+</div>
+</div>
+<div class="mt-4 p-3 rounded-xl bg-slate-100/70 border border-slate-200 text-xs text-secondary">
+                Token ถูกยกเลิกอัตโนมัติหลังตัดสัญญาและปิดระบบแจ้งหนี้
+              </div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-end">
+<button class="text-xs text-secondary hover:text-on-surface font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span>ดูประวัติการเชื่อมต่อ</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<div class="h-8"></div>
+</main>
+</div>
+<!-- ============================================================ -->
+<!-- 8. SLIDE-OVER DRAWER: สัญญาเช่าห้อง 205 (Interactive Demo)      -->
+<!-- ============================================================ -->
+<div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none" id="drawer-backdrop" onclick="closeDrawer()"></div>
+<div class="fixed top-0 right-0 h-full w-full max-w-xl bg-surface-container-lowest z-50 shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-out border-l border-slate-200" id="lease-drawer">
+<!-- Drawer Header -->
+<div class="p-6 border-b border-slate-200 flex items-center justify-between bg-white">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-primary text-on-primary flex items-center justify-center font-bold text-xl shadow-md">
+          205
+        </div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-title-lg font-title-lg text-on-surface font-bold">รายละเอียดสัญญาเช่า ห้อง 205</h3>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">Active</span>
+</div>
+<p class="text-body-sm font-body-sm text-secondary">ศิริสุข เพลส • รหัสสัญญา: CON-2567-08-205</p>
+</div>
+</div>
+<button class="p-2 rounded-xl text-secondary hover:text-on-surface hover:bg-slate-100 transition-colors" onclick="closeDrawer()">
+<span class="material-symbols-outlined text-2xl" data-icon="close">close</span>
+</button>
+</div>
+<!-- Drawer Scrollable Body -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Key Lease Details Card -->
+<div class="bg-surface rounded-2xl border border-slate-200 p-5 space-y-4">
+<h4 class="text-title-md font-title-md text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="description">description</span>
+<span>ข้อมูลข้อตกลงสัญญา</span>
+</h4>
+<div class="grid grid-cols-2 gap-3 text-sm">
+<div class="p-3 bg-white rounded-xl border border-slate-200/80">
+<span class="text-xs text-secondary block mb-1">ค่าเช่ารายเดือน</span>
+<span class="text-lg font-bold text-primary">฿4,500</span>
+<span class="text-xs text-secondary"> / เดือน</span>
+</div>
+<div class="p-3 bg-white rounded-xl border border-slate-200/80">
+<span class="text-xs text-secondary block mb-1">เงินมัดจำประกันสัญญา</span>
+<span class="text-lg font-bold text-on-surface">฿9,000</span>
+<span class="text-xs text-emerald-600 block">(ชำระครบแล้ว)</span>
+</div>
+<div class="p-3 bg-white rounded-xl border border-slate-200/80">
+<span class="text-xs text-secondary block mb-1">วันเริ่ม - สิ้นสุดสัญญา</span>
+<span class="font-semibold text-on-surface">11 ส.ค. 67 - 10 ส.ค. 68</span>
+<span class="text-xs text-secondary block mt-0.5">ระยะเวลา 12 เดือน</span>
+</div>
+<div class="p-3 bg-white rounded-xl border border-blue-200 bg-blue-50/40">
+<span class="text-xs text-blue-900 font-medium block mb-1">วันครบกำหนดชำระค่าเช่า</span>
+<span class="text-base font-bold text-blue-700">วันที่ 10 ของทุกเดือน</span>
+<span class="text-[11px] text-blue-600 block">(เงื่อนไขพิเศษเฉพาะห้อง)</span>
+</div>
+</div>
+<!-- Meter Rates Policy -->
+<div class="p-3.5 bg-white rounded-xl border border-slate-200/80 flex items-center justify-between text-xs">
+<div>
+<span class="text-secondary block">อัตราค่าไฟฟ้า</span>
+<span class="font-bold text-on-surface text-sm">฿7.00 / หน่วย</span>
+</div>
+<div class="h-6 w-[1px] bg-slate-200"></div>
+<div>
+<span class="text-secondary block">อัตราค่าน้ำประปา</span>
+<span class="font-bold text-on-surface text-sm">฿18.00 / หน่วย</span>
+</div>
+<div class="h-6 w-[1px] bg-slate-200"></div>
+<div>
+<span class="text-secondary block">อินเทอร์เน็ต WiFi หอพัก</span>
+<span class="font-bold text-emerald-600 text-sm">ฟรี ไม่มีค่าใช้จ่าย</span>
+</div>
+</div>
+</div>
+<!-- Contract PDF Attachment -->
+<div class="bg-surface rounded-2xl border border-slate-200 p-5 space-y-3">
+<h4 class="text-title-md font-title-md text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="attach_file">attach_file</span>
+<span>เอกสารสัญญาแนบ (PDF)</span>
+</h4>
+<div class="flex items-center justify-between p-3.5 bg-white rounded-xl border border-slate-200 hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div>
+<div class="text-sm font-semibold text-on-surface">สัญญาเช่าห้อง_205_กัญญา.pdf</div>
+<div class="text-xs text-secondary">2.4 MB • ลงนามอิเล็กทรอนิกส์แล้ว</div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 text-secondary hover:text-primary rounded-lg transition-colors" title="ดูไฟล์">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 text-secondary hover:text-primary rounded-lg transition-colors" title="ดาวน์โหลด">
+<span class="material-symbols-outlined text-lg" data-icon="download">download</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Tenant & Co-tenants LINE Status -->
+<div class="bg-surface rounded-2xl border border-slate-200 p-5 space-y-3">
+<div class="flex items-center justify-between">
+<h4 class="text-title-md font-title-md text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-600 text-xl" data-icon="forum">forum</span>
+<span>รายชื่อผู้เช่าในระบบ LINE LIFF</span>
+</h4>
+<span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">2 คนในห้อง</span>
+</div>
+<div class="space-y-2">
+<!-- Primary Tenant -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-sm">
+                กพ
+              </div>
+<div>
+<div class="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+<span>นางสาวกัญญา พงษ์สถิตย์</span>
+<span class="text-[10px] bg-primary text-white px-1.5 py-0.2 rounded font-medium">ผู้เช่าหลัก</span>
+</div>
+<div class="text-xs text-secondary">LINE Display: Kanya.P • โทร: 081-234-5678</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-emerald-600" data-icon="check_circle">check_circle</span>
+</div>
+<!-- Co-tenant -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-slate-100 text-secondary font-bold flex items-center justify-center text-sm">
+                นพ
+              </div>
+<div>
+<div class="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+<span>นางสาวนภัสสร พงษ์สถิตย์</span>
+<span class="text-[10px] bg-slate-100 text-secondary px-1.5 py-0.2 rounded font-medium">ผู้เช่าร่วม</span>
+</div>
+<div class="text-xs text-secondary">LINE Display: Napassorn • โทร: 089-987-6543</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-emerald-600" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Recent Billing & Payment History -->
+<div class="bg-surface rounded-2xl border border-slate-200 p-5 space-y-3">
+<h4 class="text-title-md font-title-md text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="receipt_long">receipt_long</span>
+<span>ประวัติบิลและการชำระเงิน</span>
+</h4>
+<div class="space-y-2 text-xs">
+<!-- Bill 1 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+<div>
+<span class="font-semibold text-on-surface block text-sm">รอบบิล กุมภาพันธ์ 2568</span>
+<span class="text-secondary">ค่าเช่า ฿4,500 + ไฟ ฿420 + น้ำ ฿90</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-on-surface block text-sm">฿5,010</span>
+<span class="text-emerald-600 font-medium">ชำระแล้ว (10 ก.พ. 68)</span>
+</div>
+</div>
+<!-- Bill 2 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
+<div>
+<span class="font-semibold text-on-surface block text-sm">รอบบิล มกราคม 2568</span>
+<span class="text-secondary">ค่าเช่า ฿4,500 + ไฟ ฿385 + น้ำ ฿90</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-on-surface block text-sm">฿4,975</span>
+<span class="text-emerald-600 font-medium">ชำระแล้ว (10 ม.ค. 68)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Safe Termination Section (End Lease Guard) -->
+<div class="bg-rose-50/60 rounded-2xl border border-rose-200 p-5 space-y-3">
+<div class="flex items-center gap-2 text-rose-800">
+<span class="material-symbols-outlined text-rose-600" data-icon="warning">warning</span>
+<h4 class="text-title-md font-title-md font-bold">การสิ้นสุดสัญญาเช่า (End Lease)</h4>
+</div>
+<p class="text-xs text-rose-700 leading-relaxed">
+          การจบสัญญาจะดำเนินการปลดการเชื่อมต่อผู้เช่าจาก LINE OA ของห้อง 205 สรุปยอดมิเตอร์งวดสุดท้าย คืนเงินมัดจำ (฿9,000) หลังหักค่าซ่อมบำรุง และเปลี่ยนสถานะห้องเป็น "ว่างพร้อมตรวจรับ"
+        </p>
+<button class="w-full h-11 rounded-xl bg-white hover:bg-rose-100 text-rose-700 border border-rose-300 font-title-md text-sm flex items-center justify-center gap-2 transition-colors active:scale-[0.98]" onclick="confirmEndLease()">
+<span class="material-symbols-outlined text-lg" data-icon="logout">logout</span>
+<span>ดำเนินการจบสัญญาห้อง 205 อย่างปลอดภัย</span>
+</button>
+</div>
+</div>
+<!-- Drawer Sticky Action Footer -->
+<div class="p-4 border-t border-slate-200 bg-white flex items-center justify-between gap-3">
+<button class="h-10 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-secondary text-sm font-medium transition-colors" onclick="closeDrawer()">
+        ปิดหน้าต่าง
+      </button>
+<div class="flex items-center gap-2">
+<button class="h-10 px-4 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-medium text-sm flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="edit">edit</span>
+<span>แก้ไขสัญญา</span>
+</button>
+<button class="h-10 px-4 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-title-md text-sm flex items-center gap-1.5 shadow-sm transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="send">send</span>
+<span>ส่งแจ้งเตือนผ่าน LINE</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Toast Notification element -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-on-background text-surface px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 border border-outline/30" id="toast">
+<span class="material-symbols-outlined text-emerald-400" data-icon="check_circle">check_circle</span>
+<span class="text-sm font-medium" id="toast-text">คัดลอกลิงก์สำเร็จแล้ว</span>
+</div>
+<!-- ============================================================ -->
+<!-- INLINE JAVASCRIPT: DRAWER & MICRO-INTERACTIONS              -->
+<!-- ============================================================ -->
+<script>
+    function openDrawer() {
+      const drawer = document.getElementById('lease-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop.classList.add('opacity-100', 'pointer-events-auto');
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById('lease-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-text');
+      text.innerText = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    function copyInviteLink() {
+      const dummyLink = "https://liff.line.me/sirisuk-place/invite?tk=tok_203_a98f12c";
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(dummyLink);
+      }
+      showToast("คัดลอกลิงก์เชิญห้อง 203 สำหรับส่งใน LINE แล้ว!");
+    }
+
+    function confirmEndLease() {
+      if (confirm("คุณต้องการเริ่มกระบวนการจบสัญญา ห้อง 205 (นางสาวกัญญา พงษ์สถิตย์) ใช่หรือไม่? ระบบจะนำเข้าสู่ขั้นตอนตรวจมิเตอร์และคืนเงินประกัน")) {
+        showToast("เปิดขั้นตอนจบสัญญาและคำนวณเงินประกันเรียบร้อย");
+      }
+    }
+  </script>
+</body></html>

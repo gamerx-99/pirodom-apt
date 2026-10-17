@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-slate-50" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ศิริสุข เพลส - ภาพรวมระบบจัดการหอพัก</title>
+<!-- Google Font: Plus Jakarta Sans / Noto Sans Thai -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50: "#EFF6FF",
+            100: "#DBEAFE",
+            200: "#BFDBFE",
+            300: "#93C5FD",
+            400: "#60A5FA",
+            500: "#3B82F6",
+            600: "#2563EB",
+            700: "#1D4ED8",
+            800: "#1E40AF",
+            900: "#1E3A8A",
+            950: "#172554"
+          },
+          accent: {
+            light: "#E0F2FE",
+            DEFAULT: "#0284C7",
+            sky: "#38BDF8",
+            dark: "#0369A1"
+          },
+          slate: {
+            850: "#0F172A",
+            900: "#0B1120",
+            950: "#020617"
+          }
+        },
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', '"Noto Sans Thai"', 'sans-serif'],
+          numeric: ['"Plus Jakarta Sans"', '"Noto Sans Thai"', 'sans-serif']
+        },
+        boxShadow: {
+          'card': '0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04)',
+          'card-hover': '0 10px 25px -3px rgba(15, 23, 42, 0.07), 0 4px 6px -4px rgba(15, 23, 42, 0.04)',
+          'glow': '0 4px 20px -2px rgba(37, 99, 235, 0.25)',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans Thai', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+  }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 450, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
+  /* Custom scrollbar for modern sleek aesthetic */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+  }
+</style>
+</head>
+<body class="h-full bg-[#F8FAFC] text-slate-900 antialiased overflow-x-hidden selection:bg-brand-100 selection:text-brand-900">
+<!-- Mobile Off-Canvas Drawer Backdrop -->
+<div class="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-40 hidden md:hidden transition-opacity duration-300" id="mobileDrawerBackdrop" onclick="toggleSidebar()"></div>
+<!-- Modern Sleek Sidebar: Deep Charcoal/Black (#0F172A) SaaS Canvas -->
+<aside class="fixed top-0 left-0 h-full w-72 z-50 p-5 bg-[#0F172A] border-r border-slate-800/80 shadow-2xl flex flex-col justify-between -translate-x-full md:translate-x-0 transition-transform duration-300 ease-out" id="sideNavBar">
+<!-- Top Branding & Navigation -->
+<div class="flex flex-col gap-6">
+<!-- Dormitory Brand Header -->
+<div class="flex items-center gap-3.5 px-2 pt-1">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 via-brand-500 to-accent-sky text-white flex items-center justify-center shadow-glow ring-2 ring-white/10 shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="apartment">apartment</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-[17px] font-bold text-white tracking-tight truncate">ศิริสุข เพลส</span>
+<span class="w-1.5 h-1.5 rounded-full bg-accent-sky"></span>
+</div>
+<span class="text-xs text-slate-400 font-medium tracking-normal">ระบบจัดการหอพัก 19 ยูนิต</span>
+</div>
+</div>
+<!-- LINE OA Status Pill with Modern Glass Accent -->
+<div class="bg-slate-900/90 border border-slate-800 rounded-xl px-3.5 py-2.5 flex items-center justify-between shadow-inner">
+<div class="flex items-center gap-2.5">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#06C755] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#06C755]"></span>
+</span>
+<span class="text-xs font-semibold text-slate-200">LINE OA เชื่อมต่อแล้ว</span>
+</div>
+<div class="w-6 h-6 rounded-md bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer" title="รีเฟรชการเชื่อมต่อ">
+<span class="material-symbols-outlined text-sm" data-icon="sync">sync</span>
+</div>
+</div>
+<!-- Main Navigation Menu -->
+<nav aria-label="เมนูหลัก" class="flex flex-col gap-1.5">
+<div class="px-2 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400/80">เมนูหลัก</div>
+<!-- Tab 0: ภาพรวม (ACTIVE) -->
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 text-white font-semibold shadow-glow transition-all group" href="#overview">
+<span class="material-symbols-outlined text-[20px] text-white" data-icon="dashboard">dashboard</span>
+<span class="text-sm">ภาพรวม</span>
+<span class="ml-auto w-1.5 h-1.5 rounded-full bg-white"></span>
+</a>
+<!-- Tab 1: ห้องพักและสัญญา -->
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 font-medium transition-all group" href="#rooms">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200 transition-colors" data-icon="apartment">apartment</span>
+<span class="text-sm">ห้องพักและสัญญา</span>
+</a>
+<!-- Tab 2: จดมิเตอร์ -->
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 font-medium transition-all group" href="#meters">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200 transition-colors" data-icon="speed">speed</span>
+<span class="text-sm">จดมิเตอร์</span>
+<span class="ml-auto bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[11px] font-bold px-2 py-0.5 rounded-full">2 ค้าง</span>
+</a>
+<!-- Tab 3: บิลและใบแจ้งหนี้ -->
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 font-medium transition-all group" href="#bills">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200 transition-colors" data-icon="receipt_long">receipt_long</span>
+<span class="text-sm">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- Tab 4: ตรวจสลิป LINE -->
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 font-medium transition-all group" href="#slips">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200 transition-colors" data-icon="receipt">receipt</span>
+<span class="text-sm">ตรวจสลิป LINE</span>
+<span class="ml-auto bg-brand-500 text-white text-[11px] font-bold px-2 py-0.5 rounded-full shadow-sm">3</span>
+</a>
+<!-- Tab 5: งานซ่อมบำรุง -->
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 font-medium transition-all group" href="#maintenance">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200 transition-colors" data-icon="build">build</span>
+<span class="text-sm">งานซ่อมบำรุง</span>
+<span class="ml-auto bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[11px] font-bold px-2 py-0.5 rounded-full">2 ใหม่</span>
+</a>
+<!-- Tab 6: ตั้งค่าระบบ -->
+<a class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 font-medium transition-all group" href="#settings">
+<span class="material-symbols-outlined text-[20px] text-slate-400 group-hover:text-slate-200 transition-colors" data-icon="settings">settings</span>
+<span class="text-sm">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Bottom User Profile & Sign Out Card -->
+<div class="border-t border-slate-800/90 pt-4 flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
+<div class="relative shrink-0">
+<div class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-500 to-accent-sky text-white flex items-center justify-center font-bold text-sm shadow">
+          สม
+        </div>
+<span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-900"></span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-sm font-semibold text-slate-100 truncate">สมศักดิ์ รักสงบ</span>
+<span class="text-xs text-slate-400">ผู้จัดการหอพัก</span>
+</div>
+</div>
+<button class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors text-xs font-semibold w-full text-left">
+<span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+<span>ออกจากระบบ</span>
+</button>
+</div>
+</aside>
+<!-- Main SaaS Content Wrapper -->
+<div class="md:pl-72 flex flex-col min-h-screen">
+<!-- Top App Bar -->
+<header class="sticky top-0 w-full z-20 flex justify-between items-center px-4 sm:px-8 py-3.5 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+<div class="flex items-center gap-3.5">
+<!-- Mobile Drawer Toggle Button -->
+<button aria-label="เปิดเมนู" class="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors" onclick="toggleSidebar()">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div>
+<div class="flex items-center gap-2.5">
+<h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">ภาพรวม</h1>
+<!-- Modern Pill Badge for Demo Data -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/80 shadow-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+            ข้อมูลตัวอย่าง (Demo Data)
+          </span>
+</div>
+<p class="text-xs text-slate-500 font-medium hidden sm:block mt-0.5">ติดตามห้องพัก รายรับ และงานที่ต้องจัดการในรอบเดือน</p>
+</div>
+</div>
+<!-- Action & Date Controls -->
+<div class="flex items-center gap-2.5 sm:gap-3">
+<!-- Month Navigation Pill -->
+<div class="flex items-center bg-slate-100/90 border border-slate-200/80 rounded-xl p-1 shadow-xs">
+<button class="p-1 hover:bg-white rounded-lg text-slate-600 hover:text-slate-900 transition-all" title="เดือนก่อนหน้า">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="flex items-center gap-1.5 px-2.5">
+<span class="material-symbols-outlined text-[16px] text-brand-600" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-bold text-slate-800 whitespace-nowrap">ตุลาคม 2567</span>
+</div>
+<button class="p-1 hover:bg-white rounded-lg text-slate-600 hover:text-slate-900 transition-all" title="เดือนถัดไป">
+<span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- Live Sync Tag -->
+<div class="hidden xl:flex items-center gap-2 text-xs text-slate-500 font-medium bg-white px-3 py-2 rounded-xl border border-slate-200 shadow-xs">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+</span>
+<span>อัปเดตล่าสุด: วันนี้ 14:32 น.</span>
+</div>
+<!-- Secondary CTA: Record Meter -->
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 text-xs font-bold shadow-xs active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[18px] text-brand-600" data-icon="speed">speed</span>
+<span>บันทึกมิเตอร์</span>
+</button>
+<!-- Primary Gradient CTA: Create Bill -->
+<button class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-500 hover:to-brand-600 text-white text-xs font-bold shadow-glow active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+<span>สร้างบิล</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-4 sm:p-7 lg:p-8 space-y-7 max-w-7xl w-full mx-auto">
+<!-- SECTION 1: Modern Elevated Financial Summary Cards -->
+<section aria-label="สรุปข้อมูลการเงิน" class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="payments">payments</span>
+</div>
+<h2 class="text-base font-bold text-slate-900">การเงินประจำเดือน ตุลาคม 2567</h2>
+</div>
+<span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">สรุป 19 ยูนิต</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1: ยอดเรียกเก็บรวม -->
+<div class="p-5 bg-white rounded-2xl border border-slate-200/90 shadow-card hover:shadow-card-hover hover:border-brand-300 transition-all duration-200 group flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">ยอดเรียกเก็บรวม (Total)</span>
+<div class="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-3xl font-extrabold text-slate-900 tracking-tight font-numeric">฿84,500</span>
+<span class="text-xs font-medium text-slate-500">บาท</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+<span class="flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[15px] text-brand-600" data-icon="domain">domain</span>
+              ทั้งหมด 19 ยูนิต
+            </span>
+<span class="text-brand-600 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+              ดูทั้งหมด <span class="text-[14px]">→</span>
+</span>
+</div>
+</div>
+<!-- Card 2: รับชำระแล้ว -->
+<div class="p-5 bg-white rounded-2xl border border-slate-200/90 shadow-card hover:shadow-card-hover hover:border-emerald-300 transition-all duration-200 group flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">รับชำระแล้ว (Collected)</span>
+<div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-3xl font-extrabold text-emerald-600 tracking-tight font-numeric">฿62,300</span>
+<span class="text-xs font-medium text-slate-500">บาท</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100">
+<div class="flex justify-between text-xs mb-1.5 font-medium">
+<span class="text-slate-600">สำเร็จ 14 จาก 19 บิล</span>
+<span class="font-extrabold text-emerald-600">73.7%</span>
+</div>
+<div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-500" style="width: 73.7%;"></div>
+</div>
+</div>
+</div>
+<!-- Card 3: ยอดค้างชำระ -->
+<div class="p-5 bg-white rounded-2xl border border-slate-200/90 shadow-card hover:shadow-card-hover hover:border-amber-300 transition-all duration-200 group flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">ยอดค้างชำระ (Pending)</span>
+<div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="pending">pending</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-3xl font-extrabold text-amber-600 tracking-tight font-numeric">฿22,200</span>
+<span class="text-xs font-medium text-slate-500">บาท</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="flex items-center gap-1.5 text-slate-600 font-medium">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              รอเก็บ 5 บิล
+            </span>
+<span class="text-amber-600 font-bold group-hover:translate-x-0.5 transition-transform flex items-center gap-0.5">
+              ติดตาม <span class="text-[14px]">→</span>
+</span>
+</div>
+</div>
+<!-- Card 4: ยอดเกินกำหนด (Overdue) -->
+<div class="p-5 bg-gradient-to-br from-rose-50/40 via-white to-white rounded-2xl border-2 border-rose-200 shadow-card hover:shadow-card-hover hover:border-rose-400 transition-all duration-200 group flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-bold text-rose-700 uppercase tracking-wider">ยอดเกินกำหนด (Overdue)</span>
+<div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="warning">warning</span>
+</div>
+</div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-3xl font-extrabold text-rose-600 tracking-tight font-numeric">฿9,200</span>
+<span class="text-xs font-bold text-rose-700">(2 บิล)</span>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-rose-100">
+<div class="flex items-start gap-1.5 bg-rose-50/80 text-rose-800 text-[11px] leading-tight font-medium p-2 rounded-xl border border-rose-200/80">
+<span class="material-symbols-outlined text-[15px] text-rose-600 shrink-0 mt-0.5" data-icon="error_outline">error_outline</span>
+<span>*เป็นส่วนหนึ่งของยอดค้างชำระ (ไม่รวมซ้ำในยอดค้าง)</span>
+</div>
+</div>
+</div>
+</div>
+<p class="text-xs text-slate-500 flex items-center gap-1.5 px-1 pt-0.5 font-medium">
+<span class="material-symbols-outlined text-[15px] text-slate-400" data-icon="info">info</span>
+        หมายเหตุ: รายรับไม่นับรวมบิลร่าง บิลยกเลิก หรือเงินประกันความเสียหาย
+      </p>
+</section>
+<!-- SECTION 2: Modern Action Required Interactive Cards -->
+<section aria-label="งานที่ต้องจัดการด่วน" class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="flex h-3 w-3 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-brand-600"></span>
+</span>
+<h2 class="text-base font-bold text-slate-900">งานที่ต้องจัดการ (Action Required)</h2>
+</div>
+<span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">รอดำเนินการ 6 กลุ่มงาน</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+<!-- Task 1: สลิปรอตรวจ -->
+<div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="receipt">receipt</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-900">สลิปรอตรวจ</span>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-amber-100 text-amber-800">3 รายการ</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">อัปโหลดจาก LINE OA</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold active:scale-[0.98] transition-all shadow-xs">
+            เข้าตรวจสลิป
+          </button>
+</div>
+<!-- Task 2: ห้องที่ยังไม่ได้จดมิเตอร์ -->
+<div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600 shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="speed">speed</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-900">ยังไม่จดมิเตอร์</span>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-brand-100 text-brand-800">2 ห้อง</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">ห้อง 304, 305 (น้ำ-ไฟ)</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold active:scale-[0.98] transition-all shadow-glow">
+            จดมิเตอร์ทันที
+          </button>
+</div>
+<!-- Task 3: บิลใกล้ครบกำหนด -->
+<div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="schedule">schedule</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-900">บิลใกล้ครบกำหนด</span>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-emerald-100 text-emerald-800">3 รายการ</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">ครบกำหนด 31 ต.ค.</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-xl bg-[#06C755] hover:bg-[#05b34c] text-white text-xs font-bold flex items-center gap-1 active:scale-[0.98] transition-all shadow-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="send">send</span>
+<span>ส่งเตือน LINE</span>
+</button>
+</div>
+<!-- Task 4: บิลเกินกำหนด -->
+<div class="p-4 bg-rose-50/25 rounded-2xl border border-rose-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-rose-100 border border-rose-200 flex items-center justify-center text-rose-600 shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="notification_important">notification_important</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-rose-800">บิลเกินกำหนด</span>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-rose-100 text-rose-700">2 รายการ</span>
+</div>
+<p class="text-xs text-rose-700 mt-0.5">ห้อง 205 (ครบ 10 ต.ค.), 103</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold active:scale-[0.98] transition-all shadow-xs">
+            ติดตามทวงถาม
+          </button>
+</div>
+<!-- Task 5: งานซ่อมรอรับเรื่อง -->
+<div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="handyman">handyman</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-900">งานซ่อมรอรับเรื่อง</span>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-amber-100 text-amber-800">2 เรื่อง</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">ห้อง 202 (แอร์), 104 (ก๊อก)</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold active:scale-[0.98] transition-all border border-slate-200">
+            มอบหมายช่าง
+          </button>
+</div>
+<!-- Task 6: สัญญาใกล้หมดอายุ -->
+<div class="p-4 bg-white rounded-2xl border border-slate-200 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600 shrink-0">
+<span class="material-symbols-outlined text-[24px]" data-icon="assignment_late">assignment_late</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-slate-900">สัญญาใกล้หมดอายุ</span>
+<span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-slate-100 text-slate-700">1 สัญญา</span>
+</div>
+<p class="text-xs text-slate-500 mt-0.5">ห้อง 301 สิ้นสุด 30 พ.ย. 67</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold active:scale-[0.98] transition-all border border-slate-200">
+            ดูสัญญา
+          </button>
+</div>
+</div>
+</section>
+<!-- SECTION 3: 19 Units Visual Status Matrix -->
+<section aria-label="แผนผังสถานะห้องพัก 19 ยูนิต" class="p-6 bg-white rounded-2xl border border-slate-200 shadow-card space-y-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span>
+</div>
+<h2 class="text-base font-bold text-slate-900">สถานะห้องพักทั้งหมด (19 ยูนิต)</h2>
+</div>
+<p class="text-xs text-slate-500 mt-1">คลิกที่ยูนิตเพื่อดูรายละเอียดมิเตอร์ สัญญา และประวัติการเช่า</p>
+</div>
+<!-- Search & Filter Controls -->
+<div class="flex flex-wrap items-center gap-2.5">
+<div class="relative w-full sm:w-64">
+<span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[18px]" data-icon="search">search</span>
+</span>
+<input class="w-full pl-9 pr-3.5 py-2 text-xs rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all placeholder:text-slate-400 font-medium" placeholder="ค้นหาเลขห้อง หรือชื่อ..." type="text"/>
+</div>
+<button class="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-1.5 transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px] text-slate-500" data-icon="filter_list">filter_list</span>
+<span>ตัวกรอง</span>
+</button>
+</div>
+</div>
+<!-- Modern Filter Chips Bar -->
+<div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+<button class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-brand-600 text-white shadow-glow">
+          ทั้งหมด (19)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-slate-400"></span> ว่าง (2)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-sky-500"></span> จองแล้ว (1)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span> มีผู้เช่า (15)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span> รอย้ายออก (1)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-400 opacity-60">
+          ปรับปรุง (0)
+        </button>
+</div>
+<!-- Floors Layout -->
+<div class="space-y-5">
+<!-- Ground Floor: 1 Commercial Unit (S-01) -->
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">ชั้นล่าง (Ground Floor) - ยูนิตพาณิชย์</span>
+<div class="h-px bg-slate-200/70 flex-1"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+<!-- S-01 Commercial Unit Card -->
+<div class="p-4 bg-gradient-to-br from-white to-slate-50/60 rounded-2xl border-2 border-brand-200 shadow-card hover:shadow-card-hover hover:border-brand-500 transition-all cursor-pointer group">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="storefront">storefront</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-lg font-black text-slate-900 tracking-tight font-numeric">S-01</span>
+<span class="text-[11px] font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2 py-0.5 rounded-md">ยูนิตพาณิชย์</span>
+</div>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+                  ชำระแล้ว
+                </span>
+</div>
+<div class="mt-2.5 text-xs font-bold text-slate-800 truncate">
+                บจก. ก้าวหน้าการค้า (ร้านสะดวกซัก/มินิมาร์ท)
+              </div>
+<div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="text-slate-500">ค่าเช่า: <strong class="text-slate-900 font-bold font-numeric">฿12,000</strong>/ด.</span>
+<span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-semibold text-[11px]">มิเตอร์ครบถ้วน</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Floor 1 (6 Units: 101 - 106) -->
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">ชั้น 1 (Floor 1)</span>
+<div class="h-px bg-slate-200/70 flex-1"></div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+<!-- Room 101 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">101</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายธนกฤต ปานทอง</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,200</span>
+</div>
+</div>
+<!-- Room 102 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">102</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">น.ส.วิภาดา แสนสุข</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,200</span>
+</div>
+</div>
+<!-- Room 103 (OVERDUE) -->
+<div class="p-3 bg-rose-50/20 rounded-xl border-2 border-rose-300 shadow-card hover:border-rose-500 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-rose-800 font-numeric">103</span>
+<span class="w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse ring-2 ring-rose-200" title="เกินกำหนด"></span>
+</div>
+<p class="text-xs text-slate-600 truncate mt-1 font-medium">น.ส.กมลวรรณ บุญชู</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-rose-100">
+<span class="text-rose-700 font-bold text-[11px]">เกินกำหนด</span>
+<span class="text-rose-800 font-extrabold font-numeric">฿4,600</span>
+</div>
+</div>
+<!-- Room 104 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">104</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายชัยวัฒน์ พรประสิทธิ์</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,200</span>
+</div>
+</div>
+<!-- Room 105 (VACANT) -->
+<div class="p-3 bg-slate-50/70 rounded-xl border border-dashed border-slate-300 hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-500 font-numeric">105</span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400" title="ห้องว่าง"></span>
+</div>
+<p class="text-xs text-slate-400 italic truncate mt-1">- ว่าง พร้อมอยู่ -</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
+<span class="text-slate-600 bg-slate-200/80 px-1.5 py-0.2 rounded font-semibold text-[10px]">รอผู้เช่า</span>
+<span class="text-slate-500 font-bold font-numeric">฿4,000</span>
+</div>
+</div>
+<!-- Room 106 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">106</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายอนุชา โคตรสมบัติ</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,200</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Floor 2 (6 Units: 201 - 206) -->
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">ชั้น 2 (Floor 2)</span>
+<div class="h-px bg-slate-200/70 flex-1"></div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+<!-- Room 201 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">201</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">น.ส.ดวงฤทัย ใจเย็น</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,300</span>
+</div>
+</div>
+<!-- Room 202 (Pending Slip) -->
+<div class="p-3 bg-amber-50/20 rounded-xl border border-amber-300 shadow-card hover:border-amber-500 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">202</span>
+<span class="w-2.5 h-2.5 rounded-full bg-amber-500 ring-2 ring-amber-100" title="รอตรวจสลิป"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายชาตรี มีสุข</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-amber-100">
+<span class="text-amber-800 font-bold text-[11px] bg-amber-100 px-1 rounded">ตรวจสลิป</span>
+<span class="text-slate-800 font-bold font-numeric">฿4,750</span>
+</div>
+</div>
+<!-- Room 203 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">203</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายพงศกร รัตนวงศ์</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,300</span>
+</div>
+</div>
+<!-- Room 204 (Booked) -->
+<div class="p-3 bg-sky-50/30 rounded-xl border border-sky-200 shadow-card hover:border-sky-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-sky-900 font-numeric">204</span>
+<span class="w-2.5 h-2.5 rounded-full bg-sky-500 ring-2 ring-sky-100" title="จองแล้ว"></span>
+</div>
+<p class="text-xs text-sky-800 truncate mt-1 font-medium">จอง: คุณพัชรา</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-sky-100">
+<span class="text-sky-800 font-bold text-[11px] bg-sky-100 px-1 rounded">นัดทำสัญญา</span>
+<span class="text-slate-600 font-semibold text-[11px]">มัดจำแล้ว</span>
+</div>
+</div>
+<!-- Room 205 (SPECIFIC CONTRACT DUE DATE: 10th of Month & OVERDUE) -->
+<div class="p-3 bg-rose-50/25 rounded-xl border-2 border-rose-300 shadow-card hover:border-rose-500 transition-all cursor-pointer ring-1 ring-rose-200">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="text-base font-extrabold text-rose-800 font-numeric">205</span>
+<span class="text-[9px] font-bold px-1 py-0.2 rounded bg-rose-100 text-rose-800">ครบ 10 ต.ค.</span>
+</div>
+<span class="w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse ring-2 ring-rose-200" title="เกินกำหนด"></span>
+</div>
+<p class="text-xs text-slate-600 truncate mt-1 font-medium">นายอภิสิทธิ์ วงศ์ดี</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-rose-100">
+<span class="text-rose-700 font-bold text-[11px]">เกินกำหนด</span>
+<span class="text-rose-800 font-extrabold font-numeric">฿4,600</span>
+</div>
+</div>
+<!-- Room 206 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">206</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">น.ส.นภัสสร คงเจริญ</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,300</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Floor 3 (6 Units: 301 - 306) -->
+<div>
+<div class="flex items-center gap-2 mb-3">
+<span class="text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">ชั้น 3 (Floor 3)</span>
+<div class="h-px bg-slate-200/70 flex-1"></div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+<!-- Room 301 (Moving out pending) -->
+<div class="p-3 bg-amber-50/15 rounded-xl border border-amber-300 shadow-card hover:border-amber-500 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">301</span>
+<span class="w-2.5 h-2.5 rounded-full bg-amber-500 ring-2 ring-amber-100" title="รอย้ายออก"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายธวัชชัย รุ่งโรจน์</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-amber-100">
+<span class="text-amber-800 font-bold text-[10px] bg-amber-100 px-1 rounded">ย้ายออก สิ้น พ.ย.</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,400</span>
+</div>
+</div>
+<!-- Room 302 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">302</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายศุภกร แก้วตา</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,400</span>
+</div>
+</div>
+<!-- Room 303 -->
+<div class="p-3 bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">303</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-100" title="มีผู้เช่า"></span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">น.ส.ศศิธร เจริญผล</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-emerald-700 font-bold text-[11px]">ชำระแล้ว</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,400</span>
+</div>
+</div>
+<!-- Room 304 (Pending Meter) -->
+<div class="p-3 bg-white rounded-xl border-2 border-dashed border-amber-300 shadow-card hover:border-amber-500 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">304</span>
+<span class="material-symbols-outlined text-amber-500 text-[18px]" data-icon="speed">speed</span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">นายกิตติคุณ มั่นคง</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-amber-800 font-bold text-[10px] bg-amber-100 px-1 rounded">ยังไม่จดมิเตอร์</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,400</span>
+</div>
+</div>
+<!-- Room 305 (Pending Meter) -->
+<div class="p-3 bg-white rounded-xl border-2 border-dashed border-amber-300 shadow-card hover:border-amber-500 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-900 font-numeric">305</span>
+<span class="material-symbols-outlined text-amber-500 text-[18px]" data-icon="speed">speed</span>
+</div>
+<p class="text-xs text-slate-500 truncate mt-1 font-medium">น.ส.พิมพ์ใจ สุวรรณ</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-100">
+<span class="text-amber-800 font-bold text-[10px] bg-amber-100 px-1 rounded">ยังไม่จดมิเตอร์</span>
+<span class="text-slate-700 font-bold font-numeric">฿4,400</span>
+</div>
+</div>
+<!-- Room 306 (VACANT) -->
+<div class="p-3 bg-slate-50/70 rounded-xl border border-dashed border-slate-300 hover:border-brand-400 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-base font-extrabold text-slate-500 font-numeric">306</span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-400" title="ห้องว่าง"></span>
+</div>
+<p class="text-xs text-slate-400 italic truncate mt-1">- ว่าง พร้อมอยู่ -</p>
+<div class="mt-2.5 flex items-center justify-between text-xs pt-1 border-t border-slate-200/60">
+<span class="text-slate-600 bg-slate-200/80 px-1.5 py-0.2 rounded font-semibold text-[10px]">รอผู้เช่า</span>
+<span class="text-slate-500 font-bold font-numeric">฿4,400</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Split Workspace (Left: Bills Follow-up Table | Right: Maintenance Work Orders) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT (7 cols): Bills Follow-up Table -->
+<section aria-label="ตารางบิลที่ต้องติดตาม" class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
+<div class="p-5 flex items-center justify-between border-b border-slate-100">
+<div>
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="receipt_long">receipt_long</span>
+</div>
+<h2 class="text-base font-bold text-slate-900">บิลที่ต้องติดตาม (เรียงตามความเร่งด่วน)</h2>
+</div>
+<p class="text-xs text-slate-500 mt-1">แสดงบิลเกินกำหนดและรอตรวจสลิปก่อน</p>
+</div>
+<a class="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1 group" href="#all-bills">
+            ดูบิลทั้งหมด (19) <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200/70">
+<th class="py-3 px-4">ห้อง/ยูนิต</th>
+<th class="py-3 px-3">ผู้เช่า</th>
+<th class="py-3 px-3">งวดค่าเช่า</th>
+<th class="py-3 px-3">วันครบกำหนด</th>
+<th class="py-3 px-3 text-right">ยอดเงิน</th>
+<th class="py-3 px-3">สถานะบิล</th>
+<th class="py-3 px-4 text-center">จัดการ</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 text-xs">
+<!-- Row 1: Room 205 (CRITICAL CONTRACT RULE: Due on 10 Oct, Overdue 14 days) -->
+<tr class="hover:bg-rose-50/30 transition-colors bg-rose-50/15">
+<td class="py-3.5 px-4 font-bold text-slate-900">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-6 rounded-full bg-rose-600"></span>
+<span class="text-sm font-extrabold font-numeric">205</span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-slate-900">นายอภิสิทธิ์ วงศ์ดี</div>
+<div class="text-[11px] text-slate-500">โทร. 081-992-XXXX</div>
+</td>
+<td class="py-3.5 px-3 text-slate-600 whitespace-nowrap">ต.ค. 2567</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="text-rose-700 font-extrabold font-numeric">10 ต.ค. 2567</div>
+<span class="inline-block text-[10px] text-rose-800 bg-rose-100 font-bold px-1.5 py-0.2 rounded">ตามสัญญา (วันที่ 10)</span>
+</td>
+<td class="py-3.5 px-3 text-right font-extrabold text-rose-700 whitespace-nowrap font-numeric">
+                  ฿4,600.00
+                </td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] bg-rose-100 text-rose-800 border border-rose-200 font-bold">
+<span class="material-symbols-outlined text-[13px]" data-icon="alarm">alarm</span>
+                    เกินกำหนด 14 วัน
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-center whitespace-nowrap">
+<button class="px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors border border-slate-200">
+                    ดูรายละเอียด
+                  </button>
+</td>
+</tr>
+<!-- Row 2: Room 103 -->
+<tr class="hover:bg-rose-50/30 transition-colors bg-rose-50/10">
+<td class="py-3.5 px-4 font-bold text-slate-900">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-6 rounded-full bg-rose-600"></span>
+<span class="text-sm font-extrabold font-numeric">103</span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-slate-900">น.ส.กมลวรรณ บุญชู</div>
+<div class="text-[11px] text-slate-500">โทร. 089-341-XXXX</div>
+</td>
+<td class="py-3.5 px-3 text-slate-600 whitespace-nowrap">ต.ค. 2567</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="text-slate-800 font-semibold font-numeric">31 ต.ค. 2567</div>
+<span class="text-[10px] text-slate-500">สิ้นเดือนปกติ</span>
+</td>
+<td class="py-3.5 px-3 text-right font-extrabold text-rose-700 whitespace-nowrap font-numeric">
+                  ฿4,600.00
+                </td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] bg-rose-100 text-rose-800 border border-rose-200 font-bold">
+<span class="material-symbols-outlined text-[13px]" data-icon="warning">warning</span>
+                    ค้างชำระงวดก่อน
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-center whitespace-nowrap">
+<button class="px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors border border-slate-200">
+                    ดูรายละเอียด
+                  </button>
+</td>
+</tr>
+<!-- Row 3: Room 202 (Pending LINE OA Slip) -->
+<tr class="hover:bg-amber-50/30 transition-colors">
+<td class="py-3.5 px-4 font-bold text-slate-900">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-6 rounded-full bg-amber-500"></span>
+<span class="text-sm font-extrabold font-numeric">202</span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-slate-900">นายชาตรี มีสุข</div>
+<div class="text-[11px] text-brand-700 font-medium">ส่งสลิปผ่าน LINE 13:40 น.</div>
+</td>
+<td class="py-3.5 px-3 text-slate-600 whitespace-nowrap">ต.ค. 2567</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="text-slate-800 font-semibold font-numeric">31 ต.ค. 2567</div>
+<span class="text-[10px] text-slate-500">สิ้นเดือนปกติ</span>
+</td>
+<td class="py-3.5 px-3 text-right font-extrabold text-slate-900 whitespace-nowrap font-numeric">
+                  ฿4,750.00
+                </td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] bg-amber-100 text-amber-800 border border-amber-200 font-bold">
+<span class="material-symbols-outlined text-[13px]" data-icon="receipt">receipt</span>
+                    สลิปรอตรวจสอบ LINE
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-center whitespace-nowrap">
+<button class="px-3 py-1.5 text-xs font-bold rounded-xl bg-amber-500 hover:bg-amber-600 text-white transition-colors shadow-xs">
+                    ตรวจสลิป
+                  </button>
+</td>
+</tr>
+<!-- Row 4: S-01 Commercial Unit (PAID) -->
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="py-3.5 px-4 font-bold text-slate-900">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-6 rounded-full bg-emerald-500"></span>
+<span class="text-sm font-extrabold font-numeric text-brand-700">S-01</span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="font-bold text-slate-900">บจก. ก้าวหน้าการค้า</div>
+<div class="text-[11px] text-slate-500">ยูนิตร้านค้าชั้นล่าง</div>
+</td>
+<td class="py-3.5 px-3 text-slate-600 whitespace-nowrap">ต.ค. 2567</td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<div class="text-slate-800 font-semibold font-numeric">31 ต.ค. 2567</div>
+<span class="text-[10px] text-slate-500">สิ้นเดือนปกติ</span>
+</td>
+<td class="py-3.5 px-3 text-right font-extrabold text-emerald-600 whitespace-nowrap font-numeric">
+                  ฿12,000.00
+                </td>
+<td class="py-3.5 px-3 whitespace-nowrap">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+                    ชำระแล้ว
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-center whitespace-nowrap">
+<button class="px-3 py-1.5 text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-colors border border-slate-200">
+                    ดูใบเสร็จ
+                  </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- RIGHT (5 cols): Urgent Maintenance Work Orders -->
+<section aria-label="งานซ่อมบำรุงล่าสุด" class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-card overflow-hidden">
+<div class="p-5 flex items-center justify-between border-b border-slate-100">
+<div>
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="build">build</span>
+</div>
+<h2 class="text-base font-bold text-slate-900">งานซ่อมล่าสุด (LINE แจ้งซ่อม)</h2>
+</div>
+<p class="text-xs text-slate-500 mt-1">รับเรื่องและประสานช่างเข้าแก้ไข</p>
+</div>
+<a class="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1 group" href="#all-tickets">
+            ดูทั้งหมด <span class="group-hover:translate-x-0.5 transition-transform">→</span>
+</a>
+</div>
+<div class="p-5 space-y-3.5">
+<!-- Ticket 1: Room 202 - Air Conditioner (CRITICAL / URGENT) -->
+<div class="p-4 rounded-2xl border border-rose-200 bg-rose-50/20 border-l-4 border-l-rose-600 hover:shadow-card-hover transition-all space-y-2.5">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-md text-xs font-black bg-white text-slate-900 border border-slate-200 font-numeric">ห้อง 202</span>
+<span class="text-xs font-semibold text-slate-500">เครื่องปรับอากาศ</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200">
+<span class="material-symbols-outlined text-[13px]" data-icon="priority_high">priority_high</span>
+                ด่วนมาก
+              </span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-slate-900">แอร์น้ำหยดเยอะมากและไม่เย็น</h3>
+<p class="text-xs text-slate-600 mt-0.5">ผู้เช่าแจ้งว่าน้ำหยดลงที่นอน ปิดแอร์แล้ว รอช่างเข้าดู</p>
+</div>
+<div class="pt-2.5 border-t border-rose-100 flex items-center justify-between text-xs">
+<span class="text-slate-500 flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[14px] text-slate-400" data-icon="schedule">schedule</span>
+                2 ชั่วโมงที่แล้ว (ผ่าน LINE)
+              </span>
+<button class="px-3.5 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold active:scale-[0.98] transition-all shadow-glow text-xs">
+                มอบหมายช่าง
+              </button>
+</div>
+</div>
+<!-- Ticket 2: Room 104 - Plumbing -->
+<div class="p-4 rounded-2xl border border-slate-200 bg-white border-l-4 border-l-amber-500 hover:shadow-card-hover transition-all space-y-2.5">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-md text-xs font-black bg-slate-100 text-slate-900 font-numeric">ห้อง 104</span>
+<span class="text-xs font-semibold text-slate-500">ประปา/สุขภัณฑ์</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+<span class="material-symbols-outlined text-[13px]" data-icon="schedule">schedule</span>
+                ปานกลาง
+              </span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-slate-900">ก๊อกอ่างล้างหน้ารั่วซึมใต้ข้อต่อ</h3>
+<p class="text-xs text-slate-600 mt-0.5">ช่างสมพรรับงานแล้ว นัดเข้าตรวจเวลา 16:00 น. วันนี้</p>
+</div>
+<div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="text-amber-700 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="engineering">engineering</span>
+                กำลังดำเนินการ (ช่างนัด 16:00)
+              </span>
+<button class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold border border-slate-200 transition-colors text-xs">
+                ดูรายละเอียด
+              </button>
+</div>
+</div>
+<!-- Ticket 3: S-01 Commercial Unit - Electrical (RESOLVED) -->
+<div class="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/50 border-l-4 border-l-emerald-500 opacity-90 hover:opacity-100 transition-all space-y-2">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-md text-xs font-black bg-white text-slate-900 border border-slate-200 font-numeric">S-01 ร้านค้า</span>
+<span class="text-xs font-semibold text-slate-500">ระบบไฟฟ้า</span>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle">check_circle</span>
+                เสร็จสิ้น
+              </span>
+</div>
+<h3 class="text-xs font-bold text-slate-800">เปลี่ยนหลอดไฟ LED หน้าร้าน (2 จุด)</h3>
+<div class="pt-2 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+<span>ปิดงานเมื่อ: 3 วันที่แล้ว</span>
+<button class="text-brand-600 hover:text-brand-700 font-bold">ดูประวัติ</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Modern Clean Footer -->
+<footer class="mt-auto border-t border-slate-200 bg-white py-4 px-6 text-center text-xs text-slate-500">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5">
+<div class="flex items-center gap-2 font-medium">
+<span class="font-bold text-slate-800">ศิริสุข เพลส (Sirisuk Place)</span>
+<span>•</span>
+<span>ระบบจัดการหอพักและอพาร์ตเมนต์ เชื่อมต่อ LINE OA</span>
+</div>
+<div class="text-[11px] text-slate-400 font-medium">
+        เวอร์ชัน 2.4.0 (Contemporary SaaS) | เซิร์ฟเวอร์ทำงานปกติ 99.98%
+      </div>
+</div>
+</footer>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sideNavBar');
+    const backdrop = document.getElementById('mobileDrawerBackdrop');
+    
+    const isClosed = sidebar.classList.contains('-translate-x-full');
+    if (isClosed) {
+      sidebar.classList.remove('-translate-x-full');
+      backdrop.classList.remove('hidden');
+    } else {
+      sidebar.classList.add('-translate-x-full');
+      backdrop.classList.add('hidden');
+    }
+  }
+</script>
+</body></html>

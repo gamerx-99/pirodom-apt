@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>รายละเอียดใบแจ้งหนี้ - ศิริสุข เพลส</title>
+<!-- Google Fonts: Inter & Sarabun/Prompt fallback support -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Prompt:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "background": "#f8f9ff",
+            "on-secondary": "#ffffff",
+            "surface": "#f8f9ff",
+            "on-secondary-container": "#5c647a",
+            "tertiary-container": "#0073ae",
+            "secondary-fixed-dim": "#bec6e0",
+            "tertiary-fixed": "#cce5ff",
+            "error": "#ba1a1a",
+            "inverse-primary": "#b4c5ff",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "on-tertiary-container": "#e7f2ff",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "surface-variant": "#d3e4fe",
+            "surface-tint": "#0053db",
+            "on-error-container": "#93000a",
+            "secondary-container": "#dae2fd",
+            "on-error": "#ffffff",
+            "on-background": "#0b1c30",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "error-container": "#ffdad6",
+            "surface-dim": "#cbdbf5",
+            "on-tertiary-fixed-variant": "#004b73",
+            "on-primary-fixed-variant": "#003ea8",
+            "surface-container-high": "#dce9ff",
+            "surface-container-low": "#eff4ff",
+            "on-surface-variant": "#434655",
+            "surface-bright": "#f8f9ff",
+            "on-primary-fixed": "#00174b",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container": "#e5eeff",
+            "secondary-fixed": "#dae2fd",
+            "on-tertiary-fixed": "#001d31",
+            "on-secondary-fixed": "#131b2e",
+            "on-surface": "#0b1c30",
+            "primary-container": "#2563eb",
+            "outline-variant": "#c3c6d7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "primary": "#004ac6",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-secondary-fixed-variant": "#3f465c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter-desktop": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin-desktop": "2rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["Prompt", "Inter", "sans-serif"],
+            "headline-lg-mobile": ["Prompt", "Inter", "sans-serif"],
+            "label-sm": ["Prompt", "Inter", "sans-serif"],
+            "label-md": ["Prompt", "Inter", "sans-serif"],
+            "body-sm": ["Prompt", "Inter", "sans-serif"],
+            "headline-xl-mobile": ["Prompt", "Inter", "sans-serif"],
+            "body-lg": ["Prompt", "Inter", "sans-serif"],
+            "body-md": ["Prompt", "Inter", "sans-serif"],
+            "title-md": ["Prompt", "Inter", "sans-serif"],
+            "headline-md": ["Prompt", "Inter", "sans-serif"],
+            "title-lg": ["Prompt", "Inter", "sans-serif"],
+            "headline-lg": ["Prompt", "Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+    .pt-safe {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    /* Subtle scan animation for bill proof verification mock */
+    @keyframes scan {
+      0% { transform: translateY(0); opacity: 0.8; }
+      50% { transform: translateY(180px); opacity: 0.3; }
+      100% { transform: translateY(0); opacity: 0.8; }
+    }
+    .scanner-line {
+      animation: scan 2.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-primary-container selection:text-on-primary">
+<!-- LINE LIFF Top Bar: Focused transactional view (back target to /liff) -->
+<header class="sticky top-0 z-40 w-full bg-surface-container-lowest border-b border-outline-variant/30 shadow-sm pt-safe">
+<div class="max-w-md mx-auto px-4 h-14 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<a aria-label="ย้อนกลับไปหน้าหลัก" class="p-2 -ml-2 rounded-xl text-on-surface hover:bg-surface-container transition-all active:scale-95 inline-flex items-center justify-center" href="/liff">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</a>
+<div>
+<h1 class="font-title-md text-title-md text-on-surface leading-tight">รายละเอียดใบแจ้งหนี้</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span>INV-2410-205</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span>ศิริสุข เพลส</span>
+</p>
+</div>
+</div>
+<div class="flex items-center">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container font-label-md text-label-md font-semibold text-primary">
+<span class="material-symbols-outlined text-[16px]">door_front</span>
+          ห้อง 205
+        </span>
+</div>
+</div>
+</header>
+<!-- Main Content Container (Mobile-first viewport capped at 480px for LIFF fidelity) -->
+<main class="flex-1 max-w-md w-full mx-auto px-4 py-4 space-y-4 pb-32">
+<!-- Section 1: Summary Card & Overdue Alert -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm relative overflow-hidden">
+<!-- Accent status banner indicator -->
+<div class="absolute top-0 left-0 right-0 h-1.5 bg-error"></div>
+<div class="flex items-start justify-between mb-3">
+<div>
+<span class="font-label-md text-label-md text-on-surface-variant">งวดประจำเดือน</span>
+<p class="font-title-md text-title-md text-on-surface">ตุลาคม 2567</p>
+</div>
+<!-- Status Badge: Overdue (Rose pill with 6px dot) -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FEF2F2] border border-[#FCA5A5]/60 text-[#B91C1C] font-label-sm text-label-sm uppercase tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#EF4444]"></span>
+          เกินกำหนดชำระ
+        </span>
+</div>
+<!-- Main Net Balance -->
+<div class="bg-surface-container-low/70 rounded-xl p-3.5 border border-outline-variant/20 mb-3.5">
+<div class="text-on-surface-variant font-label-md text-label-md">ยอดสุทธิที่ต้องชำระ</div>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">฿4,600</span>
+<span class="font-label-md text-label-md text-on-surface-variant">บาท</span>
+</div>
+</div>
+<!-- Tenant & Due Date Meta Grid -->
+<div class="grid grid-cols-2 gap-2 text-body-sm font-body-sm pt-1">
+<div class="bg-surface-bright p-2.5 rounded-lg border border-outline-variant/20">
+<span class="text-on-surface-variant block font-label-sm text-label-sm">ผู้เช่าห้องพัก</span>
+<span class="font-medium text-on-surface truncate block">คุณอภิสิทธิ์ วงศ์สวัสดิ์</span>
+</div>
+<div class="bg-surface-bright p-2.5 rounded-lg border border-error-container/60 bg-error-container/10">
+<span class="text-error block font-label-sm text-label-sm">ครบกำหนดชำระ</span>
+<span class="font-semibold text-error block">10 ต.ค. 2567</span>
+</div>
+</div>
+<!-- Notification Warning Callout -->
+<div class="mt-3 flex items-start gap-2 bg-[#FEF2F2] p-2.5 rounded-lg text-[#93000A] font-body-sm text-body-sm border border-[#FCA5A5]/40">
+<span class="material-symbols-outlined text-[18px] text-[#EF4444] shrink-0 mt-0.5">warning</span>
+<p class="leading-snug">เกินกำหนดแล้ว กรุณาชำระยอดเงินและแนบหลักฐานการโอนเพื่อหลีกเลี่ยงค่าปรับรายวันตามสัญญาเช่า</p>
+</div>
+</div>
+<!-- Section 2: Breakdown of Charges (3 categories) -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">receipt_long</span>
+<h2 class="font-title-md text-title-md text-on-surface">รายการค่าใช้จ่าย</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 รายการ</span>
+</div>
+<div class="divide-y divide-outline-variant/20">
+<!-- 1. ค่าเช่าห้องพัก -->
+<div class="py-3 flex items-start justify-between">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary mt-0.5">
+<span class="material-symbols-outlined text-[18px]">bed</span>
+</div>
+<div>
+<p class="font-medium text-on-surface">ค่าเช่าห้องพัก</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ห้อง 205 (งวดประจำเดือน ต.ค. 2567)</p>
+</div>
+</div>
+<span class="font-semibold text-on-surface font-title-md text-title-md whitespace-nowrap">฿3,266</span>
+</div>
+<!-- 2. ค่าน้ำประปาเหมาจ่าย -->
+<div class="py-3 flex items-start justify-between">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary mt-0.5">
+<span class="material-symbols-outlined text-[18px]">water_drop</span>
+</div>
+<div>
+<p class="font-medium text-on-surface">ค่าน้ำประปาเหมาจ่าย</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">อัตราเหมาจ่ายรายเดือน 1 ห้อง</p>
+</div>
+</div>
+<span class="font-semibold text-on-surface font-title-md text-title-md whitespace-nowrap">฿150</span>
+</div>
+<!-- 3. ค่าไฟฟ้าตามมิเตอร์ -->
+<div class="py-3">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center text-primary mt-0.5">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</div>
+<div>
+<p class="font-medium text-on-surface">ค่าไฟฟ้าตามมิเตอร์</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">148 หน่วย × 8.00 บาท/หน่วย</p>
+</div>
+</div>
+<span class="font-semibold text-on-surface font-title-md text-title-md whitespace-nowrap">฿1,184</span>
+</div>
+<!-- Meter reading detail pill box -->
+<div class="mt-2.5 ml-11 bg-surface-container-low rounded-xl p-2.5 border border-outline-variant/30 text-body-sm">
+<div class="grid grid-cols-3 gap-2 text-center divide-x divide-outline-variant/30">
+<div>
+<span class="text-on-surface-variant text-[11px] block">เลขเดิม</span>
+<span class="font-medium text-on-surface">2,150</span>
+</div>
+<div>
+<span class="text-on-surface-variant text-[11px] block">เลขใหม่</span>
+<span class="font-medium text-on-surface">2,298</span>
+</div>
+<div>
+<span class="text-primary text-[11px] block font-medium">ใช้ไปสุทธิ</span>
+<span class="font-bold text-primary">148 ยูนิต</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Total Row Summary -->
+<div class="pt-3 border-t border-outline-variant/40 flex items-center justify-between mt-1">
+<span class="font-title-md text-title-md text-on-surface">ยอดรวมทั้งสิ้น</span>
+<span class="font-title-lg text-title-lg text-primary font-bold">฿4,600.00</span>
+</div>
+</div>
+<!-- Section 3: PromptPay & Bank Details -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm space-y-4">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">qr_code_scanner</span>
+<h2 class="font-title-md text-title-md text-on-surface">ชำระเงินผ่านพร้อมเพย์</h2>
+</div>
+<span class="text-[11px] px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">QR ยอดตรง</span>
+</div>
+<!-- Bank Transfer Detail Card -->
+<div class="bg-surface-container-low/70 rounded-xl p-3.5 border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-[#00A950] text-white flex items-center justify-center font-bold text-base shadow-sm">
+            KBANK
+          </div>
+<div>
+<p class="font-label-md text-label-md font-semibold text-on-surface">บจก. ศิริสุข พร้อมเพอร์รี่</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ธนาคารกสิกรไทย</p>
+<p class="font-body-md text-body-md text-on-surface font-mono font-medium tracking-wider">xxx-x-x1234-x</p>
+</div>
+</div>
+<button class="p-2 rounded-xl border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container active:scale-95 transition-all text-on-surface-variant flex flex-col items-center justify-center shrink-0" id="copy-bank-btn" onclick="copyAccountNumber()" title="คัดลอกเลขบัญชี">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span class="text-[10px] mt-0.5" id="copy-label">คัดลอก</span>
+</button>
+</div>
+<!-- PromptPay Dynamic QR Box -->
+<div class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-2xl border border-outline-variant/30">
+<!-- Thai PromptPay Logo banner mockup -->
+<div class="bg-[#003D6B] text-white px-3 py-1 rounded-t-lg text-[11px] font-bold tracking-wider flex items-center gap-1 mb-2">
+<span>PROMPTPAY</span>
+<span class="text-[9px] bg-white text-[#003D6B] px-1 rounded font-bold">พร้อมเพย์</span>
+</div>
+<div class="bg-white p-3 rounded-xl shadow-sm border border-outline-variant/30 relative">
+<!-- Real Scalable Vector Representation of PromptPay QR -->
+<svg aria-label="QR Code พร้อมเพย์ยอด 4,600 บาท" class="w-48 h-48" fill="none" role="img" viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<!-- QR Background -->
+<rect fill="white" height="200" width="200"></rect>
+<!-- Corner Finder Patterns -->
+<!-- Top Left -->
+<rect fill="#0B1C30" height="45" rx="4" width="45" x="15" y="15"></rect>
+<rect fill="white" height="29" rx="2" width="29" x="23" y="23"></rect>
+<rect fill="#0B1C30" height="17" rx="1" width="17" x="29" y="29"></rect>
+<!-- Top Right -->
+<rect fill="#0B1C30" height="45" rx="4" width="45" x="140" y="15"></rect>
+<rect fill="white" height="29" rx="2" width="29" x="148" y="23"></rect>
+<rect fill="#0B1C30" height="17" rx="1" width="17" x="154" y="29"></rect>
+<!-- Bottom Left -->
+<rect fill="#0B1C30" height="45" rx="4" width="45" x="15" y="140"></rect>
+<rect fill="white" height="29" rx="2" width="29" x="23" y="148"></rect>
+<rect fill="#0B1C30" height="17" rx="1" width="17" x="29" y="154"></rect>
+<!-- Alignment Pattern -->
+<rect fill="#0B1C30" height="25" rx="2" width="25" x="135" y="135"></rect>
+<rect fill="white" height="15" rx="1" width="15" x="140" y="140"></rect>
+<rect fill="#0B1C30" height="5" width="5" x="145" y="145"></rect>
+<!-- Simulated QR Data Blocks & Timing Marks -->
+<g fill="#0B1C30">
+<rect height="8" rx="1" width="8" x="68" y="20"></rect>
+<rect height="8" rx="1" width="8" x="80" y="20"></rect>
+<rect height="8" rx="1" width="8" x="104" y="20"></rect>
+<rect height="8" rx="1" width="8" x="120" y="20"></rect>
+<rect height="8" rx="1" width="8" x="68" y="36"></rect>
+<rect height="8" rx="1" width="16" x="92" y="36"></rect>
+<rect height="8" rx="1" width="8" x="116" y="36"></rect>
+<rect height="8" rx="1" width="24" x="68" y="52"></rect>
+<rect height="8" rx="1" width="16" x="100" y="52"></rect>
+<rect height="8" rx="1" width="8" x="20" y="68"></rect>
+<rect height="8" rx="1" width="16" x="36" y="68"></rect>
+<rect height="8" rx="1" width="8" x="60" y="68"></rect>
+<rect height="8" rx="1" width="16" x="76" y="68"></rect>
+<rect height="8" rx="1" width="8" x="100" y="68"></rect>
+<rect height="8" rx="1" width="24" x="124" y="68"></rect>
+<rect height="8" rx="1" width="8" x="156" y="68"></rect>
+<rect height="8" rx="1" width="12" x="172" y="68"></rect>
+<rect height="8" rx="1" width="16" x="20" y="84"></rect>
+<rect height="8" rx="1" width="8" x="44" y="84"></rect>
+<rect height="8" rx="1" width="24" x="60" y="84"></rect>
+<rect height="8" rx="1" width="16" x="92" y="84"></rect>
+<rect height="8" rx="1" width="8" x="116" y="84"></rect>
+<rect height="8" rx="1" width="16" x="140" y="84"></rect>
+<rect height="8" rx="1" width="16" x="164" y="84"></rect>
+<rect height="8" rx="1" width="8" x="68" y="100"></rect>
+<rect height="8" rx="1" width="16" x="84" y="100"></rect>
+<rect height="8" rx="1" width="16" x="108" y="100"></rect>
+<rect height="8" rx="1" width="24" x="132" y="100"></rect>
+<rect height="8" rx="1" width="8" x="20" y="116"></rect>
+<rect height="8" rx="1" width="16" x="36" y="116"></rect>
+<rect height="8" rx="1" width="16" x="68" y="116"></rect>
+<rect height="8" rx="1" width="8" x="92" y="116"></rect>
+<rect height="8" rx="1" width="16" x="108" y="116"></rect>
+<rect height="8" rx="1" width="16" x="148" y="116"></rect>
+<rect height="8" rx="1" width="8" x="172" y="116"></rect>
+<rect height="8" rx="1" width="16" x="68" y="140"></rect>
+<rect height="8" rx="1" width="8" x="92" y="140"></rect>
+<rect height="8" rx="1" width="16" x="108" y="140"></rect>
+<rect height="8" rx="1" width="8" x="68" y="156"></rect>
+<rect height="8" rx="1" width="24" x="84" y="156"></rect>
+<rect height="8" rx="1" width="8" x="116" y="156"></rect>
+<rect height="8" rx="1" width="24" x="68" y="172"></rect>
+<rect height="8" rx="1" width="16" x="100" y="172"></rect>
+</g>
+<!-- Center Logo Badge -->
+<rect fill="#004AC6" height="36" rx="8" width="36" x="82" y="82"></rect>
+<path d="M94 92H106M94 96H106M94 100H101M100 108L106 102" stroke="white" stroke-linecap="round" stroke-width="2.5"></path>
+</svg>
+</div>
+<p class="font-title-md text-title-md text-on-surface font-semibold mt-3">ยอดชำระ ฿4,600.00</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">สแกนได้ด้วยแอปทุกธนาคาร</p>
+<!-- Download QR Button -->
+<button class="mt-3.5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-container-lowest text-on-surface border border-outline-variant hover:bg-surface-container active:scale-95 transition-all font-label-md text-label-md shadow-sm" onclick="downloadQrMock()">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span>บันทึกภาพ QR Code ลงเครื่อง</span>
+</button>
+</div>
+</div>
+<!-- Section 4: Slip Attachment & Proof Upload -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm space-y-4">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">upload_file</span>
+<h2 class="font-title-md text-title-md text-on-surface">แนบสลิปหลักฐานโอนเงิน</h2>
+</div>
+<span class="text-error text-label-sm font-label-sm">* จำเป็น</span>
+</div>
+<!-- Upload Actions (Camera & Gallery) -->
+<div class="grid grid-cols-2 gap-3" id="upload-buttons-container">
+<!-- Button 1: Gallery -->
+<label class="cursor-pointer flex flex-col items-center justify-center p-4 rounded-xl border-2 border-dashed border-outline-variant/70 hover:border-primary bg-surface-container-low/50 hover:bg-surface-container-low transition-all text-center group active:scale-95" for="slip-file-input">
+<span class="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform">add_photo_alternate</span>
+<span class="font-label-md text-label-md font-semibold text-on-surface mt-1.5">เลือกจากอัลบั้ม</span>
+<span class="text-[11px] text-on-surface-variant">ภาพถ่ายหรือไฟล์ JPG/PNG</span>
+<input accept="image/*" class="hidden" id="slip-file-input" onchange="handleFileSelect(event)" type="file"/>
+</label>
+<!-- Button 2: Camera Capture -->
+<label class="cursor-pointer flex flex-col items-center justify-center p-4 rounded-xl border-2 border-dashed border-outline-variant/70 hover:border-primary bg-surface-container-low/50 hover:bg-surface-container-low transition-all text-center group active:scale-95" for="slip-camera-input">
+<span class="material-symbols-outlined text-[28px] text-primary group-hover:scale-110 transition-transform">photo_camera</span>
+<span class="font-label-md text-label-md font-semibold text-on-surface mt-1.5">ถ่ายภาพสลิป</span>
+<span class="text-[11px] text-on-surface-variant">เปิดกล้องมือถือ</span>
+<input accept="image/*" capture="environment" class="hidden" id="slip-camera-input" onchange="handleFileSelect(event)" type="file"/>
+</label>
+</div>
+<!-- Preview State Card (Hidden by default, toggled via JS) -->
+<div class="hidden" id="slip-preview-container">
+<div class="bg-surface-container-low rounded-xl p-3 border border-outline-variant/50 relative overflow-hidden">
+<div class="flex items-start gap-3">
+<div class="w-20 h-24 bg-surface-container-lowest rounded-lg border border-outline-variant/40 overflow-hidden relative shrink-0 flex items-center justify-center shadow-sm">
+<img class="object-cover w-full h-full" data-alt="A realistic high-definition preview of a mobile bank transfer slip from a Thai commercial bank displaying transaction details with a subtle teal and blue tone to match the sleek SaaS student housing application palette." id="preview-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKTPftQnDToiWBJ6sFgsd-a0PanKcoRLbH-HR2qk_6wa3_4yheZdSa87WULEG1LeHArTCT1OOHCd-THGAYAh2clGWTLp1PdRUtZ5e8_OF2VFOs2aU0-liBnB0WOyY3eu28dlwy8xf-GsM_gTed3hxOidHcaT0_OFteQJMILwyTRRMWci4rKzihLt0CZYtcvvM5Oblbt-Iv1riVaVG40CGUb_fWYMaQrboeQA3T8lElX9E7NVqbhqPSuw"/>
+<!-- Animated verification scanning indicator line -->
+<div class="absolute inset-x-0 h-0.5 bg-primary scanner-line shadow-sm"></div>
+</div>
+<div class="flex-1 min-w-0 pr-1">
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  แนบไฟล์สำเร็จ
+                </span>
+</div>
+<p class="font-label-md text-label-md font-semibold text-on-surface truncate mt-1" id="slip-file-name">kbank_slip_2410205.jpg</p>
+<p class="text-[11px] text-on-surface-variant">ขนาด 1.4 MB • พร้อมส่งตรวจ</p>
+<!-- Actions on current slip -->
+<div class="flex items-center gap-2 mt-2.5">
+<button class="text-primary hover:text-primary-container font-label-sm text-label-sm font-semibold inline-flex items-center gap-0.5" onclick="triggerReupload()" type="button">
+<span class="material-symbols-outlined text-[15px]">refresh</span>
+                  เปลี่ยนรูป
+                </button>
+<span class="text-outline-variant">|</span>
+<button class="text-error hover:text-on-error-container font-label-sm text-label-sm inline-flex items-center gap-0.5" onclick="removeSlip()" type="button">
+<span class="material-symbols-outlined text-[15px]">delete</span>
+                  ยกเลิก
+                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Automated Slip Verification Note -->
+<div class="flex items-start gap-2 text-on-surface-variant font-body-sm text-body-sm bg-surface-container-low/50 p-3 rounded-xl border border-outline-variant/20">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5">verified_user</span>
+<div class="space-y-0.5">
+<p class="font-medium text-on-surface">ระบบตรวจสอบสลิปอัตโนมัติ (Slip Verification)</p>
+<p class="text-[12px] leading-relaxed">ระบบจะอ่านรหัสอ้างอิง QR เพื่อตัดยอดบิลให้อัตโนมัติทันที กรุณาแนบสลิปที่เห็น QR Code และข้อมูลการโอนครบถ้วนชัดเจน</p>
+</div>
+</div>
+</div>
+<!-- Section 5: Timeline of Submission Flow -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm">
+<h3 class="font-title-md text-title-md text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">timeline</span>
+        ขั้นตอนการชำระเงิน
+      </h3>
+<div class="relative pl-6 space-y-3.5 before:content-[''] before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant/40">
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">1</span>
+<p class="font-label-md text-label-md font-medium text-on-surface">สแกนชำระเงิน ฿4,600</p>
+<p class="text-[11px] text-on-surface-variant">บันทึก QR เพื่อเปิดในแอปธนาคาร</p>
+</div>
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">2</span>
+<p class="font-label-md text-label-md font-medium text-on-surface">แนบภาพสลิปที่โอน</p>
+<p class="text-[11px] text-on-surface-variant">อัปโหลดจากอัลบั้มหรือถ่ายภาพ</p>
+</div>
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center text-[10px] font-bold border border-outline-variant">3</span>
+<p class="font-label-md text-label-md font-medium text-on-surface-variant">ระบบตรวจสอบและออกใบเสร็จ</p>
+<p class="text-[11px] text-on-surface-variant">อัปเดตสถานะเป็น "ชำระแล้ว" ภายใน 1-3 นาที</p>
+</div>
+</div>
+</div>
+<!-- Dorm Contact Info Box for Assistance -->
+<div class="text-center py-2 text-on-surface-variant text-body-sm">
+<p>มีข้อสงสัยเกี่ยวกับยอดบิล? ติดต่อสำนักงานศิริสุข เพลส</p>
+<a class="text-primary font-semibold inline-flex items-center gap-1 mt-0.5 hover:underline" href="tel:021234567">
+<span class="material-symbols-outlined text-[16px]">call</span> 02-123-4567 (08:30 - 18:00 น.)
+      </a>
+</div>
+</main>
+<!-- Sticky Bottom Fixed Bar: Primary Submission Action Driver (Safe Area Aware) -->
+<aside class="fixed bottom-0 inset-x-0 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/40 z-50 pb-safe shadow-[0_-4px_12px_rgba(15,23,42,0.06)]">
+<div class="max-w-md mx-auto px-4 py-3 flex items-center gap-3">
+<div class="flex-1 min-w-0">
+<span class="text-[11px] text-on-surface-variant block">ยอดที่ต้องชำระ</span>
+<div class="flex items-baseline gap-1">
+<span class="font-title-lg text-title-lg font-bold text-error">฿4,600</span>
+<span class="text-[11px] text-on-surface-variant">(เกินกำหนด)</span>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="flex-[1.6] h-12 bg-primary-container hover:bg-[#1D4ED8] active:bg-[#1E40AF] text-on-primary rounded-xl font-label-md text-label-md font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none" id="submit-slip-btn" onclick="submitSlipHandler()">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span>ส่งสลิปเพื่อตรวจสอบ</span>
+</button>
+</div>
+</aside>
+<!-- Toast Notification Container -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-inverse-surface text-inverse-on-surface px-4 py-2.5 rounded-xl text-body-sm shadow-xl flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300" id="toast">
+<span class="material-symbols-outlined text-inverse-primary text-[18px]" id="toast-icon">check_circle</span>
+<span id="toast-msg">คัดลอกเลขบัญชีแล้ว</span>
+</div>
+<!-- JavaScript for LIFF Micro-interactions & Mock Slip Handler -->
+<script>
+    // Copy Account Number
+    function copyAccountNumber() {
+      const accNumber = "xxx-x-x1234-x"; // Masked standard demo
+      navigator.clipboard?.writeText("0987654321").catch(() => {});
+      
+      const copyLabel = document.getElementById('copy-label');
+      copyLabel.innerText = 'คัดลอกแล้ว';
+      copyLabel.classList.add('text-primary', 'font-semibold');
+      showToast('คัดลอกเลขบัญชีสำเร็จแล้ว', 'check_circle');
+
+      setTimeout(() => {
+        copyLabel.innerText = 'คัดลอก';
+        copyLabel.classList.remove('text-primary', 'font-semibold');
+      }, 2500);
+    }
+
+    // QR Download Simulation
+    function downloadQrMock() {
+      showToast('บันทึกภาพ QR Code ลงเครื่องแล้ว', 'download_done');
+    }
+
+    // File Selection Handler
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const previewContainer = document.getElementById('slip-preview-container');
+      const uploadButtons = document.getElementById('upload-buttons-container');
+      const fileNameEl = document.getElementById('slip-file-name');
+      const previewImg = document.getElementById('preview-img');
+
+      // Update filename
+      fileNameEl.innerText = file.name || 'slip_payment_room205.jpg';
+
+      // Read & display image preview
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+
+      // Toggle views
+      previewContainer.classList.remove('hidden');
+      uploadButtons.classList.add('hidden');
+      showToast('แนบรูปสลิปเรียบร้อยแล้ว', 'attach_file');
+    }
+
+    function removeSlip() {
+      document.getElementById('slip-file-input').value = '';
+      document.getElementById('slip-camera-input').value = '';
+      document.getElementById('slip-preview-container').classList.add('hidden');
+      document.getElementById('upload-buttons-container').classList.remove('hidden');
+      showToast('ยกเลิกไฟล์สลิปแล้ว', 'delete');
+    }
+
+    function triggerReupload() {
+      document.getElementById('slip-file-input').click();
+    }
+
+    // Submit Slip Action
+    function submitSlipHandler() {
+      const previewContainer = document.getElementById('slip-preview-container');
+      const isSlipAttached = !previewContainer.classList.contains('hidden');
+      const submitBtn = document.getElementById('submit-slip-btn');
+
+      if (!isSlipAttached) {
+        showToast('กรุณาแนบภาพสลิปหลักฐานโอนเงินก่อนส่ง', 'warning');
+        // Gentle highlight scroll to upload box
+        previewContainer.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      // Simulate loading state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <span class="inline-block animate-spin material-symbols-outlined text-[18px]">progress_activity</span>
+        <span>กำลังตรวจสอบสลิป...</span>
+      `;
+
+      setTimeout(() => {
+        submitBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[20px] text-white">check</span>
+          <span>ส่งข้อมูลเรียบร้อย</span>
+        `;
+        submitBtn.classList.remove('bg-primary-container');
+        submitBtn.classList.add('bg-emerald-600');
+        showToast('ส่งสลิปเพื่อตรวจสอบสำเร็จแล้ว ระบบกำลังประมวลผล', 'verified');
+      }, 1800);
+    }
+
+    // Helper Toast
+    function showToast(message, iconName = 'info') {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastMsg.innerText = message;
+      toastIcon.innerText = iconName;
+
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2800);
+    }
+  </script>
+</body></html>

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>จัดการงานซ่อมบำรุง - ศิริสุข เพลส</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#e7f2ff",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary": "#004ac6",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "on-primary-container": "#eeefff",
+            "on-tertiary-fixed": "#001d31",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#5c647a",
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-surface": "#213145",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#e5eeff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2563eb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#00174b",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "secondary-container": "#dae2fd",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary-container": "#0073ae",
+            "surface": "#f8f9ff",
+            "outline": "#737686",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-primary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-tertiary-fixed-variant": "#004b73"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "label-sm": ["Inter"],
+            "title-lg": ["Inter"],
+            "title-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600"}],
+            "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "label-sm": ["11px", {"lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600"}],
+            "title-lg": ["18px", {"lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+            "title-md": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+            "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "fontWeight": "400"}],
+            "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+            "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "headline-md": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased h-full flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- SIDEBAR NAVIGATION (Anchored from JSON) -->
+<aside class="fixed top-0 left-0 h-full w-[260px] z-40 bg-on-background dark:bg-inverse-surface border-r border-on-surface-variant/20 dark:border-outline/20 flex flex-col justify-between p-space-md hidden lg:flex select-none">
+<div class="flex flex-col gap-6">
+<!-- Brand Header -->
+<div class="px-2 pt-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-bold text-lg shadow-sm">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">apartment</span>
+</div>
+<div>
+<h1 class="text-title-lg font-title-lg font-bold text-surface dark:text-surface-bright leading-tight">ศิริสุข เพลส</h1>
+<p class="text-body-sm font-body-sm text-outline-variant flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-[#10b981] inline-block animate-pulse"></span>
+              LINE OA เชื่อมต่อแล้ว (19 ยูนิต)
+            </p>
+</div>
+</div>
+</div>
+<!-- Quick Action CTA -->
+<div class="px-1">
+<button class="w-full bg-[#1e293b] hover:bg-[#334155] text-surface font-title-md text-title-md py-2.5 px-3 rounded-xl border border-white/10 flex items-center justify-center gap-2 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm">person_add</span>
+<span>เพิ่มผู้เช่าใหม่</span>
+</button>
+</div>
+<!-- Nav Items -->
+<nav class="flex flex-col gap-1">
+<!-- 1. ภาพรวม -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-md font-label-md">ภาพรวม</span>
+</a>
+<!-- 2. ห้องพักและสัญญา -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">apartment</span>
+<span class="text-label-md font-label-md">ห้องพักและสัญญา</span>
+</a>
+<!-- 3. จดมิเตอร์ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">speed</span>
+<span class="text-label-md font-label-md">จดมิเตอร์</span>
+</a>
+<!-- 4. บิลและใบแจ้งหนี้ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-label-md font-label-md">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- 5. ตรวจสลิป LINE -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">receipt</span>
+<span class="text-label-md font-label-md">ตรวจสลิป LINE</span>
+</a>
+<!-- 6. งานซ่อมบำรุง (ACTIVE MATCHING DESTINATION) -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary-container/20 text-tertiary-fixed font-title-md border-l-4 border-primary-container dark:border-inverse-primary active:scale-[0.98]" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">handyman</span>
+<span class="text-label-md font-label-md font-semibold text-white">งานซ่อมบำรุง</span>
+</div>
+<!-- Red/Pink Badge with "2 ใหม่" -->
+<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-[#fee2e2] text-[#dc2626] border border-[#fca5a5]/40 animate-pulse">
+            2 ใหม่
+          </span>
+</a>
+<!-- 7. ตั้งค่าระบบ -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md font-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer -->
+<div class="pt-4 border-t border-on-surface-variant/20 flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-outline-variant">
+<span class="material-symbols-outlined text-xl">account_circle</span>
+<div class="truncate">
+<p class="text-label-md font-label-md text-surface font-medium truncate">ผู้จัดการ สมศักดิ์</p>
+<p class="text-body-sm font-body-sm text-outline-variant truncate">ผู้ดูแลระบบอาคาร</p>
+</div>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-outline-variant hover:text-[#f87171] hover:bg-error-container/20 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-label-md font-label-md">ออกจากระบบ</span>
+</a>
+</div>
+</aside>
+<!-- TOP NAVBAR (Anchored from JSON) -->
+<header class="sticky top-0 right-0 z-30 w-full lg:pl-[260px] bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant/40 dark:border-outline/20 shadow-sm">
+<div class="flex justify-between items-center h-16 px-4 md:px-space-xl max-w-full">
+<div class="flex items-center gap-4">
+<!-- Mobile Drawer Toggle -->
+<button class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:bg-surface-container">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div>
+<span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface tracking-tight">ศิริสุข เพลส (Sirisuk Place)</span>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="font-title-md border-b-2 border-primary pb-0.5 text-primary">มีนาคม 2568</span>
+<span>•</span>
+<span class="hover:text-on-surface transition-colors cursor-pointer">รอบบิลปัจจุบัน</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<!-- Global Search -->
+<div class="relative hidden sm:block w-52 md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg">search</span>
+<input class="w-full h-10 pl-9 pr-3 text-body-sm font-body-sm bg-surface rounded-xl border border-outline-variant/50 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 text-on-surface outline-none transition-all" placeholder="ค้นหาเลขห้อง, ชื่อผู้เช่า..." type="text"/>
+</div>
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-150 relative" title="การแจ้งเตือน">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-150" title="รีเฟรชข้อมูล">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+<button class="hidden sm:block p-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-150" title="ช่วยเหลือ">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="h-6 w-px bg-outline-variant/50 mx-1 hidden sm:block"></div>
+<!-- Primary & Secondary Action Cluster -->
+<button class="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-sm">sync</span>
+<span>ซิงค์ข้อมูล LINE</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-primary-container hover:bg-[#1d4ed8] text-white font-title-md text-title-md shadow-sm active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-sm">post_add</span>
+<span class="hidden sm:inline">สร้างบิลประจำเดือน</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN VIEWPORT CANVAS -->
+<main class="lg:pl-[260px] flex-1 flex flex-col w-full pb-16">
+<div class="max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+<!-- HEADER ACTION BAR: DOCUMENT_4 Maintenance Specification -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-outline-variant/30">
+<div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-secondary mb-1">
+<span>หน้าหลัก</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-medium">จัดการงานซ่อมบำรุง</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight font-bold">
+            จัดการงานซ่อมบำรุง
+          </h1>
+<p class="text-body-md font-body-md text-on-surface-variant mt-0.5">
+            ติดตามงานแจ้งซ่อมจากผู้เช่า คัดกรองงานเร่งด่วน และอัปเดตสถานะการแก้ไข
+          </p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-on-surface font-title-md text-title-md shadow-sm transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg">download</span>
+<span>ส่งออกรายงาน</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-container hover:bg-[#1d4ed8] text-white font-title-md text-title-md shadow-sm transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+<span>+ บันทึกงานซ่อมใหม่</span>
+</button>
+</div>
+</div>
+<!-- STATUS SUMMARY CARDS (5 State Metrics from Specification) -->
+<section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
+<!-- 1. รอรับเรื่อง (Pending) -->
+<div class="bg-surface-container-lowest border-2 border-[#fca5a5] rounded-2xl p-4 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-[#991b1b] font-semibold flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-[#ef4444] animate-ping"></span>
+              รอรับเรื่อง (Pending)
+            </span>
+<span class="material-symbols-outlined text-[#ef4444] text-xl">notification_important</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-headline-xl font-headline-xl font-bold text-[#b91c1c]">2</span>
+<span class="text-body-sm font-body-sm text-[#b91c1c] font-medium bg-[#fee2e2] px-2 py-0.5 rounded-full">ด่วนที่สุด</span>
+</div>
+<p class="text-body-sm font-body-sm text-secondary mt-1">ต้องมอบหมายงานด่วน</p>
+</div>
+<!-- 2. กำลังดำเนินการ (In Progress) -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-primary-container transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">
+              กำลังดำเนินการ (In Progress)
+            </span>
+<span class="material-symbols-outlined text-primary text-xl">engineering</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-headline-xl font-headline-xl font-bold text-on-surface">1</span>
+<span class="text-body-sm font-body-sm text-primary font-medium bg-primary-fixed/30 px-2 py-0.5 rounded-full">ช่างกำลังเข้า</span>
+</div>
+<p class="text-body-sm font-body-sm text-secondary mt-1">นัดหมายเรียบร้อย</p>
+</div>
+<!-- 3. รอดำเนินการ/รออะไหล่ (Waiting) -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-[#f59e0b] transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">
+              รออะไหล่ (Waiting)
+            </span>
+<span class="material-symbols-outlined text-[#f59e0b] text-xl">hourglass_top</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-headline-xl font-headline-xl font-bold text-on-surface">1</span>
+<span class="text-body-sm font-body-sm text-[#b45309] font-medium bg-[#fef3c7] px-2 py-0.5 rounded-full">สั่งอะไหล่แล้ว</span>
+</div>
+<p class="text-body-sm font-body-sm text-secondary mt-1">คาดส่งมอบพรุ่งนี้</p>
+</div>
+<!-- 4. ซ่อมเสร็จรอยืนยัน (Done) -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-[#10b981] transition-colors">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">
+              ซ่อมเสร็จรอยืนยัน (Done)
+            </span>
+<span class="material-symbols-outlined text-[#10b981] text-xl">task_alt</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-headline-xl font-headline-xl font-bold text-on-surface">1</span>
+<span class="text-body-sm font-body-sm text-[#047857] font-medium bg-[#d1fae5] px-2 py-0.5 rounded-full">รอผู้เช่าตรวจ</span>
+</div>
+<p class="text-body-sm font-body-sm text-secondary mt-1">ยังไม่ปิดงานทางบัญชี</p>
+</div>
+<!-- 5. ปิดงานแล้ว (Closed) -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between hover:border-outline transition-colors col-span-2 sm:col-span-1">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">
+              ปิดงานแล้ว (Closed)
+            </span>
+<span class="material-symbols-outlined text-outline text-xl">inventory</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-headline-xl font-headline-xl font-bold text-secondary">12</span>
+<span class="text-body-sm font-body-sm text-secondary font-medium bg-surface-container px-2 py-0.5 rounded-full">เดือนนี้</span>
+</div>
+<p class="text-body-sm font-body-sm text-secondary mt-1">สรุปค่าใช้จ่ายแล้ว</p>
+</div>
+</section>
+<!-- FILTER CONTROLS BAR -->
+<section class="bg-surface-container-lowest border border-outline-variant/60 rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+<!-- Search & Quick Inputs -->
+<div class="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-3">
+<!-- Room Search -->
+<div class="relative flex-1 sm:max-w-xs">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg">meeting_room</span>
+<input class="w-full h-10 pl-9 pr-3 text-body-sm font-body-sm bg-surface rounded-xl border border-outline-variant/60 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 text-on-surface outline-none" placeholder="ค้นหาเลขห้อง เช่น 101, 202..." type="text" value="202"/>
+</div>
+<!-- Category Filter -->
+<div class="relative sm:w-44">
+<select class="w-full h-10 px-3 pr-8 text-body-sm font-body-sm bg-surface rounded-xl border border-outline-variant/60 focus:border-primary-container text-on-surface outline-none appearance-none">
+<option value="">ทุกหมวดหมู่งาน</option>
+<option selected="" value="air">แอร์/เครื่องปรับอากาศ</option>
+<option value="plumb">ประปา/สุขภัณฑ์</option>
+<option value="elec">ไฟฟ้า</option>
+<option value="struct">โครงสร้าง/ประตู</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-outline pointer-events-none text-lg">expand_more</span>
+</div>
+<!-- Priority Filter -->
+<div class="relative sm:w-40">
+<select class="w-full h-10 px-3 pr-8 text-body-sm font-body-sm bg-surface rounded-xl border border-outline-variant/60 focus:border-primary-container text-on-surface outline-none appearance-none">
+<option value="">ทุกความเร่งด่วน</option>
+<option selected="" value="urgent">ด่วนมาก (แดง)</option>
+<option value="medium">ปานกลาง</option>
+<option value="normal">ทั่วไป</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-outline pointer-events-none text-lg">expand_more</span>
+</div>
+<!-- Status Filter -->
+<div class="relative sm:w-44">
+<select class="w-full h-10 px-3 pr-8 text-body-sm font-body-sm bg-surface rounded-xl border border-outline-variant/60 focus:border-primary-container text-on-surface outline-none appearance-none">
+<option value="">ทุกสถานะงาน</option>
+<option selected="" value="pending">รอรับเรื่อง (2)</option>
+<option value="progress">กำลังดำเนินการ (1)</option>
+<option value="waiting">รออะไหล่ (1)</option>
+<option value="done">ซ่อมเสร็จรอยืนยัน (1)</option>
+<option value="closed">ปิดงานแล้ว</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-2.5 text-outline pointer-events-none text-lg">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-2 border-t lg:border-t-0 pt-3 lg:pt-0">
+<span class="text-body-sm font-body-sm text-secondary">ผลลัพธ์: <strong>3 งานที่เปิดอยู่</strong> จาก 19 ยูนิต</span>
+<button class="p-2 rounded-xl text-secondary hover:bg-surface-container transition-colors" title="ล้างตัวกรอง">
+<span class="material-symbols-outlined text-lg">filter_alt_off</span>
+</button>
+</div>
+</section>
+<!-- MAIN WORKSPACE: Split View (Table/Cards + Slide-over Drawer) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT WORKLIST (lg:col-span-7) -->
+<div class="lg:col-span-7 flex flex-col gap-4">
+<!-- ITEM 1: Active Selected Card (Room 202) -->
+<div class="bg-surface-container-lowest border-2 border-primary-container rounded-2xl p-5 shadow-md relative overflow-hidden transition-all">
+<!-- Active Indicator Pill Ribbon -->
+<div class="absolute top-0 right-0 bg-primary-container text-white px-3 py-1 rounded-bl-xl text-label-sm font-label-sm uppercase flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-xs">visibility</span>
+              กำลังดูรายละเอียด
+            </div>
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+<div class="flex items-start gap-3.5">
+<!-- Room Badge Number -->
+<div class="w-14 h-14 rounded-2xl bg-[#0b1c30] text-white flex flex-col items-center justify-center font-bold shadow-sm">
+<span class="text-[10px] text-outline-variant uppercase">ห้อง</span>
+<span class="text-xl leading-none">202</span>
+</div>
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">แอร์มีน้ำหยดหนักมาก</h3>
+<!-- Category Pill -->
+<span class="text-label-sm font-label-sm px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface font-medium">
+                      แอร์/เครื่องปรับอากาศ
+                    </span>
+</div>
+<!-- Priority and Reporter -->
+<div class="flex items-center gap-3 mt-1.5 text-body-sm font-body-sm text-secondary">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#fef2f2] text-[#b91c1c] font-semibold border border-[#fca5a5]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#ef4444]"></span>
+                      ด่วนมาก
+                    </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-[#06c755]" style="font-variation-settings: 'FILL' 1;">chat</span>
+                      ผู้แจ้ง: คุณชาตรี (LINE)
+                    </span>
+<span>•</span>
+<span class="text-on-surface-variant font-medium">วันนี้ 11:30 น.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Issue Summary snippet -->
+<div class="mt-4 p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 text-body-sm font-body-sm text-on-surface">
+              "น้ำหยดลงที่นอนด้านล่างต่อเนื่องตั้งแต่เปิดแอร์ตอนสาย ต้องเอาถังมารองแล้ว เกรงจะช็อตเข้าปลั๊กไฟครับ"
+            </div>
+<!-- Card Bottom Bar & Actions -->
+<div class="mt-4 pt-3.5 border-t border-outline-variant/30 flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-2 text-label-md font-label-md text-secondary">
+<span class="material-symbols-outlined text-sm text-outline">attachment</span>
+<span>แนบรูป 2 ใบ</span>
+<span class="text-outline">•</span>
+<span class="text-[#b91c1c] font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#ef4444]"></span>
+                  รอรับเรื่อง (Pending)
+                </span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 rounded-xl bg-primary-container hover:bg-[#1d4ed8] text-white font-title-md text-title-md shadow-sm transition-all flex items-center gap-1.5 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm">assignment_ind</span>
+<span>รับเรื่องและมอบหมาย</span>
+</button>
+</div>
+</div>
+</div>
+<!-- ITEM 2: Room 104 (Washbasin Tap Leak) -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary-container/60 rounded-2xl p-5 shadow-sm transition-all">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+<div class="flex items-start gap-3.5">
+<div class="w-14 h-14 rounded-2xl bg-surface-container text-on-surface flex flex-col items-center justify-center font-bold">
+<span class="text-[10px] text-secondary uppercase">ห้อง</span>
+<span class="text-xl leading-none">104</span>
+</div>
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">ก๊อกน้ำอ่างล้างหน้ารั่วซึม</h3>
+<span class="text-label-sm font-label-sm px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface font-medium">
+                      ประปา/สุขภัณฑ์
+                    </span>
+</div>
+<div class="flex items-center gap-3 mt-1.5 text-body-sm font-body-sm text-secondary">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#fffbeb] text-[#b45309] font-semibold border border-[#fde68a]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#f59e0b]"></span>
+                      ปานกลาง
+                    </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-[#06c755]" style="font-variation-settings: 'FILL' 1;">chat</span>
+                      ผู้แจ้ง: คุณศิริพร (LINE)
+                    </span>
+<span>•</span>
+<span>เมื่อวาน 18:45 น.</span>
+</div>
+</div>
+</div>
+<!-- Status Badge -->
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-label-sm font-label-sm bg-[#fee2e2] text-[#b91c1c] font-semibold self-start sm:self-auto">
+<span class="w-1.5 h-1.5 rounded-full bg-[#ef4444]"></span>
+                รอรับเรื่อง
+              </span>
+</div>
+<p class="mt-3 text-body-sm font-body-sm text-on-surface-variant line-clamp-1">
+              "ปิดก๊อกสนิทแล้วยังมีน้ำหยดติ๋งๆ ตลอดทั้งคืน คาดว่าลูกยางหรือเกลียวข้อต่อจะเสื่อมครับ"
+            </p>
+<div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">ช่างแนะนำ: ลุงวิทย์ (ช่างประปาประจำ)</span>
+<button class="px-3 py-1.5 rounded-xl border border-outline-variant bg-surface hover:bg-surface-container text-on-surface font-title-md text-title-md transition-colors">
+                ดูข้อมูล
+              </button>
+</div>
+</div>
+<!-- ITEM 3: Room 302 (Balcony Light Bulb Out) -->
+<div class="bg-surface-container-lowest border border-outline-variant/60 hover:border-primary-container/60 rounded-2xl p-5 shadow-sm transition-all">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+<div class="flex items-start gap-3.5">
+<div class="w-14 h-14 rounded-2xl bg-surface-container text-on-surface flex flex-col items-center justify-center font-bold">
+<span class="text-[10px] text-secondary uppercase">ห้อง</span>
+<span class="text-xl leading-none">302</span>
+</div>
+<div>
+<div class="flex items-center gap-2 flex-wrap">
+<h3 class="text-title-lg font-title-lg font-bold text-on-surface">หลอดไฟระเบียงดับ</h3>
+<span class="text-label-sm font-label-sm px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface font-medium">
+                      ไฟฟ้า
+                    </span>
+</div>
+<div class="flex items-center gap-3 mt-1.5 text-body-sm font-body-sm text-secondary">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-secondary font-medium">
+                      ทั่วไป
+                    </span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-[#06c755]" style="font-variation-settings: 'FILL' 1;">chat</span>
+                      ผู้แจ้ง: คุณธนภัทร (LINE)
+                    </span>
+<span>•</span>
+<span>2 วันก่อน</span>
+</div>
+</div>
+</div>
+<!-- Status Badge: In Progress -->
+<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed/40 text-primary font-semibold self-start sm:self-auto">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                กำลังดำเนินการ
+              </span>
+</div>
+<div class="mt-3 flex items-center gap-2 text-body-sm font-body-sm text-primary bg-primary-fixed/15 p-2 rounded-xl">
+<span class="material-symbols-outlined text-sm">calendar_clock</span>
+<span>นัดหมายช่าง: ช่างนพ เข้าพรุ่งนี้ 10:00 น. (ผู้เช่ายินยอมให้ไขกุญแจเข้า)</span>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">รออะไหล่: หลอดไฟ LED ขั้ว E27 Daylight</span>
+<button class="px-3 py-1.5 rounded-xl border border-outline-variant bg-surface hover:bg-surface-container text-on-surface font-title-md text-title-md transition-colors">
+                ดูข้อมูล
+              </button>
+</div>
+</div>
+<!-- Recently Resolved Section (Blueprint done vs closed distinction) -->
+<div class="bg-surface-container-low/60 rounded-2xl p-4 border border-outline-variant/40 mt-2">
+<div class="flex items-center justify-between mb-3">
+<h4 class="text-title-md font-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">history</span>
+                สถานะล่าสุดอื่นๆ ตามกติกา Blueprint
+              </h4>
+<span class="text-body-sm font-body-sm text-secondary">แยก Done (รอยืนยัน) และ Closed (ปิดบัญชี)</span>
+</div>
+<div class="space-y-2">
+<!-- Item with 'Done' Status -->
+<div class="bg-surface-container-lowest p-3 rounded-xl border border-outline-variant/40 flex items-center justify-between text-body-sm font-body-sm">
+<div class="flex items-center gap-2.5">
+<span class="w-7 h-7 rounded-lg bg-surface-container text-on-surface font-bold flex items-center justify-center text-xs">205</span>
+<span class="font-medium text-on-surface">ซ่อมมือจับประตูลูกบิดหลวม</span>
+<span class="text-secondary">(ช่างเสร็จงานแล้ว 14:00 น.)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-[#ecfdf5] text-[#047857] font-medium border border-[#a7f3d0] text-label-sm">
+                    Done (รอผู้เช่ายืนยันปิดงาน)
+                  </span>
+<button class="text-primary hover:underline text-xs font-medium">ตรวจสลิปค่าอะไหล่</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT SLIDE-OVER WORKSPACE DRAWER (lg:col-span-5) -->
+<!-- Details: #MNT-2410-02 (Room 202) -->
+<div class="lg:col-span-5 bg-surface-container-lowest border border-outline-variant/70 rounded-2xl shadow-lg p-5 flex flex-col gap-5 sticky top-24">
+<!-- Drawer Header -->
+<div class="flex items-start justify-between pb-4 border-b border-outline-variant/40">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm uppercase bg-[#fee2e2] text-[#b91c1c] font-bold px-2 py-0.5 rounded-md">
+                  #MNT-2410-02
+                </span>
+<span class="text-label-sm font-label-sm text-secondary">แจ้งผ่าน LINE OA</span>
+</div>
+<h2 class="text-headline-md font-headline-md font-bold text-on-surface mt-1">
+                รายละเอียดงานแจ้งซ่อม (ห้อง 202)
+              </h2>
+</div>
+<button class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Tenant Contact Card -->
+<div class="bg-surface p-3.5 rounded-xl border border-outline-variant/40 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#2563eb]/10 text-primary flex items-center justify-center font-bold">
+                ช
+              </div>
+<div>
+<p class="text-title-md font-title-md font-semibold text-on-surface">นายชาตรี กุลวิเศษ (ห้อง 202)</p>
+<p class="text-body-sm font-body-sm text-secondary">โทร: 081-456-7890 • สัญญาหมด: 31 พ.ค. 2568</p>
+</div>
+</div>
+<a class="p-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary transition-colors" href="tel:0814567890" title="โทรหาผู้เช่า">
+<span class="material-symbols-outlined text-lg">call</span>
+</a>
+</div>
+<!-- Problem Photos Attached from LINE (2 photos required) -->
+<div>
+<label class="text-label-md font-label-md font-semibold text-on-surface flex items-center justify-between mb-2">
+<span>ภาพถ่ายความเสียหายที่ผู้เช่าแนบผ่าน LINE (2 ภาพ)</span>
+<span class="text-body-sm font-body-sm text-primary font-normal cursor-pointer hover:underline">ดูรูปขนาดเต็ม</span>
+</label>
+<div class="grid grid-cols-2 gap-3">
+<!-- Image 1 -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant/50 aspect-video bg-slate-100 shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" data-alt="Modern indoor photograph of an air conditioning wall unit leaking water profusely inside a bright, modern studio apartment bedroom. Soft daytime sunlight filters through clean roller blinds, showing water droplets falling from the air conditioner seam onto a blue towel spread over light wood flooring. Clean corporate SaaS aesthetic with crisp neutral tones and cool slate tints." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMLtxCWzOOIAv_O5UmsEUOAdbYFrB5_ozFinrzdZffjsPZIn5aDqaYjNOU_cKmyNE6rdqMIf-9QPwz_jiLZfJLR-yJwCr8fT0ykJv64L06mo2CVGVgf6B7vvdBb0hXT8fR7psYIWcJmJMR7njbfdJheSOvisQ4IrxKadOOXr56-cy71Zu5oGs2Kw11COG1it7ujn7yLQ7Xk0w0SsR5W1f08nQz9ohf2NdVsXOxRo2LQT4lt_qFfVjs8A"/>
+<div class="absolute bottom-1.5 left-1.5 bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px]">
+                  รูปที่ 1: รอยน้ำรั่วหน้าเครื่อง
+                </div>
+</div>
+<!-- Image 2 -->
+<div class="relative group rounded-xl overflow-hidden border border-outline-variant/50 aspect-video bg-slate-100 shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" data-alt="Close-up shot of an air conditioning condensation tray and drain pipe leaking into a small plastic bucket placed on a tiled floor of an apartment. Minimalist Scandinavian student housing interior with neutral white and cool slate colors, showing water stains on the skirting board. High contrast, sharp detail, clean commercial presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMvYkaPpCcy20ZAtRxsStdGiG5xSJ7fc-AQIYFxeOzhgZijpPeiwTT4dprBOcUOp0QE6eifLXps1kFMz4vVfr0QrhnIjP1s4gg7uUxj1I2A-JKK-NWCpGDzdURE8fiTkMIFKtKGfeH3U3KXulhv1OgTEJQTXg4o10AcNC43YvvW3MBE9HSN_Pn8Mx_kNVELLg8RL1r9rxvXnI8G85SPeQrquojdR8alysZ-LDu0qyqPu8f_YZh6fUX7g"/>
+<div class="absolute bottom-1.5 left-1.5 bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px]">
+                  รูปที่ 2: จุดน้ำหยดลงพื้น
+                </div>
+</div>
+</div>
+</div>
+<!-- WORKFLOW STEP BUTTONS: [รับเรื่อง] -> [เริ่มดำเนินการ] -> [บันทึกรออะไหล่] -> [ซ่อมเสร็จ] -->
+<div>
+<label class="text-label-md font-label-md font-semibold text-on-surface block mb-2">
+              ขั้นตอนการปฏิบัติงาน (Workflow Steps)
+            </label>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 bg-surface rounded-xl border border-outline-variant/50">
+<!-- Step 1: รับเรื่อง (Current Action) -->
+<button class="py-2 px-1 text-center rounded-lg bg-primary-container text-white font-title-md text-label-md shadow-sm flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>1. รับเรื่อง</span>
+</button>
+<!-- Step 2: เริ่มดำเนินการ -->
+<button class="py-2 px-1 text-center rounded-lg hover:bg-surface-container text-on-surface-variant font-label-md text-label-md flex flex-col items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+<span>2. เริ่มดำเนินการ</span>
+</button>
+<!-- Step 3: บันทึกรออะไหล่ -->
+<button class="py-2 px-1 text-center rounded-lg hover:bg-surface-container text-on-surface-variant font-label-md text-label-md flex flex-col items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-sm">pending_actions</span>
+<span>3. รออะไหล่</span>
+</button>
+<!-- Step 4: ซ่อมเสร็จ -->
+<button class="py-2 px-1 text-center rounded-lg hover:bg-surface-container text-on-surface-variant font-label-md text-label-md flex flex-col items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-sm">task_alt</span>
+<span>4. ซ่อมเสร็จ</span>
+</button>
+</div>
+<p class="text-[11px] text-secondary mt-1 text-center">
+              *เมื่อกด “4. ซ่อมเสร็จ” ระบบจะเข้าสู่สถานะ <strong>Done (รอผู้เช่ายืนยันปิดงาน)</strong> และไม่ตัดเป็น Closed ทันที
+            </p>
+</div>
+<!-- Internal Admin Note -->
+<div>
+<label class="text-label-md font-label-md font-semibold text-on-surface block mb-1">
+              บันทึกหมายเหตุภายใน (Internal Notes)
+            </label>
+<textarea class="w-full text-body-sm font-body-sm p-2.5 bg-surface rounded-xl border border-outline-variant/60 focus:border-primary-container text-on-surface outline-none resize-none" placeholder="เช่น มอบหมายช่างสมศักดิ์เข้าล้างถาดน้ำทิ้ง, นัดช่างนอก 14:00 น..." rows="2">มอบหมายช่างภายนอก (ช่างแอร์มิตรภาพ) เข้าตรวจสอบท่อน้ำทิ้งตัน คาดว่าต้องตัดล้างใหญ่</textarea>
+</div>
+<!-- LINE Automated Message Box -->
+<div class="bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-3.5">
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-label-md font-label-md font-semibold text-[#166534] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base text-[#16a34a]" style="font-variation-settings: 'FILL' 1;">send</span>
+                ข้อความที่จะส่งแจ้งผู้เช่าผ่าน LINE อัตโนมัติ
+              </span>
+<span class="text-[11px] text-[#15803d] font-medium bg-white px-2 py-0.5 rounded-full border border-[#86efac]">
+                แจ้งเตือนทันที
+              </span>
+</div>
+<div class="text-body-sm font-body-sm text-[#14532d] bg-white p-2.5 rounded-lg border border-[#86efac]/50 leading-relaxed font-mono">
+              [ศิริสุข เพลส] สวัสดีครับคุณชาตรี (ห้อง 202) นิติบุคคลได้รับเรื่องงานแจ้งซ่อม #MNT-2410-02 (แอร์มีน้ำหยด) แล้ว ขณะนี้ประสานงานช่างเรียบร้อย คาดว่าจะเข้าตรวจเช็คเวลา 13:30 น. วันนี้ครับ
+            </div>
+</div>
+<!-- Primary Confirmation Dispatch Button -->
+<div class="pt-2 flex items-center gap-3">
+<button class="flex-1 py-3 px-4 rounded-xl bg-primary-container hover:bg-[#1d4ed8] text-white font-title-md text-title-md font-semibold shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+<span class="material-symbols-outlined text-lg">send_and_archive</span>
+<span>ยืนยันรับเรื่อง &amp; ส่งข้อความ LINE</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- MOBILE BOTTOM BAR (Mandatory Responsive Pivot md:hidden) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t border-outline-variant/40 shadow-lg px-2 py-1.5 flex justify-around items-center">
+<a class="flex flex-col items-center py-1 px-3 text-secondary hover:text-primary" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="text-[10px] mt-0.5">ภาพรวม</span>
+</a>
+<a class="flex flex-col items-center py-1 px-3 text-secondary hover:text-primary" href="#">
+<span class="material-symbols-outlined text-xl">apartment</span>
+<span class="text-[10px] mt-0.5">ห้องพัก</span>
+</a>
+<a class="flex flex-col items-center py-1 px-3 text-primary font-bold relative" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">handyman</span>
+<span class="text-[10px] mt-0.5">งานซ่อม</span>
+<span class="absolute top-1 right-2 w-2 h-2 rounded-full bg-error"></span>
+</a>
+<a class="flex flex-col items-center py-1 px-3 text-secondary hover:text-primary" href="#">
+<span class="material-symbols-outlined text-xl">receipt_long</span>
+<span class="text-[10px] mt-0.5">บิล</span>
+</a>
+<a class="flex flex-col items-center py-1 px-3 text-secondary hover:text-primary" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="text-[10px] mt-0.5">ตั้งค่า</span>
+</a>
+</nav>
+</body></html>

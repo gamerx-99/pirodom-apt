@@ -1,3 +1,4 @@
+import { isCronConfigured, notConfiguredResponse } from "@/lib/env";
 import { isCronRequest } from "@/lib/cron";
 
 // งานตามบรีฟ 1.6 ตารางเวลาอยู่ใน vercel.json (เวลา UTC)
@@ -10,9 +11,13 @@ const JOBS = [
 ];
 
 export async function GET(request: Request, { params }: RouteContext<"/api/cron/[job]">) {
+  if (!isCronConfigured()) {
+    return notConfiguredResponse(["CRON_SECRET"]);
+  }
   if (!isCronRequest(request)) return new Response("unauthorized", { status: 401 });
   const { job } = await params;
   if (!JOBS.includes(job)) return new Response("unknown job", { status: 404 });
   // TODO Phase 5: ลงมือทำแต่ละงาน (idempotent)
   return new Response("not implemented", { status: 501 });
 }
+

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ตั้งค่าหอพักและการเชื่อมต่อ - ศิริสุข เพลส</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#e7f2ff",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary": "#004ac6",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "on-primary-container": "#eeefff",
+            "on-tertiary-fixed": "#001d31",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#5c647a",
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-surface": "#213145",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#e5eeff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2563eb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#00174b",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "secondary-container": "#dae2fd",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary-container": "#0073ae",
+            "surface": "#f8f9ff",
+            "outline": "#737686",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-primary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-tertiary-fixed-variant": "#004b73"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "label-sm": ["Inter"],
+            "title-lg": ["Inter"],
+            "title-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md text-body-md selection:bg-primary selection:text-on-primary min-h-screen">
+<!-- Desktop Rail / SideNavBar (Fixed 260px) -->
+<aside class="fixed top-0 left-0 h-full w-[260px] z-40 bg-on-background dark:bg-inverse-surface border-r border-on-surface-variant/20 dark:border-outline/20 flex flex-col justify-between p-space-md hidden lg:flex">
+<div class="flex flex-col gap-6">
+<!-- Brand Anchor Header -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-bold font-title-lg text-title-lg shadow-sm">
+          ศ
+        </div>
+<div class="flex flex-col">
+<span class="text-title-lg font-title-lg font-bold text-surface dark:text-surface-bright">ศิริสุข เพลส</span>
+<span class="text-body-sm font-body-sm text-outline-variant flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            LINE OA เชื่อมต่อแล้ว (19 ยูนิต)
+          </span>
+</div>
+</div>
+<!-- Quick Action CTA -->
+<button class="w-full flex items-center justify-center gap-2 bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md py-2.5 px-3 rounded-xl transition-all duration-150 shadow-sm active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>เพิ่มผู้เช่าใหม่</span>
+</button>
+<!-- Navigation Links (7 Items from Shared JSON Blueprint) -->
+<nav class="flex flex-col gap-1">
+<!-- 1. ภาพรวม (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">ภาพรวม</span>
+</a>
+<!-- 2. ห้องพักและสัญญา (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="apartment">apartment</span>
+<span class="text-label-md font-label-md">ห้องพักและสัญญา</span>
+</a>
+<!-- 3. จดมิเตอร์ (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="text-label-md font-label-md">จดมิเตอร์</span>
+</a>
+<!-- 4. บิลและใบแจ้งหนี้ (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-md font-label-md">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- 5. ตรวจสลิป LINE (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="receipt">receipt</span>
+<span class="text-label-md font-label-md">ตรวจสลิป LINE</span>
+</a>
+<!-- 6. งานซ่อมบำรุง (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="handyman">handyman</span>
+<span class="text-label-md font-label-md">งานซ่อมบำรุง</span>
+</a>
+<!-- 7. ตั้งค่าระบบ (ACTIVE MATCH for Route /admin/settings) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-container/20 text-tertiary-fixed font-title-md border-l-4 border-primary-container dark:border-inverse-primary active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-label-md font-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer -->
+<div class="border-t border-on-surface-variant/20 pt-4 flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 text-surface">
+<span class="material-symbols-outlined text-outline-variant" data-icon="account_circle">account_circle</span>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md text-surface">ผู้จัดการ สมศักดิ์</span>
+<span class="text-body-sm font-body-sm text-outline-variant">ผู้ดูแลระบบสูงสุด</span>
+</div>
+</div>
+<button class="w-full flex items-center gap-3 px-3 py-2 text-outline-variant hover:text-rose-400 hover:bg-on-surface-variant/20 rounded-lg transition-colors text-left text-body-sm font-body-sm" type="button">
+<span class="material-symbols-outlined text-rose-400" data-icon="logout">logout</span>
+<span>ออกจากระบบ</span>
+</button>
+</div>
+</aside>
+<!-- Sticky TopNavBar -->
+<header class="sticky top-0 right-0 z-30 w-full lg:pl-[260px] bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant/40 dark:border-outline/20 shadow-sm transition-all">
+<div class="flex justify-between items-center h-16 px-space-md lg:px-space-xl max-w-full">
+<!-- Breadcrumb & Context Title -->
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined lg:hidden text-on-surface-variant cursor-pointer" data-icon="menu">menu</span>
+<div class="flex items-center gap-2">
+<span class="text-headline-md font-headline-md font-bold text-on-surface dark:text-inverse-on-surface">ศิริสุข เพลส (Sirisuk Place)</span>
+<span class="hidden sm:inline-block text-outline-variant font-body-md">/</span>
+<span class="hidden sm:inline-block text-label-md font-label-md text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">ตั้งค่าระบบ</span>
+</div>
+</div>
+<!-- Action Cluster & System Meta -->
+<div class="flex items-center gap-2 lg:gap-3">
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary text-base" data-icon="calendar_today">calendar_today</span>
+<span>มีนาคม 2568</span>
+<span class="text-outline-variant">|</span>
+<span class="text-primary font-medium">รอบบิลปัจจุบัน</span>
+</div>
+<button class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-outline-variant/60 text-on-surface hover:bg-surface-container transition-colors text-label-md font-label-md" type="button">
+<span class="material-symbols-outlined text-emerald-600" data-icon="sync">sync</span>
+<span>ซิงค์ข้อมูล LINE</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" title="การแจ้งเตือน" type="button">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" title="รีเฟรชสถานะ" type="button">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" title="ความช่วยเหลือ" type="button">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center font-bold text-primary font-label-sm text-label-sm ml-1" title="รูปโปรไฟล์ ผู้จัดการ สมศักดิ์">
+          สศ
+        </div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas (Capped at 1440px with Deep Slate/Cool White Contrast) -->
+<main class="lg:pl-[260px] pb-16">
+<div class="max-w-[1440px] mx-auto px-space-md sm:px-space-lg lg:px-space-xl pt-space-lg">
+<!-- Page Header Zone -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-outline-variant/30">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight">ตั้งค่าหอพักและการเชื่อมต่อ</h1>
+<span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-label-sm font-label-sm uppercase flex items-center gap-1.5 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+              ข้อมูลตัวอย่าง (Demo Data)
+            </span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant mt-1.5">
+            จัดการข้อมูลพื้นฐานหอพัก ข้อมูลบัญชีรับเงิน และสถานะการเชื่อมต่อ LINE OA
+          </p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-body-sm font-body-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-base" data-icon="verified_user">verified_user</span>
+            ความปลอดภัยระดับองค์กร (SSL 256-bit)
+          </span>
+</div>
+</div>
+<!-- Settings Navigation Tabs -->
+<div class="mt-6 border-b border-outline-variant/40 flex overflow-x-auto no-scrollbar gap-1 sm:gap-2">
+<button class="flex items-center gap-2 px-4 py-3 text-primary font-title-md text-title-md border-b-2 border-primary whitespace-nowrap bg-primary/5 rounded-t-lg transition-colors" type="button">
+<span class="material-symbols-outlined text-primary" data-icon="apartment">apartment</span>
+<span>1. ข้อมูลหอพัก (General Info)</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-3 text-on-surface-variant hover:text-on-surface font-title-md text-title-md border-b-2 border-transparent whitespace-nowrap transition-colors hover:bg-surface-container-low rounded-t-lg" type="button">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>2. บัญชีรับชำระเงิน (Payment Accounts)</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-3 text-on-surface-variant hover:text-on-surface font-title-md text-title-md border-b-2 border-transparent whitespace-nowrap transition-colors hover:bg-surface-container-low rounded-t-lg" type="button">
+<span class="material-symbols-outlined" data-icon="mark_chat_read">mark_chat_read</span>
+<span>3. การเชื่อมต่อ LINE OA &amp; Webhook</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-3 text-on-surface-variant hover:text-on-surface font-title-md text-title-md border-b-2 border-transparent whitespace-nowrap transition-colors hover:bg-surface-container-low rounded-t-lg" type="button">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span>4. บริการตรวจสลิป &amp; ระบบอัตโนมัติ</span>
+</button>
+</div>
+<!-- Bento Grid Architecture for High Operational Clarity -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+<!-- ================= CARD 1: ข้อมูลหอพัก (8 Cols on Desktop) ================= -->
+<section class="lg:col-span-7 bg-surface-container-lowest rounded-2xl border border-outline-variant/50 p-space-lg shadow-sm hover:border-outline-variant transition-all">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="home_work">home_work</span>
+</div>
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface">ข้อมูลหอพัก</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">ข้อมูลนิติบุคคลและจุดติดต่อผู้เช่าหลัก</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-label-sm font-label-sm flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              เปิดดำเนินการปกติ
+            </span>
+</div>
+<form class="mt-5 space-y-4" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">ชื่อหอพัก</label>
+<div class="relative">
+<input class="w-full h-[42px] px-3 rounded-xl border border-outline/40 bg-surface-bright text-on-surface font-body-md text-body-md focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none" readonly="" type="text" value="ศิริสุข เพลส (Sirisuk Place)"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-outline text-base" data-icon="lock">lock</span>
+</div>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">จำนวนยูนิตทั้งหมด</label>
+<div class="h-[42px] px-3.5 rounded-xl border border-outline/30 bg-surface-container-low flex items-center justify-between">
+<span class="font-title-md text-title-md text-on-surface font-semibold">19 ยูนิต</span>
+<span class="text-body-sm font-body-sm text-secondary">(ห้องพัก 18 ห้อง, ร้านค้า 1 ยูนิต)</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">ที่อยู่อาคาร / ที่ตั้งโครงการ</label>
+<textarea class="w-full p-3 rounded-xl border border-outline/40 bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none" rows="2">99/18 ซอยฉลองกรุง 1 แขวงลาดกระบัง เขตลาดกระบัง กรุงเทพมหานคร 10520</textarea>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">เบอร์โทรศัพท์ติดต่อส่วนกลาง</label>
+<div class="relative">
+<input class="w-full h-[42px] pl-10 pr-3 rounded-xl border border-outline/40 bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none" type="tel" value="082-456-7890"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-base" data-icon="call">call</span>
+</div>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1.5">อีเมลผู้จัดการ / ใบเสร็จ</label>
+<div class="relative">
+<input class="w-full h-[42px] pl-10 pr-3 rounded-xl border border-outline/40 bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none" type="email" value="admin@sirisukplace.com"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-base" data-icon="mail">mail</span>
+</div>
+</div>
+</div>
+<div class="pt-2 flex justify-end">
+<button class="inline-flex items-center gap-2 bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md h-10 px-5 rounded-xl shadow-sm transition-all active:scale-[0.98]" type="submit">
+<span class="material-symbols-outlined text-base" data-icon="save">save</span>
+<span>บันทึกข้อมูลหอพัก</span>
+</button>
+</div>
+</form>
+</section>
+<!-- ================= CARD 3: สถานะการเชื่อมต่อ LINE Official Account (5 Cols) ================= -->
+<section class="lg:col-span-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/50 p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</div>
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface">การเชื่อมต่อ LINE OA</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">ระบบส่งข้อความบิลและแจ้งยอดอัตโนมัติ</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-label-sm font-label-sm flex items-center gap-1.5 font-semibold">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                พร้อมใช้งาน (Connected ✓)
+              </span>
+</div>
+<!-- LINE OA Channel Details -->
+<div class="mt-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">Channel Name</span>
+<span class="text-title-md font-title-md text-on-surface">Sirisuk Place Official</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">Basic ID / LINE ID</span>
+<span class="font-mono text-body-md font-body-md text-primary bg-primary/10 px-2 py-0.5 rounded-md font-semibold">@sirisukplace</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">ตรวจสอบล่าสุด</span>
+<span class="text-body-sm font-body-sm text-on-surface font-medium flex items-center gap-1">
+<span>วันนี้ 14:30 น.</span>
+<span class="text-emerald-600 text-label-sm font-semibold">(Ping สำเร็จ 42ms)</span>
+</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">Webhook URL</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-mono truncate max-w-[200px]">https://api.sirisuk.com/webhook/line</span>
+</div>
+</div>
+<!-- Security Assurance Note -->
+<div class="mt-4 p-3 rounded-xl bg-surface border border-outline-variant/40 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5" data-icon="shield">shield</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+                Access Token และ Channel Secret ได้รับการป้องกันใน Server Environment ไม่แสดงใน Client UI เพื่อความปลอดภัยสูงสุด
+              </p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-outline">Webhook Event Handlers: 4 active</span>
+<button class="text-label-md font-label-md text-primary hover:text-primary-container inline-flex items-center gap-1 font-semibold" type="button">
+<span class="material-symbols-outlined text-base" data-icon="tune">tune</span>
+              ทดสอบส่งสัญญาณ (Ping)
+            </button>
+</div>
+</section>
+<!-- ================= CARD 2: ข้อมูลบัญชีรับชำระเงิน (7 Cols) ================= -->
+<section class="lg:col-span-7 bg-surface-container-lowest rounded-2xl border border-outline-variant/50 p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="credit_card">credit_card</span>
+</div>
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface">ข้อมูลบัญชีรับชำระเงิน</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">สำหรับออก QR Code และใบแจ้งหนี้อัตโนมัติ</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-container transition-colors text-label-md font-label-md flex items-center gap-1.5 font-medium" type="button">
+<span class="material-symbols-outlined text-base" data-icon="edit">edit</span>
+<span>แก้ไขข้อมูลรับเงิน</span>
+</button>
+</div>
+<!-- Impact Warning Banner -->
+<div class="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200/80 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-amber-600 text-lg mt-0.5" data-icon="warning">warning</span>
+<div class="text-body-sm font-body-sm text-amber-900 leading-snug">
+<span class="font-semibold">คำเตือนผลกระทบ:</span> การเปลี่ยนแปลงบัญชีจะมีผลกับบิลรอบถัดไปเท่านั้น โดยจะไม่กระทบกับ QR Code บนบิลที่ถูกส่งออกไปแล้วในระบบ
+            </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+<!-- Account Details -->
+<div class="space-y-3 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                      KB
+                    </div>
+<span class="text-title-md font-title-md text-on-surface">ธนาคารกสิกรไทย</span>
+</div>
+<span class="text-label-sm font-label-sm px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-semibold">บัญชีหลัก</span>
+</div>
+<div class="mt-3 space-y-1.5">
+<div class="text-body-sm font-body-sm text-secondary">ชื่อบัญชี:</div>
+<div class="text-body-md font-body-md font-semibold text-on-surface">บจก. ศิริสุข พร็อพเพอร์ตี้</div>
+<div class="text-body-sm font-body-sm text-secondary mt-1">เลขที่บัญชี (Masked for Security):</div>
+<div class="font-mono text-title-md font-title-md font-bold text-primary tracking-wider">xxx-x-x1234-x</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">พร้อมเพย์นิติบุคคล:</span>
+<span class="font-mono text-body-md font-body-md font-semibold text-on-surface">081-xxx-xxxx</span>
+</div>
+</div>
+<!-- Preview LIFF Screen as Seen by Tenants -->
+<div class="p-4 rounded-xl bg-gradient-to-b from-surface-bright to-surface-container-low border border-outline-variant/40 flex flex-col items-center text-center">
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-wide font-bold mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="visibility">visibility</span>
+                Preview หน้าจอผู้เช่า (LINE LIFF)
+              </span>
+<!-- Mockup Phone Card -->
+<div class="w-full max-w-[220px] bg-white rounded-xl shadow-sm border border-outline-variant/60 p-3 flex flex-col items-center">
+<div class="w-8 h-1 bg-outline-variant/60 rounded-full mb-2"></div>
+<span class="text-label-sm font-label-sm text-secondary">สแกนชำระผ่าน PromptPay</span>
+<div class="w-24 h-24 my-2 p-1.5 border border-dashed border-primary/50 rounded-lg bg-surface-container flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="qr_code_2">qr_code_2</span>
+<span class="text-[9px] font-mono text-primary font-bold">KBANK PP QR</span>
+</div>
+<span class="text-label-sm font-bold text-on-surface">บจก. ศิริสุข พร็อพเพอร์ตี้</span>
+<span class="text-[10px] text-secondary font-mono">บิลห้อง 302 | ยอด 4,350 ฿</span>
+</div>
+<span class="text-body-sm font-body-sm text-outline mt-2">ยอดเงินและเลขอ้างอิงถูกผูกตรงตามห้องพัก</span>
+</div>
+</div>
+</section>
+<!-- ================= CARD 4: บริการตรวจสลิปอัตโนมัติ & ระบบ Cron Job (5 Cols) ================= -->
+<section class="lg:col-span-5 bg-surface-container-lowest rounded-2xl border border-outline-variant/50 p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</div>
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface">บริการตรวจสลิป &amp; Cron</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">ตรวจจับยอดโอนและระบบรอบส่งบิลอัตโนมัติ</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-label-sm font-label-sm flex items-center gap-1.5 font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                Active
+              </span>
+</div>
+<!-- SlipOK Service Details -->
+<div class="mt-4 p-4 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-secondary">บริการตรวจสลิป:</span>
+<span class="text-label-md font-label-md font-bold text-on-surface">SlipOK / Okslip Service</span>
+</div>
+<!-- Quota Bar -->
+<div class="mt-3">
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1.5">
+<span class="text-secondary">โควต้าสลิปคงเหลือประจำเดือน:</span>
+<span class="font-bold text-primary font-mono">450 / 500 ครั้ง</span>
+</div>
+<div class="w-full h-2.5 bg-outline-variant/30 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 90%;"></div>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm text-outline mt-1">
+<span>ใช้งานไปแล้ว 10% (50 สลิป)</span>
+<span>รีเซ็ตทุกวันที่ 1</span>
+</div>
+</div>
+</div>
+<!-- Cron Schedules & Automation Timetable -->
+<div class="mt-4 space-y-2.5">
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface border border-outline-variant/40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="send">send</span>
+<span class="text-body-sm font-body-sm font-medium text-on-surface">ส่งเตือนบิลอัตโนมัติ:</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface font-semibold bg-surface-container px-2 py-1 rounded">ทุกวันที่ 25 เวลา 09:00 น.</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface border border-outline-variant/40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-600 text-base" data-icon="event_busy">event_busy</span>
+<span class="text-body-sm font-body-sm font-medium text-on-surface">ส่งเตือนวันครบกำหนด:</span>
+</div>
+<div class="text-right">
+<span class="text-label-sm font-label-sm text-on-surface font-semibold block">เวลา 10:00 น.</span>
+<span class="text-[11px] text-secondary font-medium">(ทั่วไปสิ้นเดือน, ห้อง 205 วันที่ 10)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Cron Last Execution Meta -->
+<div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-emerald-600 text-base" data-icon="check_circle">check_circle</span>
+<span>รันล่าสุด: <strong class="text-on-surface font-semibold">28 ต.ค. 2567 09:00 น.</strong></span>
+</div>
+<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-label-sm font-label-sm font-bold">สำเร็จ 100%</span>
+</div>
+</section>
+</div>
+<!-- Quick Operational Action Ribbon -->
+<div class="mt-8 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-lg" data-icon="info">info</span>
+</div>
+<div>
+<div class="text-title-md font-title-md text-on-surface">ต้องการรีเซ็ตการเชื่อมต่อหรือย้ายโดเมนใหม่?</div>
+<div class="text-body-sm font-body-sm text-secondary">กรุณาติดต่อผู้พัฒนาระบบเพื่อสร้าง Webhook Secret ใหม่</div>
+</div>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none px-4 py-2 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md transition-colors" type="button">
+            ดูบันทึกระบบ (System Audit Log)
+          </button>
+<button class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md transition-all shadow-sm" type="button">
+            สำรองข้อมูลหอพัก (.JSON)
+          </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

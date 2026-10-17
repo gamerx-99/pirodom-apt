@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background" lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>จัดการห้องพักและร้านค้า - ศิริสุข เพลส</title>
+<!-- Google Fonts & Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Prompt:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#e7f2ff",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "primary": "#004ac6",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "on-primary-container": "#eeefff",
+            "on-tertiary-fixed": "#001d31",
+            "on-background": "#0b1c30",
+            "on-secondary-container": "#5c647a",
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "inverse-primary": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed-dim": "#bec6e0",
+            "primary-fixed-dim": "#b4c5ff",
+            "inverse-surface": "#213145",
+            "on-surface-variant": "#434655",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#e5eeff",
+            "surface-bright": "#f8f9ff",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2563eb",
+            "error-container": "#ffdad6",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "surface-container-high": "#dce9ff",
+            "on-secondary-fixed": "#131b2e",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container-highest": "#d3e4fe",
+            "on-primary-fixed": "#00174b",
+            "on-surface": "#0b1c30",
+            "surface-dim": "#cbdbf5",
+            "secondary-container": "#dae2fd",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary-container": "#0073ae",
+            "surface": "#f8f9ff",
+            "outline": "#737686",
+            "on-secondary-fixed-variant": "#3f465c",
+            "on-primary": "#ffffff",
+            "surface-tint": "#0053db",
+            "on-tertiary-fixed-variant": "#004b73"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-desktop": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Prompt", "Inter", "sans-serif"],
+            "headline-xl-mobile": ["Prompt", "Inter", "sans-serif"],
+            "label-sm": ["Prompt", "Inter", "sans-serif"],
+            "title-lg": ["Prompt", "Inter", "sans-serif"],
+            "title-md": ["Prompt", "Inter", "sans-serif"],
+            "headline-xl": ["Prompt", "Inter", "sans-serif"],
+            "body-sm": ["Prompt", "Inter", "sans-serif"],
+            "label-md": ["Prompt", "Inter", "sans-serif"],
+            "headline-lg-mobile": ["Prompt", "Inter", "sans-serif"],
+            "body-lg": ["Prompt", "Inter", "sans-serif"],
+            "body-md": ["Prompt", "Inter", "sans-serif"],
+            "headline-md": ["Prompt", "Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Prompt', 'Inter', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="h-full bg-background text-on-surface antialiased overflow-x-hidden">
+<!-- ==================== DESKTOP SIDEBAR ==================== -->
+<aside class="fixed top-0 left-0 h-full w-[260px] z-40 bg-on-background border-r border-on-surface-variant/20 flex flex-col justify-between p-space-md shadow-none select-none">
+<div class="flex flex-col gap-y-6">
+<!-- Brand Header -->
+<div class="flex items-center gap-3 px-2 pt-2">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-surface-container-lowest flex items-center justify-center font-bold text-title-lg shadow-sm">
+<span class="material-symbols-outlined" data-icon="apartment">apartment</span>
+</div>
+<div class="flex flex-col">
+<span class="text-title-lg font-title-lg font-bold text-surface">ศิริสุข เพลส</span>
+<span class="text-body-sm font-body-sm text-outline-variant flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            LINE OA เชื่อมต่อแล้ว (19 ยูนิต)
+          </span>
+</div>
+</div>
+<!-- Quick Action CTA -->
+<button class="w-full h-10 rounded-xl bg-primary-container hover:bg-primary text-surface-container-lowest font-label-md text-label-md flex items-center justify-center gap-2 transition-all duration-150 active:scale-[0.98] shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="person_add">person_add</span>
+<span>เพิ่มผู้เช่าใหม่</span>
+</button>
+<!-- Navigation Tabs (7 tabs per Shared Components JSON) -->
+<nav class="flex flex-col gap-1.5">
+<!-- 1. ภาพรวม (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">ภาพรวม</span>
+</a>
+<!-- 2. ห้องพักและสัญญา (ACTIVE) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary-container/20 text-tertiary-fixed font-title-md border-l-4 border-primary-container active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px] text-tertiary-fixed" data-icon="apartment">apartment</span>
+<span class="text-title-md font-title-md text-surface">ห้องพักและสัญญา</span>
+</a>
+<!-- 3. จดมิเตอร์ (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="speed">speed</span>
+<span class="text-label-md font-label-md">จดมิเตอร์</span>
+</a>
+<!-- 4. บิลและใบแจ้งหนี้ (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-md font-label-md">บิลและใบแจ้งหนี้</span>
+</a>
+<!-- 5. ตรวจสลิป LINE (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt">receipt</span>
+<span class="text-label-md font-label-md">ตรวจสลิป LINE</span>
+</a>
+<!-- 6. งานซ่อมบำรุง (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="handyman">handyman</span>
+<span class="text-label-md font-label-md">งานซ่อมบำรุง</span>
+</a>
+<!-- 7. ตั้งค่าระบบ (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-outline-variant hover:text-surface hover:bg-on-surface-variant/20 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="text-label-md font-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer -->
+<div class="border-t border-on-surface-variant/20 pt-4 flex flex-col gap-2">
+<div class="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-on-surface-variant/20 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary text-surface-container-lowest flex items-center justify-center font-semibold text-body-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="account_circle">account_circle</span>
+</div>
+<div class="flex flex-col">
+<span class="text-label-md font-label-md text-surface">ผู้จัดการ สมศักดิ์</span>
+<span class="text-[11px] text-outline-variant">แอดมินระบบหอพัก</span>
+</div>
+</div>
+<button class="text-outline-variant hover:text-error transition-colors p-1 rounded" title="ออกจากระบบ">
+<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ==================== TOP NAVIGATION BAR ==================== -->
+<header class="sticky top-0 right-0 z-30 w-full pl-0 md:pl-[260px] bg-surface-container-lowest border-b border-outline-variant/40 shadow-sm">
+<div class="flex justify-between items-center h-16 px-4 md:px-space-xl max-w-full">
+<!-- Left: Mobile Menu Toggle & Route Context -->
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 text-on-surface hover:bg-surface-container rounded-lg">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="flex items-center gap-3">
+<span class="text-title-lg font-title-lg font-bold text-on-surface">ศิริสุข เพลส (Sirisuk Place)</span>
+<span class="hidden sm:inline-block w-px h-4 bg-outline-variant/60"></span>
+<!-- Navigation pill context from JSON -->
+<div class="hidden sm:flex items-center gap-3 text-body-sm">
+<span class="text-primary font-title-md border-b-2 border-primary pb-0.5">มีนาคม 2568</span>
+<span class="text-on-surface-variant font-label-md">รอบบิลปัจจุบัน</span>
+</div>
+</div>
+</div>
+<!-- Right: Global Actions & Utilities -->
+<div class="flex items-center gap-3">
+<!-- Action Buttons -->
+<button class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-outline-variant/80 text-on-surface hover:bg-surface-container text-label-md font-label-md transition-colors">
+<span class="material-symbols-outlined text-[18px] text-emerald-600" data-icon="sync">sync</span>
+<span>ซิงค์ข้อมูล LINE</span>
+</button>
+<button class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-primary-container hover:bg-primary text-surface-container-lowest text-label-md font-label-md shadow-sm transition-all duration-150">
+<span class="material-symbols-outlined text-[18px]" data-icon="post_add">post_add</span>
+<span>สร้างบิลประจำเดือน</span>
+</button>
+<!-- Icon actions from JSON -->
+<div class="flex items-center gap-1 border-l border-outline-variant/40 pl-2">
+<button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors relative" title="การแจ้งเตือน">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span>
+</button>
+<button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors" title="รีเฟรช">
+<span class="material-symbols-outlined text-[20px]" data-icon="refresh">refresh</span>
+</button>
+<button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors" title="ช่วยเหลือ">
+<span class="material-symbols-outlined text-[20px]" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/60 ml-1">
+<img class="w-full h-full object-cover" data-alt="A distinguished Thai apartment manager in professional attire standing inside a bright modern lobby with clean Scandinavian minimal wood accents and soft atmospheric lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2CCzJRnUox6UKftDSwBe49jgFJwzSDdPoMjY0LA70lDcwD9dJTIgFHfLBSFc5RkZg8QDbPA4cdEtmlQ8nECbJD2o12jQ-n9F3uz3HwvhZJ_BETh6IJKwZ3gLHaYb9gI585HVOsAcJ3UOYWaoXSHRpjJaPQKNtstI7F-kNRH3GPEb97UgvJTnipA68fPEtNENlC63Iz28XaCGVJYs6aEgy-52yoCkgSULPMj7aVm_bqSkfzq59i-AM6Q"/>
+</div>
+</div>
+</div>
+</header>
+<!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+<main class="md:pl-[260px] pb-16 min-h-[calc(100vh-64px)] bg-background">
+<div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+<!-- ================= PAGE TITLE & HERO HEADER ================= -->
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="space-y-1.5">
+<div class="flex items-center gap-3">
+<h1 class="text-headline-md font-headline-md text-on-surface">ห้องพักและร้านค้า</h1>
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/50">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>
+              ข้อมูลตัวอย่าง (Demo Data)
+            </span>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">จัดการข้อมูลยูนิต ผังห้อง และความพร้อมให้เช่า พร้อมระบบผูกสัญญา LINE OA</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="h-10 px-4 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="file_download">file_download</span>
+<span>ส่งออก Excel</span>
+</button>
+<button class="h-10 px-5 rounded-xl bg-primary-container hover:bg-primary text-surface-container-lowest font-label-md text-label-md flex items-center gap-2 transition-all shadow-sm active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+<span>+ เพิ่มยูนิต</span>
+</button>
+</div>
+</section>
+<!-- ================= UNIT STATUS COUNTER CARDS ================= -->
+<section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+<!-- ทั้งหมด (19) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="text-label-md font-label-md">ยูนิตทั้งหมด</span>
+<span class="material-symbols-outlined text-[20px] text-primary" data-icon="domain">domain</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-2xl font-bold text-on-surface">19</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">ยูนิต</span>
+</div>
+</div>
+<!-- มีผู้เช่า (15) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-emerald-700">
+<span class="text-label-md font-label-md">มีผู้เช่า</span>
+<span class="material-symbols-outlined text-[20px] text-emerald-600" data-icon="check_circle">check_circle</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-2xl font-bold text-emerald-700">15</span>
+<span class="text-label-sm font-label-sm text-emerald-600">78.9%</span>
+</div>
+</div>
+<!-- ว่าง (2) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-blue-700">
+<span class="text-label-md font-label-md">ว่างพร้อมอยู่</span>
+<span class="material-symbols-outlined text-[20px] text-blue-600" data-icon="meeting_room">meeting_room</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-2xl font-bold text-blue-700">2</span>
+<span class="text-label-sm font-label-sm text-blue-600">10.5%</span>
+</div>
+</div>
+<!-- จองแล้ว (1) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-amber-700">
+<span class="text-label-md font-label-md">จองแล้ว</span>
+<span class="material-symbols-outlined text-[20px] text-amber-600" data-icon="bookmark">bookmark</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-2xl font-bold text-amber-700">1</span>
+<span class="text-label-sm font-label-sm text-amber-600">รอทำสัญญา</span>
+</div>
+</div>
+<!-- รอย้ายออก (1) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-purple-700">
+<span class="text-label-md font-label-md">รอย้ายออก</span>
+<span class="material-symbols-outlined text-[20px] text-purple-600" data-icon="logout">logout</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-2xl font-bold text-purple-700">1</span>
+<span class="text-label-sm font-label-sm text-purple-600">ภายใน 30 วัน</span>
+</div>
+</div>
+<!-- ปรับปรุง (0) -->
+<div class="bg-surface-container-lowest rounded-xl p-4 border border-outline-variant/40 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-rose-700">
+<span class="text-label-md font-label-md">ปรับปรุง</span>
+<span class="material-symbols-outlined text-[20px] text-rose-600" data-icon="build_circle">build_circle</span>
+</div>
+<div class="mt-3 flex items-baseline justify-between">
+<span class="text-2xl font-bold text-rose-700">0</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">ไม่มีห้องชำรุด</span>
+</div>
+</div>
+</section>
+<!-- ================= SEARCH & FILTER TOOLBAR ================= -->
+<section class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/40 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+<!-- Search Field -->
+<div class="relative flex-1 min-w-[280px]">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="w-full h-11 pl-11 pr-4 rounded-xl border border-outline-variant/60 bg-surface-bright text-on-surface text-body-md font-body-md placeholder:text-outline focus:outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all" placeholder="ค้นหาเลขห้อง (เช่น 101), ร้านค้า, หรือชื่อผู้เช่า..." type="text"/>
+</div>
+<!-- Filter Selects -->
+<div class="flex flex-wrap items-center gap-3">
+<!-- Type Filter -->
+<div class="flex items-center gap-2 bg-surface-bright px-3 py-1.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-on-surface-variant">ประเภท:</span>
+<select class="bg-transparent text-label-md font-label-md text-on-surface focus:outline-none border-none p-0 cursor-pointer">
+<option value="all">ทั้งหมด (19)</option>
+<option value="room">ห้องพัก (18)</option>
+<option value="shop">ร้านค้า (1)</option>
+</select>
+</div>
+<!-- Floor Filter -->
+<div class="flex items-center gap-2 bg-surface-bright px-3 py-1.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-on-surface-variant">ชั้น:</span>
+<select class="bg-transparent text-label-md font-label-md text-on-surface focus:outline-none border-none p-0 cursor-pointer">
+<option value="all">ทุกชั้น (G - 3)</option>
+<option value="g">ชั้นล่าง (G)</option>
+<option value="1">ชั้น 1</option>
+<option value="2">ชั้น 2</option>
+<option value="3">ชั้น 3</option>
+</select>
+</div>
+<!-- Status Filter -->
+<div class="flex items-center gap-2 bg-surface-bright px-3 py-1.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-on-surface-variant">สถานะ:</span>
+<select class="bg-transparent text-label-md font-label-md text-on-surface focus:outline-none border-none p-0 cursor-pointer">
+<option value="all">ทุกสถานะ</option>
+<option value="occupied">มีผู้เช่า</option>
+<option value="vacant">ว่าง</option>
+<option value="reserved">จองแล้ว</option>
+<option value="moving_out">รอย้ายออก</option>
+</select>
+</div>
+<!-- View Mode Toggle -->
+<div class="inline-flex rounded-xl bg-surface-container p-1 border border-outline-variant/40">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary shadow-sm font-label-md text-label-md flex items-center gap-1.5" title="มุมมองผังห้อง Grid">
+<span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span>
+<span class="hidden sm:inline">ผังห้อง</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors" title="มุมมองตาราง Table">
+<span class="material-symbols-outlined text-[18px]" data-icon="table_rows">table_rows</span>
+<span class="hidden sm:inline">ตาราง</span>
+</button>
+</div>
+</div>
+</section>
+<!-- ================= ROOM GRID & DRAWER WORKSPACE ================= -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+<!-- LEFT/CENTER: Interactive Floor Plan Grid (Col-Span 8) -->
+<div class="xl:col-span-8 space-y-8">
+<!-- ================= FLOOR G: GROUND FLOOR (1 Shop Unit) ================= -->
+<section class="space-y-3">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-6 rounded-full bg-primary-container"></span>
+<h2 class="text-title-lg font-title-lg text-on-surface">ชั้นล่าง (Ground Floor)</h2>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-blue-50 text-blue-700 border border-blue-200">1 ยูนิตร้านค้า</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">พื้นที่พาณิชย์</span>
+</div>
+<!-- Shop Grid (S-01) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- S-01 Commercial Unit -->
+<div class="bg-surface-container-lowest rounded-2xl border-2 border-emerald-400/40 p-space-lg shadow-sm hover:shadow-md transition-all duration-150 relative overflow-hidden group cursor-pointer hover:border-emerald-500">
+<div class="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-emerald-50 rounded-full z-0 pointer-events-none"></div>
+<div class="relative z-10 space-y-4">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-2xl font-bold text-on-surface">S-01</span>
+<span class="px-2.5 py-0.5 rounded-md text-label-sm font-label-sm bg-purple-100 text-purple-800 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="storefront">storefront</span>
+                          ร้านค้า / มินิมาร์ท
+                        </span>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-0.5">ชั้นล่าง ติดถนนทางเข้าหอพัก</p>
+</div>
+<!-- Status Pill: Occupied -->
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm uppercase bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                      มีผู้เช่า
+                    </span>
+</div>
+<!-- Tenant Detail Pill -->
+<div class="bg-surface-bright rounded-xl p-3 border border-outline-variant/40 space-y-1.5">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">ผู้เช่าสัญญา:</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface">บจก. ก้าวหน้าการค้า</span>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<span class="text-on-surface-variant">ค่าเช่ารายเดือน:</span>
+<span class="font-bold text-primary">฿12,000 / เดือน</span>
+</div>
+</div>
+<!-- Utility & LINE Status Bar -->
+<div class="flex items-center justify-between text-body-sm text-on-surface-variant pt-1 border-t border-outline-variant/20">
+<span class="flex items-center gap-1 text-emerald-600">
+<span class="material-symbols-outlined text-[16px]" data-icon="mark_chat_read">mark_chat_read</span>
+                      LINE OA ผูกแล้ว
+                    </span>
+<span class="text-label-sm text-outline">มิเตอร์ไฟ: 1,840 kWh</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FLOOR 1: 101 - 106 (6 Units) ================= -->
+<section class="space-y-3">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-6 rounded-full bg-primary-container"></span>
+<h2 class="text-title-lg font-title-lg text-on-surface">ชั้น 1 (ห้อง 101 - 106)</h2>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container text-on-surface-variant border border-outline-variant/50">6 ห้องพัก</span>
+</div>
+<span class="text-body-sm text-emerald-600 font-medium">มีผู้เช่า 5 • ว่าง 1</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+<!-- 101 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">101</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">ธนกฤต</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿3,800/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 102 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">102</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">วริศรา</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿3,800/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 103 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">103</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">กมลวรรณ</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿3,800/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 104 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">104</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">ชัยวัฒน์</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿3,800/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 105 Vacant (พร้อมเข้าอยู่ ฿3,800/ด.) -->
+<div class="bg-blue-50/60 rounded-2xl border-2 border-dashed border-blue-400 p-space-md shadow-sm hover:bg-blue-50 transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-blue-900 font-bold">105</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-blue-100 text-blue-800 border border-blue-300">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>ว่าง
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-semibold text-blue-900">พร้อมเข้าอยู่</div>
+<div class="text-body-sm text-blue-700 flex items-center justify-between">
+<span class="font-bold">฿3,800/ด.</span>
+<span class="text-xs text-blue-600 underline">ทำสัญญา</span>
+</div>
+</div>
+</div>
+<!-- 106 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">106</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">อนุชา</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿3,800/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FLOOR 2: 201 - 206 (6 Units) ================= -->
+<section class="space-y-3">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-6 rounded-full bg-primary-container"></span>
+<h2 class="text-title-lg font-title-lg text-on-surface">ชั้น 2 (ห้อง 201 - 206)</h2>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container text-on-surface-variant border border-outline-variant/50">6 ห้องพัก</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">มีผู้เช่า 5 • จองแล้ว 1</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+<!-- 201 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">201</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">ดวงฤทัย</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 202 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">202</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">ชาตรี</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 203 Reserved (พงศกร) -->
+<div class="bg-amber-50/50 rounded-2xl border border-amber-300 p-space-md shadow-sm hover:border-amber-500 transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-amber-900 font-bold">203</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-amber-100 text-amber-800 border border-amber-300">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>จองแล้ว
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-semibold text-amber-900">พงศกร</div>
+<div class="text-body-sm text-amber-700 flex items-center justify-between">
+<span>มัดจำ ฿2,000</span>
+<span class="text-xs text-amber-800 font-medium">รอเซ็นสัญญา</span>
+</div>
+</div>
+</div>
+<!-- 204 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">204</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">พัชรา</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 205 ACTIVE INSPECTED ROOM (อภิสิทธิ์ - มีผู้เช่า ครบกำหนด 10 ต.ค.) -->
+<div class="bg-surface-container-lowest rounded-2xl border-2 border-primary-container p-space-md shadow-md ring-4 ring-primary/10 transition-all cursor-pointer relative">
+<div class="absolute -top-3 right-4 px-2 py-0.5 bg-primary-container text-surface-container-lowest text-[10px] font-bold rounded uppercase tracking-wider">กำลังเปิดดู</div>
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-primary font-bold">205</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-bold text-on-surface">อภิสิทธิ์</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span class="font-medium text-primary">฿4,200/ด.</span>
+<span class="text-xs text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">ครบกำหนด 10 ต.ค.</span>
+</div>
+</div>
+</div>
+<!-- 206 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">206</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">นภัสสร</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FLOOR 3: 301 - 306 (6 Units) ================= -->
+<section class="space-y-3">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-6 rounded-full bg-primary-container"></span>
+<h2 class="text-title-lg font-title-lg text-on-surface">ชั้น 3 (ห้อง 301 - 306)</h2>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container text-on-surface-variant border border-outline-variant/50">6 ห้องพัก</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">มีผู้เช่า 4 • รอย้ายออก 1 • ว่าง 1</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+<!-- 301 Moving Out (ธนภัทร 30 พ.ย.) -->
+<div class="bg-purple-50/50 rounded-2xl border border-purple-300 p-space-md shadow-sm hover:border-purple-500 transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-purple-900 font-bold">301</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-purple-100 text-purple-800 border border-purple-300">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-600"></span>รอย้ายออก
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-purple-900">ธนภัทร</div>
+<div class="text-body-sm text-purple-700 flex items-center justify-between">
+<span>ออก 30 พ.ย.</span>
+<span class="text-xs text-purple-800 font-semibold underline">เตรียมนัดตรวจ</span>
+</div>
+</div>
+</div>
+<!-- 302 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">302</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">กานต์พิชชา</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 303 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">303</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">ณภัทร</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 304 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">304</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">อนุวัฒน์</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 305 Occupied -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-space-md shadow-sm hover:border-primary-container transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-on-surface">305</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>มีผู้เช่า
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-medium text-on-surface">ศิรินดา</div>
+<div class="text-body-sm text-on-surface-variant flex items-center justify-between">
+<span>฿4,000/ด.</span>
+<span class="text-emerald-600 text-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>LINE</span>
+</div>
+</div>
+</div>
+<!-- 306 Vacant (พร้อมอยู่ ฿4,000/ด.) -->
+<div class="bg-blue-50/60 rounded-2xl border-2 border-dashed border-blue-400 p-space-md shadow-sm hover:bg-blue-50 transition-all cursor-pointer">
+<div class="flex items-start justify-between">
+<span class="text-title-lg font-title-lg text-blue-900 font-bold">306</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-blue-100 text-blue-800 border border-blue-300">
+<span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>ว่าง
+                  </span>
+</div>
+<div class="mt-3 space-y-1">
+<div class="text-body-md font-body-md font-semibold text-blue-900">พร้อมอยู่</div>
+<div class="text-body-sm text-blue-700 flex items-center justify-between">
+<span class="font-bold">฿4,000/ด.</span>
+<span class="text-xs text-blue-600 underline">ทำสัญญา</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- RIGHT: Interactive Detail Drawer/Modal Simulation (Col-Span 4) -->
+<div class="xl:col-span-4 sticky top-20">
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/50 shadow-md p-6 space-y-6">
+<!-- Drawer Header -->
+<div class="flex items-start justify-between border-b border-outline-variant/30 pb-4">
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-headline-md font-headline-md text-on-surface">ห้อง 205</h3>
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">มีผู้เช่า</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">ชั้น 2 • ขนาด 28 ตร.ม. • ระเบียงทิศตะวันออก</p>
+</div>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+</div>
+<!-- Current Tenant Profile -->
+<div class="bg-surface-bright rounded-xl p-4 border border-outline-variant/40 space-y-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary-container shrink-0">
+<img class="w-full h-full object-cover" data-alt="A polite portrait of a Thai university student tenant wearing clean casual clothing inside a brightly lit modern student apartment room with clean minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg4RPcIbxFA8WygOFZV_-y0gpkHZH9ZUGPvmX3dqpq6DeqxwuMPpdxH6o-H590dpqJTQIFg0DVQ2C3Kwkfp_Jel2CeME8_D6Tn461sYoGGUbMjwy4V4VT-lG59VSyChq3wfzjVb3NEFvuuo3ZrgnBrC_pIT9YziCUX_vMPvE67FmYCmwwjnqzyWas2F7mXz8o0rDPtpzLa_4yAA-92deXwKueYdClFfvRuddGiexBdyRhia7H1kI1vGg"/>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="text-title-md font-title-md text-on-surface truncate">นายอภิสิทธิ์ สุขสมบูรณ์</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">089-456-7890</p>
+</div>
+<a class="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-label-sm font-semibold flex items-center gap-1 transition-colors" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="chat">chat</span>
+                  LINE
+                </a>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-2 border-t border-outline-variant/30 text-body-sm">
+<div>
+<span class="text-outline text-xs block">LINE User ID</span>
+<span class="font-mono text-xs text-on-surface font-medium truncate block">@apisit_sirisuk</span>
+</div>
+<div>
+<span class="text-outline text-xs block">สถานะแจ้งเตือน</span>
+<span class="text-emerald-700 text-xs font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>รับบิลอัตโนมัติ
+                  </span>
+</div>
+</div>
+</div>
+<!-- Active Lease Agreement Details -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<h4 class="text-title-md font-title-md text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="description">description</span>
+                  ข้อมูลสัญญาเช่าปัจจุบัน
+                </h4>
+<span class="text-label-sm text-primary font-semibold">สัญญาเลขที่ #CTR-2567-205</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-4 space-y-2.5 text-body-sm">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">ระยะเวลาสัญญา:</span>
+<span class="font-medium text-on-surface">1 ส.ค. 2567 - 31 ก.ค. 2568</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">วันครบกำหนดชำระ:</span>
+<span class="font-semibold text-amber-700">ทุกวันที่ 10 ของเดือน</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">ค่าเช่าห้องพัก:</span>
+<span class="font-bold text-on-surface">฿4,200 / เดือน</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">ค่าน้ำประปา:</span>
+<span class="font-medium text-on-surface">เหมาจ่าย ฿150 / คน / เดือน</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">ค่าไฟฟ้า:</span>
+<span class="font-medium text-on-surface">หน่วยละ ฿8.00</span>
+</div>
+<div class="flex justify-between items-center pt-2 border-t border-outline-variant/30">
+<span class="text-on-surface-variant font-medium">เงินประกันสัญญา:</span>
+<span class="font-bold text-emerald-700">฿8,000 (ชำระแล้ว)</span>
+</div>
+</div>
+</div>
+<!-- Meter Status Snapshot -->
+<div class="space-y-2">
+<h4 class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">มิเตอร์ล่าสุด (รอบ มี.ค. 2568)</h4>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-bright p-3 rounded-xl border border-outline-variant/40 flex items-center justify-between">
+<div>
+<span class="text-xs text-outline block">มิเตอร์ไฟฟ้า</span>
+<span class="text-title-md font-bold text-on-surface">2,418 <span class="text-xs font-normal text-outline">kWh</span></span>
+</div>
+<span class="material-symbols-outlined text-amber-500" data-icon="electric_meter">electric_meter</span>
+</div>
+<div class="bg-surface-bright p-3 rounded-xl border border-outline-variant/40 flex items-center justify-between">
+<div>
+<span class="text-xs text-outline block">ค่าน้ำเหมาจ่าย</span>
+<span class="text-title-md font-bold text-on-surface">1 <span class="text-xs font-normal text-outline">คน</span></span>
+</div>
+<span class="material-symbols-outlined text-blue-500" data-icon="water_drop">water_drop</span>
+</div>
+</div>
+</div>
+<!-- Quick Links Row -->
+<div class="space-y-2">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">ทางลัดจัดการยูนิต</span>
+<div class="grid grid-cols-4 gap-2 text-center">
+<a class="p-2.5 rounded-xl border border-outline-variant/60 hover:bg-surface-container hover:border-primary-container text-on-surface transition-colors flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-[20px] text-primary group-hover:scale-110 transition-transform" data-icon="history_edu">history_edu</span>
+<span class="text-label-sm font-label-sm">สัญญา</span>
+</a>
+<a class="p-2.5 rounded-xl border border-outline-variant/60 hover:bg-surface-container hover:border-primary-container text-on-surface transition-colors flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-[20px] text-emerald-600 group-hover:scale-110 transition-transform" data-icon="receipt_long">receipt_long</span>
+<span class="text-label-sm font-label-sm">บิล</span>
+</a>
+<a class="p-2.5 rounded-xl border border-outline-variant/60 hover:bg-surface-container hover:border-primary-container text-on-surface transition-colors flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-[20px] text-blue-600 group-hover:scale-110 transition-transform" data-icon="speed">speed</span>
+<span class="text-label-sm font-label-sm">มิเตอร์</span>
+</a>
+<a class="p-2.5 rounded-xl border border-outline-variant/60 hover:bg-surface-container hover:border-primary-container text-on-surface transition-colors flex flex-col items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-[20px] text-amber-600 group-hover:scale-110 transition-transform" data-icon="build">build</span>
+<span class="text-label-sm font-label-sm">แจ้งซ่อม</span>
+</a>
+</div>
+</div>
+<!-- Action Buttons Footer -->
+<div class="pt-2 flex items-center gap-3">
+<button class="flex-1 h-11 rounded-xl bg-primary-container hover:bg-primary text-surface-container-lowest font-label-md text-label-md flex items-center justify-center gap-2 transition-all shadow-sm active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+<span>แก้ไขข้อมูลห้อง</span>
+</button>
+<button class="h-11 px-3.5 rounded-xl border border-outline-variant text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="พิมพ์ประวัติห้อง">
+<span class="material-symbols-outlined text-[20px]" data-icon="print">print</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- ================= MOBILE FLOATING APP NAV ================= -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest border-t border-outline-variant/40 px-4 py-2 flex justify-around items-center shadow-lg">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="dashboard">dashboard</span>
+<span class="text-[11px]">ภาพรวม</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary-container font-semibold" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="apartment">apartment</span>
+<span class="text-[11px]">ห้องพัก</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="speed">speed</span>
+<span class="text-[11px]">มิเตอร์</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="receipt_long">receipt_long</span>
+<span class="text-[11px]">บิล</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined text-[22px]" data-icon="person">person</span>
+<span class="text-[11px]">ผู้เช่า</span>
+</a>
+</div>
+</body></html>

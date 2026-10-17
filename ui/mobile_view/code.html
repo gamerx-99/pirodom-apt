@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ศิริสุข เพลส - ระบบจัดการหอพัก</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter & Prompt Google Fonts for Thai/Latin Typography -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Prompt:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-fixed": "#dae2fd",
+            "surface-container-low": "#eff4ff",
+            "on-background": "#0b1c30",
+            "tertiary-container": "#0073ae",
+            "surface-dim": "#cbdbf5",
+            "surface-container-high": "#dce9ff",
+            "tertiary-fixed-dim": "#93ccff",
+            "on-error": "#ffffff",
+            "on-error-container": "#93000a",
+            "background": "#f8f9ff",
+            "tertiary": "#005a89",
+            "primary-container": "#2563eb",
+            "on-primary-fixed": "#00174b",
+            "on-tertiary-fixed": "#001d31",
+            "surface-variant": "#d3e4fe",
+            "error-container": "#ffdad6",
+            "inverse-on-surface": "#eaf1ff",
+            "primary-fixed-dim": "#b4c5ff",
+            "tertiary-fixed": "#cce5ff",
+            "on-primary-container": "#eeefff",
+            "on-primary-fixed-variant": "#003ea8",
+            "on-secondary-container": "#5c647a",
+            "on-surface-variant": "#434655",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed-variant": "#3f465c",
+            "inverse-surface": "#213145",
+            "on-secondary-fixed": "#131b2e",
+            "surface-tint": "#0053db",
+            "inverse-primary": "#b4c5ff",
+            "on-tertiary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-surface": "#0b1c30",
+            "primary": "#004ac6",
+            "surface-bright": "#f8f9ff",
+            "primary-fixed": "#dbe1ff",
+            "outline-variant": "#c3c6d7",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-fixed-variant": "#004b73",
+            "secondary-fixed-dim": "#bec6e0",
+            "surface": "#f8f9ff",
+            "on-primary": "#ffffff",
+            "secondary-container": "#dae2fd",
+            "surface-container": "#e5eeff",
+            "secondary": "#565e74",
+            "on-tertiary-container": "#e7f2ff",
+            "error": "#ba1a1a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-desktop": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin-desktop": "2rem",
+            "space-xl": "2rem",
+            "margin": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Prompt", "Inter", "sans-serif"],
+            "body-sm": ["Prompt", "Inter", "sans-serif"],
+            "label-md": ["Prompt", "Inter", "sans-serif"],
+            "headline-lg-mobile": ["Prompt", "Inter", "sans-serif"],
+            "headline-md": ["Prompt", "Inter", "sans-serif"],
+            "headline-xl-mobile": ["Prompt", "Inter", "sans-serif"],
+            "headline-xl": ["Prompt", "Inter", "sans-serif"],
+            "title-lg": ["Prompt", "Inter", "sans-serif"],
+            "title-md": ["Prompt", "Inter", "sans-serif"],
+            "headline-lg": ["Prompt", "Inter", "sans-serif"],
+            "body-lg": ["Prompt", "Inter", "sans-serif"],
+            "body-md": ["Prompt", "Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      font-family: 'Prompt', 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Hide scrollbars for crisp horizontal touch scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased pb-28">
+<!-- Desktop Sidebar Navigation (Responsive Bridge >= 1025px) -->
+<aside class="hidden lg:flex flex-col h-full w-72 p-4 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant fixed top-0 left-0 z-50">
+<div class="flex items-center gap-3 px-3 py-4 mb-4 border-b border-outline-variant">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-surface-container-lowest flex items-center justify-center font-bold text-title-lg">
+        ศ
+      </div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-bold">ศิริสุข เพลส (19 ยูนิต)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">ผู้ดูแลระบบหอพัก</div>
+</div>
+</div>
+<div class="mb-4 px-3 py-2 bg-surface-container-low rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface">LINE OA: เชื่อมต่อแล้ว</span>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-[18px]">verified</span>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-container text-on-primary-container font-medium" href="#">
+<span class="material-symbols-outlined material-symbols-fill">dashboard</span>
+<span class="font-label-md text-label-md">ภาพรวมหอพัก</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors font-normal" href="#">
+<span class="material-symbols-outlined">meeting_room</span>
+<span class="font-label-md text-label-md">จัดการผู้เช่าและห้องพัก</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors font-normal" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-md text-label-md">จดมิเตอร์และออกบิล</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors font-normal" href="#">
+<span class="material-symbols-outlined">build</span>
+<span class="font-label-md text-label-md">แจ้งซ่อมบำรุง</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors font-normal" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">ตั้งค่าระบบ</span>
+</a>
+</nav>
+</aside>
+<!-- Main Canvas Wrapper (Adapts on Desktop with ml-72) -->
+<div class="lg:ml-72 min-h-screen">
+<!-- 1. Top Header Component -->
+<header class="flex justify-between items-center w-full px-4 h-14 sticky top-0 z-40 bg-surface-container-lowest border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-2">
+<button aria-label="เมนู" class="lg:hidden p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<h1 class="font-title-md text-title-md text-on-surface font-bold tracking-tight">ศิริสุข เพลส</h1>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-semibold">19 ยูนิต</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="font-label-sm text-label-sm text-emerald-700">LINE OA เชื่อมต่อแล้ว</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button aria-label="การแจ้งเตือน" class="relative p-2 rounded-xl text-on-surface hover:bg-surface-container transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[10px] font-bold text-on-error">3</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container text-surface-container-lowest font-bold font-label-md text-label-md flex items-center justify-center ring-2 ring-primary-fixed">
+          AD
+        </div>
+</div>
+</header>
+<main class="px-4 py-4 max-w-4xl mx-auto space-y-5">
+<!-- Period Selector & Meta Bar -->
+<section class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] flex flex-wrap items-center justify-between gap-2">
+<div class="flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-xl">
+<button aria-label="เดือนก่อนหน้า" class="p-1 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<div class="flex items-center gap-1.5 px-2">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_month</span>
+<span class="font-title-md text-title-md text-on-surface font-bold">ตุลาคม 2567</span>
+</div>
+<button aria-label="เดือนถัดไป" class="p-1 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+            อัปเดต: 14:32 น.
+          </span>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-md bg-secondary-fixed text-on-secondary-fixed font-medium">ข้อมูลตัวอย่าง</span>
+</div>
+</section>
+<!-- 2. Quick Actions Bar -->
+<section class="grid grid-cols-2 gap-3">
+<button class="h-12 flex items-center justify-center gap-2 bg-primary-container hover:bg-primary text-on-primary rounded-xl font-title-md text-title-md shadow-sm transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>สร้างบิล</span>
+</button>
+<button class="h-12 flex items-center justify-center gap-2 bg-surface-container-lowest hover:bg-surface-container border border-outline-variant text-on-surface rounded-xl font-title-md text-title-md shadow-sm transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-primary text-[20px]">speed</span>
+<span>จดมิเตอร์</span>
+</button>
+</section>
+<!-- 3. Financial Summary Cards (2x2 Grid) -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<h2 class="font-title-md text-title-md text-on-surface font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">monitoring</span>
+            สรุปการเงินรอบเดือนนี้
+          </h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">ประจำงวด 10/2567</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Total Billed Card -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">ยอดเรียกเก็บรวม</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</div>
+</div>
+<div class="mt-2">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface tracking-tight">฿84,500</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">รวม 19 ยูนิต (100%)</div>
+</div>
+</div>
+<!-- Collected Card -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-emerald-700">รับชำระแล้ว</span>
+<div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+</div>
+</div>
+<div class="mt-2">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-emerald-700 tracking-tight">฿62,300</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">สำเร็จ 14/19 บิล (73.7%)</div>
+<!-- Progress bar -->
+<div class="w-full bg-surface-container rounded-full h-1.5 mt-2 overflow-hidden">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 73.7%"></div>
+</div>
+</div>
+</div>
+<!-- Pending Card -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-amber-700">ยอดค้างชำระ</span>
+<div class="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center text-amber-600">
+<span class="material-symbols-outlined text-[16px]">pending</span>
+</div>
+</div>
+<div class="mt-2">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-amber-700 tracking-tight">฿22,200</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">รอเก็บ 5 บิล</div>
+</div>
+</div>
+<!-- Overdue Card (Soft Red) -->
+<div class="bg-red-50/50 p-3.5 rounded-2xl border border-red-200 shadow-[0px_1px_3px_0px_rgba(15,23,42,0.05)] flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-red-700 font-bold">ยอดเกินกำหนด</span>
+<div class="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined text-[16px]">error</span>
+</div>
+</div>
+<div class="mt-2">
+<div class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-red-700 tracking-tight">฿9,200</div>
+<div class="font-label-sm text-label-sm text-red-600 mt-0.5 font-medium">ค้าง 2 บิล (ห้อง 205, 103)</div>
+</div>
+</div>
+</div>
+<!-- Overdue Disclaimer -->
+<p class="font-label-sm text-label-sm text-on-surface-variant px-1 italic">
+          *เป็นส่วนหนึ่งของยอดค้างชำระ (ไม่รวมซ้ำในยอดค้าง)
+        </p>
+</section>
+<!-- 4. งานที่ต้องจัดการ (Action Required) -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="font-title-md text-title-md text-on-surface font-bold">งานที่ต้องจัดการ</h2>
+<span class="px-2 py-0.5 text-label-sm font-label-sm bg-red-100 text-red-700 rounded-full font-bold">6 รายการ</span>
+</div>
+<button class="font-label-sm text-label-sm text-primary font-semibold hover:underline" type="button">จัดการทั้งหมด</button>
+</div>
+<div class="space-y-2.5">
+<!-- Action Item 1: สลิปรอตรวจ -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-sm flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">fact_check</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-semibold">สลิปรอตรวจ (3 รายการ)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">ห้อง 102, 204, 303 แนบสลิปแล้ว</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-surface-container-lowest font-label-md text-label-md font-semibold transition-all active:scale-95 flex-shrink-0" type="button">
+              เข้าตรวจสลิป
+            </button>
+</div>
+<!-- Action Item 2: ยังไม่จดมิเตอร์ -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-sm flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-blue-50 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">speed</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-semibold">ยังไม่จดมิเตอร์ (2 ห้อง)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">ห้อง 304, ห้อง 305 ประจำเดือน ต.ค.</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md font-semibold transition-all active:scale-95 flex-shrink-0" type="button">
+              จดมิเตอร์
+            </button>
+</div>
+<!-- Action Item 3: บิลเกินกำหนด -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border-l-4 border-l-red-500 border border-outline-variant shadow-sm flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">warning</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-red-700 font-semibold">บิลเกินกำหนด (2 รายการ)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">ห้อง 205 (ครบ 10 ต.ค.), ห้อง 103</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-surface-container-lowest font-label-md text-label-md font-semibold transition-all active:scale-95 flex-shrink-0" type="button">
+              ติดตามทวงถาม
+            </button>
+</div>
+<!-- Action Item 4: บิลใกล้ครบกำหนด -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-sm flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">forward_to_inbox</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-semibold">บิลใกล้ครบกำหนด (3 รายการ)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">ครบกำหนด 31 ต.ค. (ห้อง 105, 206, 302)</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-surface-container-lowest font-label-md text-label-md font-semibold transition-all active:scale-95 flex-shrink-0 flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">send</span>
+              ส่งเตือน LINE
+            </button>
+</div>
+<!-- Action Item 5: งานซ่อมรอรับเรื่อง -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-sm flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">handyman</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-semibold">งานซ่อมรอรับเรื่อง (2 เรื่อง)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">ห้อง 202 (แอร์มีน้ำหยด), ห้อง 104 (ก๊อกน้ำรั่ว)</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl bg-surface-container-high text-on-surface hover:bg-surface-dim font-label-md text-label-md font-semibold transition-all active:scale-95 flex-shrink-0" type="button">
+              มอบหมาย
+            </button>
+</div>
+<!-- Action Item 6: สัญญาใกล้หมดอายุ -->
+<div class="bg-surface-container-lowest p-3.5 rounded-2xl border border-outline-variant shadow-sm flex items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container text-on-surface-variant flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]">description</span>
+</div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-semibold">สัญญาใกล้หมดอายุ (1 รายการ)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">ห้อง 301 สิ้นสุด 15 พ.ย. 67</div>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-md text-label-md font-medium transition-all active:scale-95 flex-shrink-0" type="button">
+              ดูสัญญา
+            </button>
+</div>
+</div>
+</section>
+<!-- 5. สถานะห้องพัก (Unit Status List / Grid for 19 units) -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-title-md text-title-md text-on-surface font-bold">สถานะห้องพัก (19 ยูนิต)</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">แผนผังห้องและสถานะการเช่าปัจจุบัน</p>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-semibold">อัตราครองห้อง 89%</span>
+</div>
+<!-- Search Input -->
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full h-11 pl-11 pr-4 bg-surface-container-lowest rounded-xl border border-outline-variant font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary-container focus:ring-4 focus:ring-primary-container/10 transition-all shadow-sm" placeholder="ค้นหาเลขห้อง หรือชื่อผู้เช่า..." type="text"/>
+</div>
+<!-- Filter Pills (Scrollable horizontally) -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+<button class="px-3 py-1.5 rounded-full bg-on-surface text-surface-container-lowest font-label-sm text-label-sm whitespace-nowrap shadow-sm" type="button">
+            ทั้งหมด (19)
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container" type="button">
+            ว่าง (2)
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container" type="button">
+            จองแล้ว (1)
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container" type="button">
+            มีผู้เช่า (15)
+          </button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container" type="button">
+            รอย้ายออก (1)
+          </button>
+</div>
+<!-- Commercial Unit S-01 (Ground Floor Highlight) -->
+<div class="bg-gradient-to-r from-blue-50/70 to-surface-container-lowest p-3.5 rounded-2xl border-2 border-primary-fixed flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary text-surface-container-lowest flex flex-col items-center justify-center">
+<span class="font-label-sm text-[10px] uppercase font-bold leading-none">ชั้นล่าง</span>
+<span class="font-title-lg text-title-lg font-bold leading-tight">S-01</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-title-md text-title-md font-bold text-on-surface">ร้านค้า/มินิมาร์ท</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  ชำระแล้ว
+                </span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">คุณวิชัย พานิชย์ • ค่าเช่า ฿12,000/ด.</div>
+</div>
+</div>
+<button aria-label="ดูรายละเอียด" class="p-2 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Floor 3 Units Grid (6 Units: 301 - 306) -->
+<div class="space-y-2 pt-2">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md font-bold text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-sm bg-primary"></span>
+              ชั้น 3 (6 ห้อง)
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">301 - 306</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+<!-- 301 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">301</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  จ่ายแล้ว
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">ธนกฤต ศ.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,200/ด. (ใกล้หมด)</p>
+</div>
+</div>
+<!-- 302 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">302</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                  รอครบ 31
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">กานต์พิชชา</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,000/ด.</p>
+</div>
+</div>
+<!-- 303 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">303</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                  รอตรวจสลิป
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">ณภัทร ว.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,500/ด.</p>
+</div>
+</div>
+<!-- 304 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">304</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-primary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                  รอจดมิเตอร์
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">อนุวัฒน์ ร.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,000/ด.</p>
+</div>
+</div>
+<!-- 305 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">305</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-primary font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+                  รอจดมิเตอร์
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">สิรินดา ก.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,200/ด.</p>
+</div>
+</div>
+<!-- 306 (ห้องว่าง) -->
+<div class="bg-surface-container-low/50 p-3 rounded-2xl border border-dashed border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface-variant">306</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  ห้องว่าง
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-outline-variant font-normal">พร้อมเข้าอยู่</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-semibold">฿4,000/ด.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Floor 2 Units Grid (6 Units: 201 - 206) -->
+<div class="space-y-2 pt-2">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md font-bold text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-sm bg-primary"></span>
+              ชั้น 2 (6 ห้อง)
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">201 - 206</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+<!-- 201 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">201</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  จ่ายแล้ว
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">พิมพาภรณ์</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,200/ด.</p>
+</div>
+</div>
+<!-- 202 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">202</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                  แจ้งซ่อมแอร์
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">กิตติทัต ช.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,200/ด. (จ่ายแล้ว)</p>
+</div>
+</div>
+<!-- 203 (จองแล้ว) -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">203</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                  จองแล้ว
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">ชลธิชา (มัดจำ)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">เข้าอยู่ 1 พ.ย.</p>
+</div>
+</div>
+<!-- 204 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">204</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                  รอตรวจสลิป
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">ธีรเทพ ม.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,000/ด.</p>
+</div>
+</div>
+<!-- 205 (เกินกำหนด High Alert) -->
+<div class="bg-red-50/40 p-3 rounded-2xl border-2 border-red-300 shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-red-700">205</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                  เกินกำหนด
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-bold text-red-800 truncate">พงศกร พ.</p>
+<p class="font-label-sm text-label-sm text-red-700 font-semibold">฿4,600 (ครบ 10 ต.ค.)</p>
+</div>
+</div>
+<!-- 206 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">206</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                  รอครบ 31
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">อรอนงค์ ป.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿4,000/ด.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Floor 1 Units Grid (6 Units: 101 - 106) -->
+<div class="space-y-2 pt-2">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md font-bold text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-sm bg-primary"></span>
+              ชั้น 1 (6 ห้อง)
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">101 - 106</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+<!-- 101 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">101</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  จ่ายแล้ว
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">สมชาย ดีเลิศ</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿3,800/ด.</p>
+</div>
+</div>
+<!-- 102 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">102</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                  รอตรวจสลิป
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">ปรีชา สุขใจ</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿3,800/ด.</p>
+</div>
+</div>
+<!-- 103 (เกินกำหนด) -->
+<div class="bg-red-50/40 p-3 rounded-2xl border-2 border-red-300 shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-red-700">103</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                  เกินกำหนด
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-bold text-red-800 truncate">บุญส่ง ชัยยศ</p>
+<p class="font-label-sm text-label-sm text-red-700 font-semibold">฿4,600 (รอทวง)</p>
+</div>
+</div>
+<!-- 104 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">104</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                  แจ้งซ่อมก๊อก
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">วาสนา นวลดี</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿3,800/ด.</p>
+</div>
+</div>
+<!-- 105 -->
+<div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface">105</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                  รอครบ 31
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface truncate">เอกชัย เรือง</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">฿3,800/ด.</p>
+</div>
+</div>
+<!-- 106 (ห้องว่าง) -->
+<div class="bg-surface-container-low/50 p-3 rounded-2xl border border-dashed border-outline-variant shadow-sm flex flex-col justify-between space-y-2">
+<div class="flex items-center justify-between">
+<span class="font-title-lg text-title-lg font-bold text-on-surface-variant">106</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  ห้องว่าง
+                </span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-outline-variant font-normal">พร้อมเข้าอยู่</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-semibold">฿3,800/ด.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- 6. Mobile Bottom Navigation Bar (Visible on mobile, suppressed on desktop lg:hidden) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-2 bg-surface-container-lowest border-t border-outline-variant shadow-lg lg:hidden">
+<!-- Tab 1: ภาพรวม (Active) -->
+<a class="flex flex-col items-center justify-center text-primary-container font-semibold transition-all duration-150 active:scale-95 flex-1 py-1" href="#">
+<span class="material-symbols-outlined text-[24px] material-symbols-fill">dashboard</span>
+<span class="font-label-sm text-label-sm mt-0.5">ภาพรวม</span>
+</a>
+<!-- Tab 2: ห้องพัก -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary font-normal transition-all duration-150 active:scale-95 flex-1 py-1" href="#">
+<span class="material-symbols-outlined text-[24px]">apartment</span>
+<span class="font-label-sm text-label-sm mt-0.5">ห้องพัก</span>
+</a>
+<!-- Tab 3: จดมิเตอร์ -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary font-normal transition-all duration-150 active:scale-95 flex-1 py-1" href="#">
+<span class="material-symbols-outlined text-[24px]">speed</span>
+<span class="font-label-sm text-label-sm mt-0.5">จดมิเตอร์</span>
+</a>
+<!-- Tab 4: บิล -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary font-normal transition-all duration-150 active:scale-95 flex-1 py-1" href="#">
+<span class="material-symbols-outlined text-[24px]">receipt</span>
+<span class="font-label-sm text-label-sm mt-0.5">บิล</span>
+</a>
+<!-- Tab 5: แจ้งซ่อม -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary font-normal transition-all duration-150 active:scale-95 flex-1 py-1" href="#">
+<span class="material-symbols-outlined text-[24px]">handyman</span>
+<span class="font-label-sm text-label-sm mt-0.5">แจ้งซ่อม</span>
+</a>
+</nav>
+</body></html>

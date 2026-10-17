@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>ประวัติมิเตอร์ผู้เช่า - Sirisuk Place</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Typography Fonts (Inter & Thai typography fallback) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Sarabun:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration Verbatim from System -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#213145",
+            "inverse-on-surface": "#eaf1ff",
+            "secondary": "#565e74",
+            "background": "#f8f9ff",
+            "on-secondary": "#ffffff",
+            "surface": "#f8f9ff",
+            "on-secondary-container": "#5c647a",
+            "tertiary-container": "#0073ae",
+            "secondary-fixed-dim": "#bec6e0",
+            "tertiary-fixed": "#cce5ff",
+            "error": "#ba1a1a",
+            "inverse-primary": "#b4c5ff",
+            "primary-fixed": "#dbe1ff",
+            "tertiary": "#005a89",
+            "on-tertiary-container": "#e7f2ff",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#eeefff",
+            "surface-variant": "#d3e4fe",
+            "surface-tint": "#0053db",
+            "on-error-container": "#93000a",
+            "secondary-container": "#dae2fd",
+            "on-error": "#ffffff",
+            "on-background": "#0b1c30",
+            "outline": "#737686",
+            "surface-container-highest": "#d3e4fe",
+            "error-container": "#ffdad6",
+            "surface-dim": "#cbdbf5",
+            "on-tertiary-fixed-variant": "#004b73",
+            "on-primary-fixed-variant": "#003ea8",
+            "surface-container-high": "#dce9ff",
+            "surface-container-low": "#eff4ff",
+            "on-surface-variant": "#434655",
+            "surface-bright": "#f8f9ff",
+            "on-primary-fixed": "#00174b",
+            "tertiary-fixed-dim": "#93ccff",
+            "surface-container": "#e5eeff",
+            "secondary-fixed": "#dae2fd",
+            "on-tertiary-fixed": "#001d31",
+            "on-secondary-fixed": "#131b2e",
+            "on-surface": "#0b1c30",
+            "primary-container": "#2563eb",
+            "outline-variant": "#c3c6d7",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "primary": "#004ac6",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-secondary-fixed-variant": "#3f465c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "margin-tablet": "1.5rem",
+            "gutter-desktop": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin-desktop": "2rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["Inter", "Sarabun", "sans-serif"],
+            "headline-lg-mobile": ["Inter", "Sarabun", "sans-serif"],
+            "label-sm": ["Inter", "Sarabun", "sans-serif"],
+            "label-md": ["Inter", "Sarabun", "sans-serif"],
+            "body-sm": ["Inter", "Sarabun", "sans-serif"],
+            "headline-xl-mobile": ["Inter", "Sarabun", "sans-serif"],
+            "body-lg": ["Inter", "Sarabun", "sans-serif"],
+            "body-md": ["Inter", "Sarabun", "sans-serif"],
+            "title-md": ["Inter", "Sarabun", "sans-serif"],
+            "headline-md": ["Inter", "Sarabun", "sans-serif"],
+            "title-lg": ["Inter", "Sarabun", "sans-serif"],
+            "headline-lg": ["Inter", "Sarabun", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "title-lg": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.015em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+    .pt-safe {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-secondary-container">
+<!-- Desktop Centered Container wrapper for LINE LIFF Mobile Webview simulation -->
+<div class="w-full max-w-md mx-auto min-h-screen bg-background flex flex-col relative shadow-xl overflow-x-hidden">
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<!-- Applied style_shell_layout, style_bg_color, style_separation_logic, style_shadows_and_elevation -->
+<header class="sticky top-0 z-40 flex items-center justify-between w-full px-margin py-space-sm bg-surface-container-lowest dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none pt-safe">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary" data-icon="apartment">apartment</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary tracking-tight">Sirisuk Place</span>
+</div>
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-fixed font-label-md text-label-md font-semibold border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span>ห้อง 402</span>
+</div>
+</header>
+<!-- LIFF In-App Subheader / Context Bar -->
+<section class="bg-surface-container-lowest border-b border-outline-variant px-margin py-space-md">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm mb-1">
+<span class="material-symbols-outlined text-primary text-[15px]" data-icon="electric_meter">electric_meter</span>
+<span>ระบบมิเตอร์หอพักดิจิทัล</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">ประวัติมิเตอร์ไฟฟ้า</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            ห้อง 205 (ชั้น 2) • <span class="text-on-surface font-medium">คุณอภิสิทธิ์ วงศ์สวัสดิ์</span>
+</p>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          สัญญาปัจจุบัน
+        </span>
+</div>
+<!-- Route Indicator & Status Badge -->
+<div class="mt-space-sm flex items-center justify-between text-label-sm font-label-sm bg-surface-container-low px-3 py-1.5 rounded-xl border border-outline-variant">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]" data-icon="shield">shield</span>
+<span>สิทธิ์ผู้เช่ารายห้อง • ข้อมูลรับรองแล้ว</span>
+</div>
+<span class="font-mono text-outline font-medium">/liff/meters</span>
+</div>
+</section>
+<!-- MAIN SCROLLABLE CONTENT -->
+<main class="flex-1 px-margin py-space-md space-y-space-md pb-28">
+<!-- 2. PERIOD SELECTOR (แถบสลับงวดปี 2567 และเลือกดูงวดเดือน) -->
+<section class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">รอบบิลและงวดตรวจวัด</span>
+<div class="inline-flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant">
+<button class="px-2.5 py-1 rounded-md bg-surface-container-lowest text-primary font-label-sm text-label-sm shadow-xs font-semibold">ปี 2567</button>
+<button class="px-2.5 py-1 rounded-md text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface">ปี 2566</button>
+</div>
+</div>
+<!-- Month Pill Badges Scrollable List -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1.5 no-scrollbar -mx-margin px-margin pt-1">
+<button class="flex-shrink-0 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-primary-container text-on-primary shadow-xs flex items-center gap-1.5 border border-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+<span>ต.ค. 2567 (ล่าสุด)</span>
+</button>
+<button class="flex-shrink-0 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest text-on-surface-variant border border-outline-variant hover:bg-surface-container-low">
+            ก.ย. 2567
+          </button>
+<button class="flex-shrink-0 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest text-on-surface-variant border border-outline-variant hover:bg-surface-container-low">
+            ส.ค. 2567
+          </button>
+<button class="flex-shrink-0 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest text-on-surface-variant border border-outline-variant hover:bg-surface-container-low">
+            ก.ค. 2567
+          </button>
+<button class="flex-shrink-0 px-3.5 py-1.5 rounded-full text-label-md font-label-md bg-surface-container-lowest text-on-surface-variant border border-outline-variant hover:bg-surface-container-low">
+            มิ.ย. 2567
+          </button>
+</div>
+</section>
+<!-- 3. LATEST READING CARD (การ์ดมิเตอร์งวดล่าสุด - ต.ค. 2567) -->
+<section class="bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-sm overflow-hidden relative">
+<!-- Visual Accent Header Ribbon -->
+<div class="bg-primary px-space-md py-2.5 text-on-primary flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified">verified</span>
+<span class="font-title-md text-title-md text-white font-semibold">มิเตอร์งวดล่าสุด • ตุลาคม 2567</span>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-white/20 text-white font-mono">ID: MTR-205-10</span>
+</div>
+<div class="p-space-md space-y-space-md">
+<!-- Main Stat Callout (Bento Tile Style) -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">หน่วยไฟฟ้าที่ใช้จริง</span>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-xl text-headline-xl text-primary font-bold tracking-tight">148</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium">หน่วย</span>
+</div>
+<span class="font-body-sm text-[11px] text-on-surface-variant mt-1 block">
+                คำนวณจาก (2,298 - 2,150)
+              </span>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">คิดเป็นค่าไฟงวดนี้</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">฿1,184</span>
+</div>
+<span class="font-body-sm text-[11px] text-tertiary font-medium mt-1 block">
+                อัตราคงที่ 8 บาท/หน่วย
+              </span>
+</div>
+</div>
+<!-- Meter Readings Dual Display -->
+<div class="bg-surface p-3.5 rounded-xl border border-outline-variant flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">เลขมิเตอร์เดิม (ก.ย.)</span>
+<div class="font-title-lg text-title-lg text-on-surface font-mono font-bold tracking-wider">
+                02,150
+              </div>
+</div>
+<div class="flex flex-col items-center px-2">
+<span class="material-symbols-outlined text-outline text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-label-sm text-[10px] text-outline font-semibold">+148</span>
+</div>
+<div class="space-y-0.5 text-right">
+<span class="font-label-sm text-label-sm text-primary font-semibold">เลขมิเตอร์ใหม่ (ต.ค.)</span>
+<div class="font-title-lg text-title-lg text-primary font-mono font-bold tracking-wider">
+                02,298
+              </div>
+</div>
+</div>
+<!-- Metadata & Proof of Reading -->
+<div class="flex flex-col gap-2 pt-1">
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="calendar_today">calendar_today</span>
+                วันที่บันทึกข้อมูล:
+              </span>
+<span class="font-medium text-on-surface">28 ต.ค. 2567 (10:14 น.)</span>
+</div>
+<div class="flex items-center justify-between text-body-sm text-body-sm text-on-surface-variant">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="person_check">person_check</span>
+                ผู้ตรวจจดมิเตอร์:
+              </span>
+<span class="font-medium text-on-surface">สมศักดิ์ (แอดมินอาคาร)</span>
+</div>
+</div>
+<!-- Meter Photo Thumbnail Trigger Card -->
+<div class="pt-2 border-t border-outline-variant">
+<div class="flex items-center gap-3 bg-surface-container-low p-2.5 rounded-xl border border-outline-variant">
+<!-- Thumbnail with simulated realistic meter image placeholder -->
+<div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 relative border border-outline-variant bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Close up photograph of a mechanical electric utility meter dial installed in an apartment corridor. The analog counter numbers show clear sharp digits against a clean brushed metallic background with warm daylight reflections and crisp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0SANbVZtpQIm9QKI8pp9M0rNuu1thEAgD8pseeTgWWhH3Lv8aSi37drg4bhaoqMWS5qMsOuGNpBBmC9MyczdvHKv5brySlfei-naFQWz7Dz9m1XxKhpBOFIRGYJxeIzZd0MffZ5KL4-o_Kt0480Kb0QPUvBPNLtWeuNdO86Ya94E0El42yDf_C7tJtP6PUUQZNHpOjovZwNsgIkjR6LRDQpLTi_gnR7Gc1avUwg7oUWRLV_Z7zmupPw"/>
+<div class="absolute inset-0 bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[18px] drop-shadow" data-icon="zoom_in">zoom_in</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-semibold block truncate">ภาพถ่ายหน้าปัดมิเตอร์จริง</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant block">ยืนยันตัวเลข 2,298 จากกล่องอาคาร</span>
+</div>
+<button class="px-3 py-2 bg-surface-container-lowest text-primary hover:bg-surface-container border border-outline-variant rounded-xl font-label-sm text-label-sm font-semibold active:scale-95 transition-all flex items-center gap-1 shadow-xs" onclick="document.getElementById('photo-modal').classList.remove('hidden')">
+<span>ขยายภาพ</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. MONTHLY USAGE TREND (กราฟเปรียบเทียบการใช้ไฟฟ้ารายเดือน) -->
+<section class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-title-md text-title-md text-on-surface font-semibold">แนวโน้มการใช้ไฟ 5 เดือน</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">มิ.ย. 67 – ต.ค. 67 (อิงฐานข้อมูลจริง)</p>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-outline block">ค่าเฉลี่ยรายเดือน</span>
+<span class="font-title-md text-title-md text-primary font-bold">127.6 <span class="font-label-sm text-body-sm font-normal text-on-surface-variant">หน่วย</span></span>
+</div>
+</div>
+<!-- Custom Accessible CSS Bar Graph -->
+<div class="pt-4 pb-2">
+<!-- Bar Graph Container (Height fixed for accurate visual ratio) -->
+<div class="h-44 w-full flex items-end justify-between gap-3 px-2 border-b border-outline-variant relative">
+<!-- Target Reference Line: 127.6 units (~75% height) -->
+<div class="absolute left-0 right-0 top-[35%] border-b border-dashed border-secondary-fixed-dim pointer-events-none z-0">
+<span class="absolute -top-4 right-0 font-label-sm text-[10px] text-secondary font-medium bg-surface-container-lowest px-1 rounded">เฉลี่ย 127.6</span>
+</div>
+<!-- Bar 1: มิ.ย. (120 หน่วย) -> ~70% -->
+<div class="flex-1 flex flex-col items-center h-full justify-end z-10 group">
+<span class="font-label-sm text-[11px] font-semibold text-on-surface-variant mb-1 group-hover:text-primary transition-colors">120</span>
+<div class="w-full max-w-[36px] bg-secondary-container rounded-t-lg transition-all duration-300 hover:bg-primary-fixed" style="height: 65%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-2 font-medium">มิ.ย.</span>
+</div>
+<!-- Bar 2: ก.ค. (135 หน่วย) -> ~80% -->
+<div class="flex-1 flex flex-col items-center h-full justify-end z-10 group">
+<span class="font-label-sm text-[11px] font-semibold text-on-surface-variant mb-1 group-hover:text-primary transition-colors">135</span>
+<div class="w-full max-w-[36px] bg-secondary-container rounded-t-lg transition-all duration-300 hover:bg-primary-fixed" style="height: 75%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-2 font-medium">ก.ค.</span>
+</div>
+<!-- Bar 3: ส.ค. (110 หน่วย) -> ~58% -->
+<div class="flex-1 flex flex-col items-center h-full justify-end z-10 group">
+<span class="font-label-sm text-[11px] font-semibold text-on-surface-variant mb-1 group-hover:text-primary transition-colors">110</span>
+<div class="w-full max-w-[36px] bg-secondary-container rounded-t-lg transition-all duration-300 hover:bg-primary-fixed" style="height: 58%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-2 font-medium">ส.ค.</span>
+</div>
+<!-- Bar 4: ก.ย. (125 หน่วย) -> ~72% -->
+<div class="flex-1 flex flex-col items-center h-full justify-end z-10 group">
+<span class="font-label-sm text-[11px] font-semibold text-on-surface-variant mb-1 group-hover:text-primary transition-colors">125</span>
+<div class="w-full max-w-[36px] bg-secondary-container rounded-t-lg transition-all duration-300 hover:bg-primary-fixed" style="height: 70%;"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-2 font-medium">ก.ย.</span>
+</div>
+<!-- Bar 5: ต.ค. (148 หน่วย) Active High -> ~95% -->
+<div class="flex-1 flex flex-col items-center h-full justify-end z-10 group">
+<span class="font-label-sm text-[11px] font-bold text-primary mb-1">148</span>
+<div class="w-full max-w-[36px] bg-primary-container rounded-t-lg shadow-sm" style="height: 92%;"></div>
+<span class="font-label-sm text-label-sm text-primary font-bold mt-2">ต.ค.</span>
+</div>
+</div>
+</div>
+<!-- Metric Explanation Note -->
+<div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant flex items-center justify-between text-body-sm text-body-sm">
+<span class="text-on-surface-variant">เดือน ต.ค. 67 ใช้ไฟเพิ่มขึ้นจาก ก.ย.</span>
+<span class="font-semibold text-amber-700 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+            +23 หน่วย (+18.4%)
+          </span>
+</div>
+</section>
+<!-- 5. READING HISTORY LIST (ตารางประวัติมิเตอร์ย้อนหลัง) -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-title-md text-title-md text-on-surface font-semibold">ประวัติจดมิเตอร์ย้อนหลัง</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 งวดล่าสุด</span>
+</div>
+<!-- History Item 1: ต.ค. 2567 -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-md shadow-sm space-y-3 hover:border-primary-container transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+<span class="font-title-md text-title-md text-on-surface font-bold">งวดเดือน ตุลาคม 2567</span>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+              ชำระแล้ว
+            </span>
+</div>
+<!-- Numbers Breakdown Grid -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-2.5 rounded-xl text-center border border-outline-variant">
+<div>
+<span class="font-label-sm text-[11px] text-outline block">เลขเดิม</span>
+<span class="font-body-md text-body-md font-mono font-semibold text-on-surface">2,150</span>
+</div>
+<div>
+<span class="font-label-sm text-[11px] text-outline block">เลขใหม่</span>
+<span class="font-body-md text-body-md font-mono font-semibold text-primary">2,298</span>
+</div>
+<div>
+<span class="font-label-sm text-[11px] text-outline block">หน่วยที่ใช้</span>
+<span class="font-body-md text-body-md font-mono font-bold text-on-surface">148 น.</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div>
+<span class="font-label-sm text-label-sm text-outline block">ยอดเงินในบิล (8฿/น.)</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">฿1,184</span>
+</div>
+<a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container text-primary hover:bg-surface-container-high border border-outline-variant font-label-md text-label-md font-semibold transition-all" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="receipt_long">receipt_long</span>
+<span>ดูใบแจ้งหนี้</span>
+</a>
+</div>
+</div>
+<!-- History Item 2: ก.ย. 2567 -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-md shadow-sm space-y-3 hover:border-primary-container transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-title-md text-title-md text-on-surface font-bold">งวดเดือน กันยายน 2567</span>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+              ชำระแล้ว
+            </span>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-2.5 rounded-xl text-center border border-outline-variant">
+<div>
+<span class="font-label-sm text-[11px] text-outline block">เลขเดิม</span>
+<span class="font-body-md text-body-md font-mono font-semibold text-on-surface">2,025</span>
+</div>
+<div>
+<span class="font-label-sm text-[11px] text-outline block">เลขใหม่</span>
+<span class="font-body-md text-body-md font-mono font-semibold text-on-surface">2,150</span>
+</div>
+<div>
+<span class="font-label-sm text-[11px] text-outline block">หน่วยที่ใช้</span>
+<span class="font-body-md text-body-md font-mono font-bold text-on-surface">125 น.</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div>
+<span class="font-label-sm text-label-sm text-outline block">ยอดเงินในบิล (8฿/น.)</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">฿1,000</span>
+</div>
+<a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container text-primary hover:bg-surface-container-high border border-outline-variant font-label-md text-label-md font-semibold transition-all" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="receipt_long">receipt_long</span>
+<span>ดูใบแจ้งหนี้</span>
+</a>
+</div>
+</div>
+<!-- History Item 3: ส.ค. 2567 -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant p-space-md shadow-sm space-y-3 hover:border-primary-container transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+<span class="font-title-md text-title-md text-on-surface font-bold">งวดเดือน สิงหาคม 2567</span>
+</div>
+<span class="font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+              ชำระแล้ว
+            </span>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-2.5 rounded-xl text-center border border-outline-variant">
+<div>
+<span class="font-label-sm text-[11px] text-outline block">เลขเดิม</span>
+<span class="font-body-md text-body-md font-mono font-semibold text-on-surface">1,915</span>
+</div>
+<div>
+<span class="font-label-sm text-[11px] text-outline block">เลขใหม่</span>
+<span class="font-body-md text-body-md font-mono font-semibold text-on-surface">2,025</span>
+</div>
+<div>
+<span class="font-label-sm text-[11px] text-outline block">หน่วยที่ใช้</span>
+<span class="font-body-md text-body-md font-mono font-bold text-on-surface">110 น.</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div>
+<span class="font-label-sm text-label-sm text-outline block">ยอดเงินในบิล (8฿/น.)</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">฿880</span>
+</div>
+<a class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container text-primary hover:bg-surface-container-high border border-outline-variant font-label-md text-label-md font-semibold transition-all" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="receipt_long">receipt_long</span>
+<span>ดูใบแจ้งหนี้</span>
+</a>
+</div>
+</div>
+</section>
+<!-- 6. HELPER CALLOUT BOX (กล่องข้อความช่วยเหลือและแจ้งเตือน) -->
+<section class="bg-surface-container-low rounded-2xl border border-outline-variant p-space-md space-y-space-sm">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]" data-icon="help_outline">help_outline</span>
+</div>
+<div class="flex-1 space-y-1">
+<h3 class="font-title-md text-title-md text-on-surface font-semibold">พบข้อมูลไม่ถูกต้อง?</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              หากพบตัวเลขมิเตอร์ไม่ตรงกับหน้าปัดจริง หรือสงสัยว่ามีกระแสไฟฟ้ารั่วผิดปกติ โปรดแจ้งผู้จัดการอาคารทันทีผ่านระบบรับเรื่อง
+            </p>
+</div>
+</div>
+<div class="pt-2 flex gap-2">
+<a class="flex-1 py-2.5 px-3 bg-surface-container-lowest text-primary border border-outline-variant rounded-xl font-label-md text-label-md font-semibold text-center hover:bg-surface-container flex items-center justify-center gap-1.5 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="build">build</span>
+<span>แจ้งซ่อม/ตรวจมิเตอร์</span>
+</a>
+<a class="py-2.5 px-3 bg-surface-container-lowest text-on-surface border border-outline-variant rounded-xl font-label-md text-label-md font-semibold hover:bg-surface-container flex items-center justify-center gap-1 active:scale-95 transition-all" href="tel:020000000">
+<span class="material-symbols-outlined text-[18px]" data-icon="call">call</span>
+<span>นิติบุคคล</span>
+</a>
+</div>
+</section>
+</main>
+<!-- 7. BOTTOM NAVIGATION BAR (Shared Component Execution) -->
+<!-- Destination count: 4, labels: ["หน้าหลัก", "มิเตอร์", "เอกสาร", "แจ้งซ่อม"] -->
+<!-- Current intent: "มิเตอร์" is Active (index 1) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex items-center justify-around px-space-xs py-space-xs bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline pb-safe max-w-md mx-auto right-0 shadow-md">
+<!-- Nav Item 1: หน้าหลัก (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline font-label-sm text-label-sm py-1 px-3 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px] mb-0.5" data-icon="home">home</span>
+<span>หน้าหลัก</span>
+</a>
+<!-- Nav Item 2: มิเตอร์ (ACTIVE - Exact Match Hierarchy) -->
+<!-- Applied style_active_navigation verbatim -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-inverse-primary font-label-sm text-label-sm py-1 px-3 bg-secondary-container dark:bg-on-secondary-container rounded-full active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px] mb-0.5" data-icon="speed" style="font-variation-settings: 'FILL' 1;">speed</span>
+<span class="font-bold">มิเตอร์</span>
+</a>
+<!-- Nav Item 3: เอกสาร (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline font-label-sm text-label-sm py-1 px-3 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px] mb-0.5" data-icon="description">description</span>
+<span>เอกสาร</span>
+</a>
+<!-- Nav Item 4: แจ้งซ่อม (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline font-label-sm text-label-sm py-1 px-3 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[22px] mb-0.5" data-icon="build">build</span>
+<span>แจ้งซ่อม</span>
+</a>
+</nav>
+<!-- EXPANDED PHOTO MODAL DIALOG (Interactive preview of real meter photograph) -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in" id="photo-modal">
+<div class="bg-surface-container-lowest rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl border border-outline-variant flex flex-col">
+<div class="p-3 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="photo_camera">photo_camera</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">ภาพถ่ายหน้าปัดมิเตอร์จริง</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('photo-modal').classList.add('hidden')">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+</div>
+<div class="p-4 space-y-3">
+<div class="rounded-xl overflow-hidden border border-outline-variant bg-black">
+<img class="w-full h-64 object-contain" data-alt="High resolution realistic macro photograph of an apartment electricity meter reader display showing analog rolling digits reading 02298. Clearly visible serial number plaque of Sirisuk Place Room 205 under bright inspectorial flashlight illumination." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoW83SHcnw06allNB1E1gbgDdlQgoADpTW-qc91EoCdOnmODFGRayJ9UL_epddJjRe47pvIBgavMWX7GCVpgIgIz_DK34JefO9g_B3bey1zKuIRVkJ7cSUovdz5Jy2_Sdm-OAAsNSPBcXGhNhSg5W6K6jTmJxMfSbLzgnQLHWb2bH-izPrzzR7cJcYhRsgoL48v2Df3MiIn2nGChW-4U7vUe9IjqeNaMrZUwsy5eJsBTsNfgRzpP-bOg"/>
+</div>
+<div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant text-body-sm space-y-1">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">เลขอ่านได้:</span>
+<span class="font-mono font-bold text-primary text-base">02,298 kWh</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">รหัสมิเตอร์:</span>
+<span class="font-mono text-on-surface">EM-402-B2</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">บันทึกเมื่อ:</span>
+<span class="text-on-surface">28 ต.ค. 2567 • 10:14 น.</span>
+</div>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low border-t border-outline-variant flex justify-end">
+<button class="w-full py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-semibold active:scale-95 transition-all" onclick="document.getElementById('photo-modal').classList.add('hidden')">
+            ปิดหน้าต่าง
+          </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>
