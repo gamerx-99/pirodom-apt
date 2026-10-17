@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Badge, Card, EmptyState } from "@/app/components/ui";
 import LiffNav from "./components/nav";
 import { INVOICE_STATUS_LABEL, MAINT_STATUS_LABEL } from "@/lib/mock";
-import { formatTHB } from "@/lib/format";
+import { formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib/format";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 
@@ -104,8 +104,8 @@ export default async function Page() {
                 <Link href={`/liff/bills/${b.id}`} className="hover:underline">
                   {String(b.period).slice(0, 7)} · {formatTHB(Number(b.total))}
                 </Link>
-                <Badge tone={b.status === "overdue" ? "red" : "amber"}>
-                  {INVOICE_STATUS_LABEL[b.status as keyof typeof INVOICE_STATUS_LABEL] ?? b.status}
+                <Badge tone={invoiceStatusForDisplay(b.status, b.due_date, todayTH()) === "overdue" ? "red" : "amber"}>
+                  {INVOICE_STATUS_LABEL[invoiceStatusForDisplay(b.status, b.due_date, todayTH()) as keyof typeof INVOICE_STATUS_LABEL] ?? b.status}
                 </Badge>
               </li>
             ))}

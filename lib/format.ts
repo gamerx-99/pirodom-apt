@@ -31,3 +31,9 @@ export function todayTH(): string {
     day: "2-digit",
   }).format(new Date());
 }
+
+/** An issued invoice becomes overdue only after its recorded due date has passed. */
+export function invoiceStatusForDisplay(status: string, dueDate: string, today = todayTH()): string {
+  if (status === "issued" && dueDate < today) return "overdue";
+  return status;
+}

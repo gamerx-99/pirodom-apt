@@ -45,7 +45,7 @@ next-env.d.ts
 supabase/.temp
  
  # temp work files
- tmp/
+tmp/
 
 # word/excel lock files
 ~$*

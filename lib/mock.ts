@@ -24,6 +24,7 @@ export type PaymentStatus =
   | "slipok_passed"
   | "slipok_failed"
   | "mismatch"
+  | "pending_review"
   | "approved"
   | "rejected";
 
@@ -121,7 +122,7 @@ export const INVOICE_STATUS_LABEL: Record<InvoiceStatus, string> = {
   verifying: "รอตรวจสลิป",
   pending_review: "รอเจ้าหน้าที่ตรวจ",
   paid: "ชำระแล้ว",
-  overdue: "เกินกำหนด",
+  overdue: "ค้างค่าชำระ",
   void: "ยกเลิก",
 };
 
@@ -130,6 +131,7 @@ export const PAYMENT_STATUS_LABEL: Record<PaymentStatus, string> = {
   slipok_passed: "ตรวจผ่าน",
   slipok_failed: "ตรวจไม่ผ่าน",
   mismatch: "ข้อมูลไม่ตรง",
+  pending_review: "รอเจ้าหน้าที่ตรวจ",
   approved: "อนุมัติแล้ว",
   rejected: "ปฏิเสธแล้ว",
 };
