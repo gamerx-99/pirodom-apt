@@ -103,7 +103,10 @@ assert.equal((await as(C, "select id from maintenance_requests")).rows.length, 1
 await rejects(as(A, "insert into maintenance_requests (room_id, category) values ('10000000-0000-0000-0000-000000000002', 'ไฟฟ้า')"), /row-level security/);
 
 // กันสร้างบิลซ้ำ (lease_id, period)
-await rejects(db.exec("insert into invoices (lease_id, period, due_date) values ('20000000-0000-0000-0000-000000000001', '2026-12-01', '2026-11-30')"), /duplicate key/);
+ await rejects(db.exec("insert into invoices (lease_id, period, due_date) values ('20000000-0000-0000-0000-000000000001', '2026-12-01', '2026-11-30')"), /duplicate key/);
+ // Phase 1: 1 ห้องมี active lease ได้ฉบับเดียว + คำเชิญเพิกถอนได้
+ await rejects(db.exec("insert into leases (room_id, start_date, rent_amount, due_day) values ('10000000-0000-0000-0000-000000000001', '2026-11-01', 3500, 31)"), /duplicate key/);
+ await db.exec("insert into room_invitations (lease_id, token_hash, expires_at, revoked_at) values ('20000000-0000-0000-0000-000000000001', 'revoked-hash', now() + interval '7 days', now())");
 
 // ---------- storage.objects: path ต้องตรงกับสิทธิ์ ----------
 // slips/<lease_id>/<invoice_id>/<file> — tenant อ่าน/อัปโหลดเฉพาะบิลตัวเอง

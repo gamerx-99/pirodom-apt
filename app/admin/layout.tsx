@@ -1,3 +1,5 @@
+ // หน้านี้อ่าน session ทุก request — ยกเว้น static-shell validation (Cache Components)
+ export const instant = false;
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
