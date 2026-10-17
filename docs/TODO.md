@@ -77,7 +77,7 @@
 - [x] หน้าจดมิเตอร์หลายห้อง + แนบรูป + ตรวจเลขลดลง/ใช้ผิดปกติ — [`app/admin/meters/`](../app/admin/meters/page.tsx) — โค้ดและ migration อยู่ใน commit `c9b2112`; มีชุด `supabase/tests/path-a.test.mjs`; ยังไม่ใช่หลักฐาน UAT บนอุปกรณ์/Cloud
 - [ ] กติกา Q-03–Q-05 สำหรับรอบอัตโนมัติและกรณีพิเศษ — วัน/ช่วงอ่านมิเตอร์เลือกต่อบิลได้; เดือนแรก/สุดท้ายไม่เฉลี่ยและไม่สร้างร่างถ้าไม่เต็มเดือน; ค่าปรับยังไม่คำนวณอัตโนมัติ; ยอดจ่ายบางส่วน/เกินยังไม่รองรับ
 - [x] เอนจินฝั่ง Server สร้างบิลร่างเต็มเดือน: ค่าเช่า + น้ำเหมาจ่าย + หน่วยไฟ×อัตรา + รายการเพิ่ม − ส่วนลดที่ผู้ดูแลกรอกเอง — [`app/admin/billing/actions.ts`](../app/admin/billing/actions.ts)
-- [x] เก็บ snapshot รายการในบิล; migration เพิ่มการอ้างอิงแถวมิเตอร์และล็อกยอด/รายการหลังออกบิล — `20261018000003_billing_snapshots.sql` (ยังไม่ apply กับ Cloud)
+- [x] เก็บ snapshot รายการในบิล; migration เพิ่มการอ้างอิงแถวมิเตอร์และล็อกยอด/รายการหลังออกบิล — `20261018000003_billing_snapshots.sql` (apply กับ Cloud แล้ว)
 - [x] ตรวจยอดรวมและออกบิลจากร่างด้วยมือ, unique lease/period กันซ้ำ, audit log, ล็อกบิลชำระแล้ว; `mark-overdue` อัปเดตสถานะหลังพ้นวันครบกำหนดโดยไม่คิดค่าปรับ
 - [x] Admin แสดงบิลจริงและ LIFF อ่านรายละเอียดรายการจาก Supabase — [`app/admin/billing/`](../app/admin/billing/page.tsx), [`app/liff/bills/`](../app/liff/bills)
 
@@ -88,12 +88,12 @@
 - [x] Adapter SlipOK ฝั่ง Server — [`app/api/slipok/verify/route.ts`](../app/api/slipok/verify/route.ts); ผลไม่ตรง/ตรวจไม่ได้เข้าคิวตรวจมือ; รอ credentials และตรวจบัญชีจริง
 - [ ] QR PromptPay ตามบัญชีรับเงินที่ยืนยัน — โค้ดเสร็จ รอตรวจ: [`lib/promptpay.ts`](../lib/promptpay.ts) (EMVCo + CRC, เทสต์ `tests/promptpay.test.mjs`) แสดงบนหน้าบิลที่รอชำระ; เลขรับเงินจาก env `PROMPTPAY_ID`/`PROMPTPAY_ACCOUNT_NAME` เท่านั้น ไม่ตั้ง = แสดง "รอข้อมูลบัญชีรับเงิน" — ยังต้องยืนยันบัญชีจริงและสแกนทดสอบกับแอปธนาคาร `รอข้อมูล (Q-06)`
 - [x] อัปโหลดสลิป → Private Storage + ตรวจชนิดไฟล์/ขนาดฝั่ง Server (รูป 4 MB)
-- [x] เทียบยอดและ reference; unique reference + unique open payment + RPC transaction กันอนุมัติซ้ำ — migration `20261018000004_payment_workflow.sql` (ยังไม่ apply)
+- [x] เทียบยอดและ reference; unique reference + unique open payment + RPC transaction กันอนุมัติซ้ำ — migration `20261018000004_payment_workflow.sql` (apply กับ Cloud แล้ว)
 - [x] คิวตรวจแอดมิน: อนุมัติยอดเต็ม/ปฏิเสธพร้อมเหตุผล + audit log — [`app/admin/payments/`](../app/admin/payments/page.tsx)
 - [x] Provider ล่ม/ไม่มี env/ข้อมูลไม่ตรง → pending/manual review; ห้าม auto mark paid
-- [x] **[P1 โค้ดในเครื่อง; ผู้ใช้สั่งแก้ต่อ]** กู้คืนจาก `payment_verifications` ของรายการเดิมโดยไม่อัปโหลดหรือเรียก SlipOK ซ้ำ; สถานะ payment/บิล/audit บันทึกใน transaction เดียว และยังให้แอดมินตรวจยืนยันก่อน paid — ดู [การเก็บสลิปและแจ้งเตือน](PAYMENT-RECOVERY.md); migration `20261018000006` ยังไม่ apply บน Cloud
-- [x] เก็บรายการสลิป/ผู้ส่ง/log ใน Database และรูปใน Private Storage; แจ้งเตือนเว็บแอดมินพร้อมห้อง/งวดและลิงก์ไปคิวตรวจ อัปเดตทุก 15 วินาทีขณะเปิดหน้า — โค้ดในเครื่อง; ยังไม่ใช่ live UAT
-- [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — สถานะรายการแสดงบน LIFF แล้ว; LINE push หลังอนุมัติ/ปฏิเสธ โค้ดเสร็จ รอตรวจ: [`lib/notify.ts`](../lib/notify.ts) ส่งหลังงานเงินสำเร็จเท่านั้น ไม่ throw, ไม่ส่งซ้ำ (unique), เก็บผล sent/failed/skipped ใน `notifications` (migration `20261018000007` ยังไม่ apply); ไม่มี token = skipped; ยังไม่มี retry อัตโนมัติ — ส่งจริงรอ LINE OA (Q-06)
+- [x] กู้คืนจาก `payment_verifications` ของรายการเดิมโดยไม่อัปโหลดหรือเรียก SlipOK ซ้ำ; สถานะ payment/บิล/audit บันทึกใน transaction เดียว และยังให้แอดมินตรวจยืนยันก่อน paid — ดู [การเก็บสลิปและแจ้งเตือน](PAYMENT-RECOVERY.md); migration `20261018000006` apply กับ Cloud แล้ว
+- [x] เก็บรายการสลิป/ผู้ส่ง/log ใน Database และรูปใน Private Storage; แจ้งเตือนเว็บแอดมินพร้อมห้อง/งวดและลิงก์ไปคิวตรวจ อัปเดตทุก 15 วินาทีขณะเปิดหน้า — migrations apply แล้ว; ยังไม่ใช่ live UAT
+- [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — LINE push หลังอนุมัติ/ปฏิเสธ โค้ดและ migration `20261018000007` ลง Cloud แล้ว; ยังรอ UAT LINE จริง ไม่มี retry อัตโนมัติ
 
 **เกณฑ์จบ:** ยังไม่ผ่าน — migrations apply แล้ว แต่ยังไม่มี end-to-end UAT กับ SlipOK/บัญชีรับเงินจริง และยังไม่ได้ทดสอบ LINE notification กับผู้เช่าจริง
 
@@ -148,7 +148,7 @@
 | วันที่ | สิ่งที่ตรวจ | ผล |
 |---|---|---|
 | 2026-10-16 | ตรวจครั้งแรกตาม ROADMAP §7 | test/typecheck/lint ผ่าน (commit `1a93b88`) |
- | 2026-10-17 | `npm run typecheck` · `npm run lint` · `npm run build` (working tree ล่าสุด) | ผ่าน — ไม่ได้รัน test suite; migrations ยังไม่ apply และไม่มีการทดสอบ end-to-end บน Cloud/อุปกรณ์จริง |
- | 2026-10-17 (เย็น) | ข้อ 0 ครบ + Phase 1 โค้ดครบ (rooms/leases/invites/join/dashboard) + `npm run build` ครั้งแรก | test/typecheck/lint/build ผ่านทั้งหมด — รอทดสอบกับ Supabase จริง + UAT |
+| 2026-10-17 | `npm run typecheck` · `npm run lint` · `npm run build` (working tree ก่อนหน้า) | ผ่าน — ตอนนั้นไม่ได้รัน test suite; migrations ยังไม่ apply และไม่มีการทดสอบ end-to-end บน Cloud/อุปกรณ์จริง |
+| 2026-10-17 (เย็น) | ข้อ 0 ครบ + Phase 1 โค้ดครบ (rooms/leases/invites/join/dashboard) + `npm run build` ครั้งแรก | test/typecheck/lint/build ผ่านทั้งหมด — หลักฐานตามเวลานั้น; ดู [Cloud migration release evidence](SUPABASE-RELEASE-20261017.md) สำหรับสถานะปัจจุบัน |
 | 2026-10-17 (หลักฐาน flow ลิงก์เดิม) | ผู้ใช้ยืนยันเพื่อนรับลิงก์ด้วย LINE ต่างบัญชี เห็นห้อง/สัญญาจริง และคำเชิญขึ้นใช้แล้ว | เป็นหลักฐานย้อนหลังเท่านั้น; flow ปัจจุบันเปลี่ยนเป็น Bot code และต้อง UAT ใหม่ |
-| 2026-10-17 (เปลี่ยนวิธีเชิญ) | แอดมินออกรหัส 12 ตัวเก็บเฉพาะ hash; LINE webhook ตรวจ signature รับ code ผ่านข้อความส่วนตัวและผูกบัญชีด้วย RPC `accept_invite_code`; API ลิงก์เก่า 410 | โค้ด commit `b258580`; Cloud migration apply และตรวจ ledger/RPC แล้ว; ยังไม่ทดสอบ LINE จริง |
+| 2026-10-17 (เปลี่ยนวิธีเชิญ) | แอดมินออกรหัส 12 ตัวเก็บเฉพาะ hash; LINE webhook ตรวจ signature รับ code ผ่านข้อความส่วนตัวและผูกบัญชีด้วย RPC `accept_invite_code`; API ลิงก์เก่า 410 | โค้ด commit `b258580`; Cloud migration apply และตรวจ ledger/RPC แล้ว; ยังไม่ทดสอบ LINE จริง; ดู [หลักฐาน Cloud](SUPABASE-RELEASE-20261017.md) |

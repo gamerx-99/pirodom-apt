@@ -15,7 +15,7 @@ function loadTs(path, mocks) {
   return loaded.exports;
 }
 
-function makeAdmin({ used = false, revoked = false, profile = null, accept = true } = {}) {
+function makeAdmin({ used = false, expired = false, revoked = false, profile = null, accept = true, auditInsertFailures = 0 } = {}) {
   const calls = { insertedProfiles: [], audits: [], rpc: [] };
   const admin = {
     auth: { admin: {
@@ -32,16 +32,23 @@ function makeAdmin({ used = false, revoked = false, profile = null, accept = tru
         insert(value) { op = 'insert'; values = value; return query; },
         update(value) { op = 'update'; values = value; return query; },
         async maybeSingle() {
-          if (table === 'room_invitations') return { data: { id: 'invite-1', expires_at: new Date(Date.now() + 60_000).toISOString(), used_at: used ? new Date().toISOString() : null, revoked_at: revoked ? new Date().toISOString() : null }, error: null };
+          if (table === 'room_invitations') return { data: { id: 'invite-1', expires_at: new Date(Date.now() + (expired ? -60_000 : 60_000)).toISOString(), used_at: used ? new Date().toISOString() : null, revoked_at: revoked ? new Date().toISOString() : null }, error: null };
           if (table === 'profiles' && filters.line_user_id === 'U-TENANT') return { data: profile, error: null };
           if (table === 'profiles' && filters.id === 'tenant-auth-id') return { data: null, error: null };
           if (table === 'leases') return { data: { status: 'active' }, error: null };
+          if (table === 'audit_logs') return { data: calls.audits.find(row => row.actor_id === filters.actor_id && row.action === filters.action && row.record_id === filters.record_id) ?? null, error: null };
           if (table === 'rooms') return { data: { room_no: '101' }, error: null };
           throw new Error(`unexpected maybeSingle ${table} ${JSON.stringify(filters)}`);
         },
         then(resolve, reject) {
           if (table === 'profiles' && op === 'insert') calls.insertedProfiles.push(values);
-          if (table === 'audit_logs' && op === 'insert') calls.audits.push(values);
+          if (table === 'audit_logs' && op === 'insert') {
+            if (auditInsertFailures > 0) {
+              auditInsertFailures -= 1;
+              return Promise.resolve({ data: null, error: new Error('audit insert failed') }).then(resolve, reject);
+            }
+            calls.audits.push(values);
+          }
           return Promise.resolve({ data: null, error: null }).then(resolve, reject);
         },
       };
@@ -101,6 +108,23 @@ test('used code cannot bind a different LINE account, and linked profile role/ph
   assert.equal(linked.calls.rpc[0].args.p_display_name, 'Saved Name');
   assert.equal(linked.calls.rpc[0].args.p_phone, '0800000000');
   assert.equal(linked.calls.insertedProfiles.length, 0);
+});
+
+test('same-user webhook retry succeeds after code expiry and retries a failed audit insert once', async () => {
+  const { acceptInviteCodeFromLine } = loadInviteService();
+  const { admin, calls } = makeAdmin({
+    used: true,
+    expired: true,
+    auditInsertFailures: 1,
+    profile: { id: 'tenant-existing', line_user_id: 'U-TENANT', display_name: 'Saved Name', phone: null, role: 'tenant' },
+  });
+  const input = { code: 'ABCDEFGH2345', lineUserId: 'U-TENANT', lineName: 'Tenant' };
+  await assert.rejects(acceptInviteCodeFromLine(admin, input), /บันทึกประวัติการผูกบัญชีไม่สำเร็จ/);
+  assert.deepEqual(await acceptInviteCodeFromLine(admin, input), { ok: true, displayName: 'Saved Name', roomNo: '101' });
+  assert.deepEqual(await acceptInviteCodeFromLine(admin, input), { ok: true, displayName: 'Saved Name', roomNo: '101' });
+  assert.equal(calls.rpc.length, 3);
+  assert.equal(calls.audits.length, 1);
+  assert.equal(calls.audits[0].record_id, 'invite-1');
 });
 
 test('webhook verifies the signature before processing, then replies to the sender of a private text', async () => {

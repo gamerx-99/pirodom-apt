@@ -87,12 +87,15 @@ export async function acceptInviteCodeFromLine(
   // Used codes may be retried by the same LINE account after a webhook redelivery.
   const { data: existing, error: existingError } = await admin.from("profiles").select("id,line_user_id").eq("line_user_id", input.lineUserId).maybeSingle();
   if (existingError) throw new Error("อ่านบัญชี LINE ไม่สำเร็จ");
-  if (invite.revoked_at) return { ok: false, code: "revoked" };
-  if (invite.expires_at && new Date(invite.expires_at as string).getTime() < Date.now()) return { ok: false, code: "expired" };
-  if (invite.used_at && !existing) return { ok: false, code: "already_used" };
-  const { data: lease, error: leaseError } = await admin.from("leases").select("status").eq("id", invite.lease_id).maybeSingle();
-  if (leaseError) throw new Error("ตรวจสัญญาไม่สำเร็จ");
-  if (lease?.status !== "active") return { ok: false, code: "lease_closed" };
+  const isRetry = Boolean(invite.used_at);
+  if (isRetry && !existing) return { ok: false, code: "already_used" };
+  if (!isRetry) {
+    if (invite.revoked_at) return { ok: false, code: "revoked" };
+    if (invite.expires_at && new Date(invite.expires_at as string).getTime() < Date.now()) return { ok: false, code: "expired" };
+    const { data: lease, error: leaseError } = await admin.from("leases").select("status").eq("id", invite.lease_id).maybeSingle();
+    if (leaseError) throw new Error("ตรวจสัญญาไม่สำเร็จ");
+    if (lease?.status !== "active") return { ok: false, code: "lease_closed" };
+  }
 
   const profile = await getOrCreateLineProfile(admin, input.lineUserId, input.lineName);
   const { data: result, error } = await admin.rpc("accept_invite_code", {
@@ -118,13 +121,25 @@ export async function acceptInviteCodeFromLine(
     }
     throw new Error("ผูกบัญชีผู้เช่าไม่สำเร็จ");
   }
-  await admin.from("audit_logs").insert({
+  const audit = {
     actor_id: profile.id,
     action: "invite.accept.line_bot",
-    table_name: "lease_tenants",
-    record_id: String(row.out_lease_id),
-    after: { lease_id: String(row.out_lease_id) },
-  });
+    table_name: "room_invitations",
+    record_id: String(invite.id),
+  };
+  const { data: priorAudit, error: auditLookupError } = await admin.from("audit_logs").select("id")
+    .eq("actor_id", audit.actor_id)
+    .eq("action", audit.action)
+    .eq("record_id", audit.record_id)
+    .maybeSingle();
+  if (auditLookupError) throw new Error("บันทึกประวัติการผูกบัญชีไม่สำเร็จ");
+  if (!priorAudit) {
+    const { error: auditInsertError } = await admin.from("audit_logs").insert({
+      ...audit,
+      after: { lease_id: String(row.out_lease_id), profile_id: profile.id },
+    });
+    if (auditInsertError) throw new Error("บันทึกประวัติการผูกบัญชีไม่สำเร็จ");
+  }
   const { data: room } = await admin.from("rooms").select("room_no").eq("id", String(row.out_room_id)).maybeSingle();
   return { ok: true, displayName: profile.displayName, roomNo: (room?.room_no as string | undefined) ?? null };
 }
