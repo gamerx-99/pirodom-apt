@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { todayTH } from "@/lib/format";
 import {
   audit,
   generateInviteToken,
@@ -75,10 +76,14 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
    const id = String(form.get("id") ?? "");
    if (!id) throw new Error("ไม่พบ id สัญญา");
    const admin = createAdminClient();
-   const { data: lease } = await admin.from("leases").select("id,room_id,status").eq("id", id).maybeSingle();
+   const { data: lease } = await admin.from("leases").select("id,room_id,status,start_date").eq("id", id).maybeSingle();
    if (!lease) throw new Error("ไม่พบสัญญานี้");
    if (lease.status !== "active") throw new Error("สัญญานี้ปิดไปแล้ว");
-   const today = new Date().toISOString().slice(0, 10);
+   // วันที่ตามเวลาไทย ไม่ใช่ UTC (toISOString คืนวันก่อนหน้า 1 วันช่วง 00:00–07:00)
+   const today = todayTH();
+   if (today < lease.start_date) {
+     throw new Error("สัญญานี้ยังไม่เริ่ม — ตั้งวันเริ่มสัญญาให้ถูกก่อนปิด");
+   }
    const { error } = await admin.from("leases").update({ status: "ended", end_date: today }).eq("id", id).eq("status", "active");
    if (error) throw new Error(`ปิดสัญญาไม่สำเร็จ: ${error.message}`);
    // เพิกถอนคำเชิญค้าง (ใช้ครั้งเดียวอยู่แล้ว + กันลิงก์เก่าถูกกดหลังย้ายออก)
@@ -141,8 +146,54 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
    const profile_id = String(form.get("profile_id") ?? "");
    if (!lease_id || !profile_id) throw new Error("ข้อมูลไม่ครบ");
    const admin = createAdminClient();
+   const { data: target } = await admin
+     .from("lease_tenants")
+     .select("is_primary")
+     .eq("lease_id", lease_id)
+     .eq("profile_id", profile_id)
+     .maybeSingle();
+   if (!target) throw new Error("ไม่พบผู้เช่าคนนี้ในสัญญา");
+   if (target.is_primary) {
+     const { count } = await admin
+       .from("lease_tenants")
+       .select("profile_id", { count: "exact", head: true })
+       .eq("lease_id", lease_id);
+     if ((count ?? 0) <= 1) {
+       throw new Error("ผู้เช่าหลักคนสุดท้ายของสัญญาถอนไม่ได้ — ใช้ปิดสัญญาแทน");
+     }
+   }
    const { error } = await admin.from("lease_tenants").delete().eq("lease_id", lease_id).eq("profile_id", profile_id);
    if (error) throw new Error(`ถอนสิทธิ์ไม่สำเร็จ: ${error.message}`);
    await audit(admin, { actor_id: userId, action: "lease.unbind", table_name: "lease_tenants", after: { lease_id, profile_id } });
+   revalidatePath("/admin/leases");
+ }
+
+ // เปลี่ยนผู้เช่าหลัก (ROADMAP Phase 1: จัดการผู้เช่าร่วมและผู้เช่าหลัก) — มีหลักได้คนเดียวต่อสัญญา
+ export async function setPrimaryTenant(form: FormData): Promise<void> {
+   const supabase = await createClient();
+   const { userId } = await requireStaff(supabase);
+   const lease_id = String(form.get("lease_id") ?? "");
+   const profile_id = String(form.get("profile_id") ?? "");
+   if (!lease_id || !profile_id) throw new Error("ข้อมูลไม่ครบ");
+   const admin = createAdminClient();
+   const { data: target } = await admin
+     .from("lease_tenants")
+     .select("lease_id")
+     .eq("lease_id", lease_id)
+     .eq("profile_id", profile_id)
+     .maybeSingle();
+   if (!target) throw new Error("ผู้คนนี้ไม่ได้อยู่ในสัญญานี้");
+   const { error: clearError } = await admin
+     .from("lease_tenants")
+     .update({ is_primary: false })
+     .eq("lease_id", lease_id);
+   if (clearError) throw new Error(`เปลี่ยนผู้เช่าหลักไม่สำเร็จ: ${clearError.message}`);
+   const { error: setError } = await admin
+     .from("lease_tenants")
+     .update({ is_primary: true })
+     .eq("lease_id", lease_id)
+     .eq("profile_id", profile_id);
+   if (setError) throw new Error(`เปลี่ยนผู้เช่าหลักไม่สำเร็จ: ${setError.message}`);
+   await audit(admin, { actor_id: userId, action: "lease.set_primary", table_name: "lease_tenants", after: { lease_id, profile_id } });
    revalidatePath("/admin/leases");
  }

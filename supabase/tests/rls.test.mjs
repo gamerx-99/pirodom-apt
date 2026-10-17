@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 
 const db = new PGlite();
 await db.exec(`
-  create role anon nologin; create role authenticated nologin;
+  create role anon nologin; create role authenticated nologin; create role service_role nologin;
   create schema auth; create schema storage;
   create table auth.users (id uuid primary key);
   create function auth.uid() returns uuid language sql stable as
@@ -19,6 +19,9 @@ await db.exec(`
     owner uuid,
     created_at timestamptz default now()
   );
+  -- บน Supabase โฮสต์ storage.objects เปิด RLS อยู่แล้ว (migration ห้ามสั่ง enable เอง
+  -- เพราะไม่ได้เป็นเจ้าของตาราง) ชุดทดสอบต้องจำลองสภาพนั้นเอง
+  alter table storage.objects enable row level security;
   grant usage on schema public, auth, storage to anon, authenticated;
   alter default privileges in schema public grant all on tables to anon, authenticated;
   alter default privileges in schema storage grant all on tables to anon, authenticated;
@@ -145,5 +148,85 @@ assert.equal((await as(A, "select id from storage.objects where bucket_id = 'mai
 await rejects(as(B, `insert into storage.objects (bucket_id, name) values
   ('maintenance', '10000000-0000-0000-0000-000000000001/${maintId}/other.jpg')`), /row-level security/);
 assert.equal((await as(B, "select id from storage.objects where bucket_id = 'maintenance'")).rows.length, 0);
+
+// ---------- accept_invite: ลิงก์เชิญรับได้ครั้งเดียว ----------
+const D = "00000000-0000-0000-0000-00000000000d";
+const E = "00000000-0000-0000-0000-00000000000e";
+const GHOST = "00000000-0000-0000-0000-0000000000ff";
+await db.exec(`
+  insert into auth.users values ('${D}'), ('${E}');
+  insert into profiles (id, role) values ('${D}', 'tenant'), ('${E}', 'admin');
+  insert into room_invitations (lease_id, token_hash, expires_at) values
+    ('20000000-0000-0000-0000-000000000001', 'hash-ok', now() + interval '7 days'),
+    ('20000000-0000-0000-0000-000000000002', 'hash-expired', now() - interval '1 day'),
+    ('20000000-0000-0000-0000-00000000000c', 'hash-ended', now() + interval '7 days');
+`);
+
+const accept = (hash, uid, name = "ผู้เช่า", phone = "0812345678") =>
+  db.query(
+    "select * from public.accept_invite($1, $2, $3, $4)",
+    [hash, uid, name, phone],
+  );
+const codeOf = (r) => r.rows[0].code;
+
+// ผู้ใช้คนแรกได้ผูกสัญญาและกินคำเชิญ
+const first = await accept("hash-ok", D);
+assert.equal(codeOf(first), "ok");
+assert.equal(first.rows[0].ok, true);
+assert.equal(first.rows[0].out_room_id, "10000000-0000-0000-0000-000000000001");
+assert.equal(
+  (await db.query("select used_by::text as u from room_invitations where token_hash = 'hash-ok'")).rows[0].u,
+  D,
+);
+// A เป็นผู้เช่าหลักของสัญญานี้อยู่แล้ว ผู้ที่มาตามคำเชิญจึงได้ is_primary = false
+assert.equal((await db.query("select is_primary from lease_tenants where profile_id = $1", [D])).rows[0].is_primary, false);
+
+// สัญญาที่ยังไม่มีสมาชิก: คนแรกที่รับคำเชิญได้เป็นผู้เช่าหลัก
+const J = "00000000-0000-0000-0000-0000000000a0";
+await db.exec(`
+  insert into auth.users values ('${J}');
+  insert into profiles (id, role) values ('${J}', 'tenant');
+  insert into rooms (id, room_no, unit_type) values
+    ('10000000-0000-0000-0000-000000000009', '999', 'commercial');
+  insert into leases (id, room_id, start_date, rent_amount, due_day) values
+    ('20000000-0000-0000-0000-000000000009', '10000000-0000-0000-0000-000000000009', '2026-10-01', 5000, 31);
+  insert into room_invitations (lease_id, token_hash, expires_at) values
+    ('20000000-0000-0000-0000-000000000009', 'hash-fresh', now() + interval '7 days');
+`);
+await accept("hash-fresh", J);
+assert.equal((await db.query("select is_primary from lease_tenants where profile_id = $1", [J])).rows[0].is_primary, true);
+
+// ผู้ใช้คนที่สอง (แม้เป็น admin) ถูกปฏิเสธ และไม่ได้ผูกสัญญา — นี่คือเคสที่เดิมพลิกเพี้ยน
+const second = await accept("hash-ok", E);
+assert.equal(codeOf(second), "already_used");
+assert.equal(second.rows[0].ok, false);
+assert.equal(
+  (await db.query("select count(*)::int as n from lease_tenants where profile_id = $1", [E])).rows[0].n,
+  0,
+);
+
+// กดซ้ำคนเดิม → สำเร็จแบบ idempotent ไม่กินคำเชิญเพิ่ม ไม่ซ้ำ
+const repeat = await accept("hash-ok", D);
+assert.equal(codeOf(repeat), "ok");
+assert.equal((await db.query("select count(*)::int as n from lease_tenants where lease_id = '20000000-0000-0000-0000-000000000001'")).rows[0].n, 2);
+
+// token ผิด / หมดอายุ / เพิกถอน / สัญญาปิด
+assert.equal(codeOf(await accept("hash-nope", E)), "invalid_token");
+assert.equal(codeOf(await accept("hash-expired", E)), "expired");
+assert.equal(codeOf(await accept("revoked-hash", E)), "revoked");
+assert.equal(codeOf(await accept("hash-ended", E)), "lease_closed");
+assert.equal((await db.query("select count(*)::int as n from lease_tenants where profile_id = $1", [E])).rows[0].n, 0);
+
+// ผูกไม่สำเร็จ → ต้องไม่เหลือ used_at ค้าง (rollback ทั้งฟังก์ชัน)
+await db.exec("insert into room_invitations (lease_id, token_hash, expires_at) values ('20000000-0000-0000-0000-000000000002', 'hash-rollback', now() + interval '7 days')");
+await rejects(accept("hash-rollback", GHOST), /foreign key/);
+assert.equal(
+  (await db.query("select count(*)::int as n from room_invitations where token_hash = 'hash-rollback' and used_at is not null")).rows[0].n,
+  0,
+);
+assert.equal(codeOf(await accept("hash-rollback", E)), "ok");
+
+// role ของผู้เชิญเดิมต้องไม่ถูกทับด้วยการรับคำเชิญ
+assert.equal((await db.query("select role from profiles where id = $1", [E])).rows[0].role, "admin");
 
 console.log("rls.test: all passed");

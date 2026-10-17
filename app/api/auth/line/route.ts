@@ -3,6 +3,21 @@ import { createClient } from "@/lib/supabase/server";
 import { getEnv, isSupabaseAdminConfigured, isSupabaseConfigured, notConfiguredResponse } from "@/lib/env";
 import { verifyLineIdToken } from "@/lib/line-auth";
 
+type AdminClient = ReturnType<typeof createAdminClient>;
+
+/** ค้น auth user จาก email — listUsers คืนทีละหน้า จึงต้องไล่จนเจอ (ไม่ใช่อ่านหน้าแรกอย่างเดียว) */
+async function findAuthUserByEmail(admin: AdminClient, address: string) {
+  const target = address.toLowerCase();
+  for (let page = 1; page <= 20; page++) {
+    const { data, error } = await admin.auth.admin.listUsers({ page, perPage: 1000 });
+    if (error) throw new Error(error.message);
+    const hit = data.users.find((u) => u.email?.toLowerCase() === target);
+    if (hit) return hit;
+    if (data.users.length < 1000) return null;
+  }
+  return null;
+}
+
 // สะพาน LINE → Supabase session (role คงเดิม ไม่ให้ยกระดับตัวเอง)
 export async function POST(request: Request) {
   if (!isSupabaseConfigured()) {
@@ -63,20 +78,23 @@ export async function POST(request: Request) {
     ]);
     const existing = byLine ?? byId ?? null;
 
-    const userId = existing?.id ?? created.data.user?.id ?? null;
-    // user มีอยู่แล้วแต่ profile ยังไม่มี ให้ค้น id จาก email
-    let resolvedId = userId;
-    if (!resolvedId) {
-      const { data: listed } = await admin.auth.admin.listUsers();
-      resolvedId = listed.users.find((u) => u.email?.toLowerCase() === email)?.id ?? null;
+    // บัญชีที่จะเข้าสู่ระบบต้องเป็นบัญชีเดียวกับ profile ที่ผูก LINE id นี้ไว้
+    // ถ้าผูกไว้กับบัญชีอื่น (เช่น owner ที่สมัครด้วยอีเมล) ต้องออก login link ของบัญชีนั้น
+    // ไม่ใช่ของอีเมลสังเคราะห์ ไม่เช่นนั้น session จะตกไปที่บัญชีที่ไม่ได้ผูกไว้
+    let profileId = existing?.id ?? null;
+    let signInEmail = email;
+    if (byLine) {
+      const { data: linked, error: linkedError } = await admin.auth.admin.getUserById(byLine.id);
+      if (linkedError || !linked.user?.email) {
+        throw new Error(linkedError?.message ?? "อ่านบัญชีที่ผูก LINE ไม่ได้");
+      }
+      signInEmail = linked.user.email;
     }
-    if (!resolvedId) {
+    if (!profileId) {
+      profileId = (await findAuthUserByEmail(admin, email))?.id ?? created.data.user?.id ?? null;
+    }
+    if (!profileId) {
       throw new Error("หา auth user ไม่เจอ");
-    }
-
-    // LINE id นี้ผูกกับบัญชีอื่นอยู่แล้ว — ไม่ย้ายสิทธิ์ให้บัญชีใหม่
-    if (byLine && byLine.id !== resolvedId) {
-      return Response.json({ error: "line_already_linked" }, { status: 409 });
     }
 
     if (existing) {
@@ -88,7 +106,7 @@ export async function POST(request: Request) {
     } else {
       // ตั้ง tenant เฉพาะแถวที่สร้างใหม่ครั้งแรกเท่านั้น
       await admin.from("profiles").insert({
-        id: resolvedId,
+        id: profileId,
         line_user_id: lineUserId,
         display_name: claims.name ?? null,
         role: "tenant",
@@ -98,7 +116,7 @@ export async function POST(request: Request) {
     // verify ฝั่ง server เพื่อตั้ง session cookie
     const { data: link, error: linkError } = await admin.auth.admin.generateLink({
       type: "magiclink",
-      email,
+      email: signInEmail,
     });
     if (linkError || !link.properties.hashed_token) {
       throw new Error(linkError?.message ?? "ออก login link ไม่ได้");
@@ -115,7 +133,7 @@ export async function POST(request: Request) {
     const { data: profile } = await admin
       .from("profiles")
       .select("id, line_user_id, display_name, role")
-      .eq("id", resolvedId)
+      .eq("id", profileId)
       .maybeSingle();
 
     return Response.json({ ok: true, profile });

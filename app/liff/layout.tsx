@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type BridgeState =
   | { status: "loading" }
@@ -10,6 +11,7 @@ type BridgeState =
 
 export default function LiffLayout({ children }: LayoutProps<"/liff">) {
   const liffId = process.env.NEXT_PUBLIC_LIFF_ID;
+  const router = useRouter();
   const [state, setState] = useState<BridgeState>(() =>
     liffId ? { status: "loading" } : { status: "demo" },
   );
@@ -23,7 +25,8 @@ export default function LiffLayout({ children }: LayoutProps<"/liff">) {
         liff.init({ liffId }).then(async () => {
           if (cancelled) return;
           if (!liff.isLoggedIn()) {
-            liff.login();
+            // คืนกลับ URL เดิม เพื่อไม่ให้ token ใน /liff/join/<token> หายตอน login
+            liff.login({ redirectUri: window.location.href });
             return;
           }
           const idToken = liff.getIDToken();
@@ -50,6 +53,8 @@ export default function LiffLayout({ children }: LayoutProps<"/liff">) {
             return;
           }
           setState({ status: "ready" });
+          // เซิร์ฟเวอร์เรนเดอร์หน้านี้ไปก่อนที่ cookie จะมี ให้ดึงใหม่เพื่อได้ข้อมูลจริง
+          router.refresh();
         }),
       )
       .catch((e: Error) => {
@@ -58,7 +63,7 @@ export default function LiffLayout({ children }: LayoutProps<"/liff">) {
     return () => {
       cancelled = true;
     };
-  }, [liffId]);
+  }, [liffId, router]);
 
   if (state.status === "loading") return <p className="p-6">กำลังโหลด...</p>;
   if (state.status === "error")

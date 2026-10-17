@@ -8,7 +8,10 @@
 --   meters/<room_id>/<period YYYY-MM-DD>/<file> (period ตรงกับ meter_readings.period)
 --   maintenance/<room_id>/<request_id>/<file>
 
-alter table storage.objects enable row level security;
+-- หมายเหตุ: ไม่มี `alter table storage.objects enable row level security` ในไฟล์นี้
+-- บน Supabase โฮสต์แล้ว storage.objects เปิด RLS อยู่แล้ว และตารางเป็นของ supabase_storage_admin
+-- คำสั่ง enable จึงล้มเหลวด้วย "must be owner of table objects" และทำให้ทั้ง migration ล้ม
+-- ชุดทดสอบ PGlite จึงเปิด RLS เองใน supabase/tests/rls.test.mjs เพื่อจำลองสภาพแวดล้อมจริง
 
 drop policy if exists staff_slips_all on storage.objects;
 drop policy if exists staff_meters_all on storage.objects;
