@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { createInvoiceDraft, type BillingResult } from "./actions";
+import { DateInput } from "@/app/components/date-input";
 
 export type DraftLeaseInput = {
   id: string;
@@ -37,7 +38,7 @@ export function InvoiceDraftForm({
         </label>
         <label className="text-sm">
           วันครบกำหนดของบิลนี้
-          <input name="due_date" type="date" required className="mt-1 w-full rounded-xl border border-gray-200 bg-white px-3 py-2" />
+          <DateInput name="due_date" required className="mt-1 w-full rounded-xl border border-gray-200 bg-white px-3 py-2" />
         </label>
         <label className="text-sm">
           เลือกงวดมิเตอร์ที่จะใช้คิดค่าไฟ

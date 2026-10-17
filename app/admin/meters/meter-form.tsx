@@ -3,6 +3,7 @@
 import { useActionState, useMemo, useState } from "react";
 import { Badge } from "@/app/components/ui";
 import { recordMeters, type RecordMetersResult } from "./actions";
+import { DateInput } from "@/app/components/date-input";
 
 export type MeterRoomInput = {
   id: string;
@@ -56,11 +57,10 @@ export function MeterForm({
       <div className="flex flex-wrap items-end gap-3">
         <label className="text-sm">
           งวดที่จด
-          <input
-            type="date"
+          <DateInput
             name="period"
             value={period}
-            onChange={(e) => setPeriod(e.target.value)}
+            onChange={setPeriod}
             required
             className="mt-1 block rounded-xl border border-gray-200 px-3 py-2"
           />

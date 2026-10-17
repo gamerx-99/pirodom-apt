@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { createInvite, createLease } from "./actions";
+import { DateInput } from "@/app/components/date-input";
 
 export function CreateLeaseForm({ rooms }: { rooms: { id: string; room_no: string }[] }) {
   const [state, action, pending] = useActionState(createLease, null);
@@ -18,11 +19,11 @@ export function CreateLeaseForm({ rooms }: { rooms: { id: string; room_no: strin
       </label>
       <label className="text-sm">
         วันเริ่ม
-        <input name="start_date" type="date" required className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
+        <DateInput name="start_date" required className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
       </label>
       <label className="text-sm">
         วันสิ้นสุด (ถ้ามี)
-        <input name="end_date" type="date" className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
+        <DateInput name="end_date" className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
       </label>
       <label className="text-sm">
         ครบกำหนดวันที่ (31 = สิ้นเดือน)
