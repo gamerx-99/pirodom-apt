@@ -217,7 +217,7 @@ MVP เก็บสัญญา PDF ที่ลูกค้ายืนยั�
 - Signed URL อายุสั้น ตรวจสิทธิ์ทุกครั้งก่อนออก และกำหนดอายุจริงก่อน implement
 - ห้ามเปิด bucket สาธารณะเพื่อแก้ปัญหาเข้าไฟล์ไม่ได้
 - ไม่บันทึก secret, token, รูปสลิป หรือข้อมูลผู้เช่าเต็มชุดลง log โดยไม่จำเป็น
-- ตรวจ webhook signature จาก raw body พร้อมป้องกัน event ซ้ำ; ปัจจุบันมีเฉพาะส่วนตรวจ signature
+- ตรวจ LINE webhook signature จาก raw body; ข้อความส่วนตัวที่มี invite code ใช้ LINE user ID จาก event และ RPC แบบ idempotent สำหรับ retry ของรหัสเดิม
 - ป้องกัน endpoint จากคำขอไม่ผ่านสิทธิ์และการเรียกถี่ รวมการจัดการ session/CSRF ให้สอดคล้องกับวิธี auth ที่เลือก
 
 ## 9. API ที่มีและส่วนที่ยังขาด
@@ -226,12 +226,12 @@ MVP เก็บสัญญา PDF ที่ลูกค้ายืนยั�
 |---|---|---|
 | `POST /api/auth/line` | ใช้งานได้ (ตรวจ ID token ผูกตัวตน ตั้ง session) | ต้องการ LIFF ID + Channel ID จริง และทดสอบด้วย token จริง |
 | `POST /api/slipok/verify` | stub 501 | auth, upload, provider adapter, ตรวจเงิน และผลอนุมัติ |
-| `POST /api/line/webhook` | ตรวจ signature แล้วตอบ ok | ประมวลผล event, deduplication และ log ผล |
+| `POST /api/line/webhook` | ตรวจ signature, รับ invite code ทางข้อความส่วนตัว และผูกบัญชีผ่าน RPC | ทดสอบ redelivery และ UAT จริงกับ LINE OA |
 | `/admin/messages` Server Actions | ตรวจ owner/admin ก่อนส่ง LINE และบันทึกประวัติ | ตรวจใช้งานกับ LINE OA จริง |
 
 ยังไม่มี Server operations สำหรับ CRUD ห้อง/สัญญา รับคำเชิญ จดมิเตอร์ ออกบิล อนุมัติ เอกสาร และงานซ่อม ต้องกำหนด contract ตอนพัฒนา ไม่ถือว่า route หน้าจอเป็น API ที่ทำงานแล้ว
 
-## ## 10. การส่งข้อความด้วยแอดมิน
+## 10. การส่งข้อความด้วยแอดมิน
 
 ผู้ใช้เลือก A เมื่อ 17/10/2569: ยกเลิก cron ทั้งหมดและให้แอดมินส่งข้อความจาก `/admin/messages` แทน
 
@@ -241,7 +241,7 @@ MVP เก็บสัญญา PDF ที่ลูกค้ายืนยั�
 - ไม่มี token หรือ LINE user ID จะบันทึก skipped; pending ที่ค้างต้องตรวจผลก่อนส่งใหม่
 - แสดงสถานะบิลเกินกำหนดจากวันครบกำหนด ไม่มีการออกบิลหรือเตือนตามเวลาอัตโนมัติ
 
-11. การตรวจรับและการดูแลระบบ
+## 11. การตรวจรับและการดูแลระบบ
 
 | ระดับ | หลักฐานที่ต้องได้ |
 |---|---|

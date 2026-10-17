@@ -18,7 +18,8 @@
 - `notifications` เก็บผู้รับ ข้อความ ผู้สร้าง เวลา สถานะ ข้อผิดพลาด และเวลาส่งสำเร็จ
 - ส่งผ่าน LINE ถึงผู้เช่าแต่ละคนในห้อง ไม่ส่งไปกลุ่ม LINE
 - ไม่มี token หรือไม่มี LINE user ID จะบันทึก `skipped` โดยไม่เรียก LINE
-- ต้องติดตั้ง migration `20261018000007_line_payment_result.sql` และ migrations ก่อนหน้า ก่อนเปิดใช้หน้าใหม่นี้
+- ต้องติดตั้ง migration `20261018000002`–`20261018000007` และ migrations ก่อนหน้า ก่อนเปิดใช้หน้าใหม่นี้; Cloud ของโครงการ apply แล้ว
+- Migration สำหรับ invite code `20261017132926_accept_invite_code_once.sql` เป็น dependency ของการยืนยันผู้เช่าทาง Bot. เนื่องจาก timestamp เก่ากว่า migration `20261018000000`/`000001` ที่ Cloud ลงแล้ว ให้ใช้ `supabase db push --linked --include-all` เมื่อนำไปลง environment ที่ยังไม่มี migration นี้
 
 ## ข้อจำกัด
 

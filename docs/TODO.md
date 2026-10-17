@@ -1,6 +1,6 @@
 # Todo — ระบบจัดการหอพักผ่าน LINE
 
-จัดทำ 17 ตุลาคม 2569 (2026-10-17) · ฐานตรวจ: working tree ล่าสุดของ `dormitory-line` (ต่อจาก commit `f1bf4bb`; งานหน้าส่งข้อความยังไม่ commit)
+จัดทำ 17 ตุลาคม 2569 (2026-10-17) · ฐานตรวจ: release commit `b258580` และ Cloud state ที่ตรวจหลัง apply migrations
 
 อ่านคู่กับ [Roadmap](ROADMAP.md) (เกณฑ์จบเฟส) และ [Blueprint](BLUEPRINT.md) (โครงสร้างระบบ)
 
@@ -49,7 +49,7 @@
 - [ ] ทดสอบ Admin guard กับ Supabase env จริง: role ทุกแบบ + ออกจากระบบ + session หมดอายุ — `รอตรวจ`
 - [ ] ตรวจ migration/RLS/GRANT/Storage บนฐานข้อมูล Supabase ทดสอบจริง (PGlite ยังจำลอง Auth/Storage) — `รอตรวจ` (รอ Q-08)
   - 17/10/2569 ผู้ใช้อนุมัติและลง migration ครบ 6 ไฟล์บน `jxvlexoqwqynctlpgafi` แล้ว: 16 ตารางเปิด RLS, 4 private buckets, 10 Storage policies; live SQL role/claim tests ผ่าน 30 assertions และ rollback fixtures หมด; RPC grants ตรวจผ่าน — ยังเหลือ authenticated HTTP/Storage upload/signed URL และ advisor WARN 8 รายการ ดู [หลักฐานล่าสุด](SUPABASE-PHASE0-AUDIT.md)
-  - 17/10/2569 (`supabase migration list --linked`): Cloud ยังไม่มี `20261018000002_tighten_storage_policies`, `20261018000003_billing_snapshots`, `20261018000004_payment_workflow`, `20261018000005_payments_server_only` (ถอนสิทธิ์ผู้เช่า insert payments ตรง ตามผลรีวิว) — สองไฟล์หลังเปลี่ยนชื่อจาก `20261017085823`/`20261017090621` ให้เรียงต่อจากไฟล์ที่ลงแล้ว
+  - 17/10/2569 ผู้ใช้อนุมัติและ apply migrations ที่ค้าง 7 ไฟล์บน Cloud แล้ว: `20261017132926_accept_invite_code_once` และ `20261018000002`–`20261018000007`; ใช้ `supabase db push --linked --include-all --skip-vault --yes` เพราะ invite-code migration มี timestamp ก่อน `20261018000000`/`000001` ที่ลงไปแล้ว; migration ledger และ RPC/trigger smoke query ผ่าน
 - [x] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน: ผู้ใช้ยืนยันบัญชี LINE “C - Game” คือบัญชี lannatc แล้ว; ตั้ง owner พร้อม audit และผู้ใช้ส่งภาพเข้า Admin ได้จริง (17/10/2569)
 - [ ] แยก env ทดสอบ/จริง และ secret management — `รอข้อมูล (Q-08)`
 - [ ] ขั้นตอน deployment ทดสอบบน Vercel + ติดตาม error + วิธีย้อนกลับ — `รอข้อมูล (Q-08)`
@@ -58,12 +58,12 @@
 
  ## Phase 1: ห้อง สัญญา ผูกผู้เช่า — สถานะ: กำลังทำ (เปลี่ยน flow เชิญเป็นยืนยันผ่าน LINE Bot)
 
- หลักฐานเดิม 17/10/2569 ยืนยันเฉพาะ flow ลิงก์ที่ถูกแทนแล้ว: เพื่อนใช้ LINE คนละบัญชีกับแอดมินรับคำเชิญและเห็นข้อมูลห้อง 101/สัญญา; ผลนี้ไม่ยืนยัน flow Bot ใหม่ จึงยังไม่ปิด Phase 1 จนกว่า UAT แบบออกโค้ด → ส่ง Bot → ผูกบัญชี → เข้า LIFF จะผ่าน ดู [บันทึกเดิมและขอบเขตหลักฐาน](PHASE1-VERIFICATION.md)
+หลักฐานเดิม 17/10/2569 ยืนยันเฉพาะ flow ลิงก์ที่ถูกแทนแล้ว: เพื่อนใช้ LINE คนละบัญชีกับแอดมินรับคำเชิญและเห็นข้อมูลห้อง 101/สัญญา; ผลนี้ไม่ยืนยัน flow Bot ใหม่ จึงยังไม่ปิด Phase 1 จนกว่า UAT แบบออกโค้ด → ส่ง Bot → ผูกบัญชี → เข้า LIFF จะผ่าน ดู [บันทึกเดิมและขอบเขตหลักฐาน](PHASE1-VERIFICATION.md)
 
  - [x] Server operations + UI CRUD ห้อง (residential/commercial) — แทน mock ใน [`app/admin/rooms`](../app/admin/rooms/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: สร้าง/แก้ไข/ลบห้องพร้อม audit; ลบต้องพิมพ์เลขห้องยืนยันและห้ามลบห้องที่มีประวัติ; local validation/RLS/FK tests ผ่าน ยังรอตรวจ UI หลัง deploy)
  - [x] CRUD สัญญา + ผู้เช่าร่วม/ผู้เช่าหลัก + ย้ายออก/ถอนสิทธิ์ — [`app/admin/leases/`](../app/admin/leases/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569; ค่าเงินกรอกตามจริง ไม่ hardcode — ข้อมูลจริงรอ Q-02)
- - [x] เปลี่ยนลิงก์เป็นรหัสสุ่ม 12 ตัว: แสดงครั้งเดียว, เก็บเฉพาะ hash, อายุ 7 วัน — local code done; ยังรอตรวจ LINE จริง
- - [x] LINE Bot รับรหัสในข้อความส่วนตัว, ใช้ LINE user ID จาก signed webhook, ผูกผ่าน RPC transaction เดิม — local code done; ยังรอตรวจ LINE จริง
+  - [x] เปลี่ยนลิงก์เป็นรหัสสุ่ม 12 ตัว: แสดงครั้งเดียว, เก็บเฉพาะ hash, อายุ 7 วัน — โค้ด commit `b258580`; RPC ลง Cloud แล้ว; ยังรอ UAT LINE จริง
+  - [x] LINE Bot รับรหัสในข้อความส่วนตัว, ใช้ LINE user ID จาก signed webhook, ผูกผ่าน `accept_invite_code` แบบ transaction — โค้ดและ migration ลงแล้ว; ยังรอ UAT LINE จริง
  - [ ] ทดสอบ flow จริง: แอดมินออกรหัส → ผู้เช่าส่ง Bot → บัญชีถูกผูก → เข้า LIFF เห็นเฉพาะสัญญาตนเอง — `รอตรวจ`
  - [ ] ยืนยัน LINE Login/LIFF และ Messaging API channels อยู่ใน LINE Developers Provider เดียวกัน ก่อน UAT
  - [x] ปิด API รับลิงก์เก่า (410) และหน้า `/liff/join/[token]` แจ้งวิธีขอรหัสใหม่
@@ -95,7 +95,7 @@
 - [x] เก็บรายการสลิป/ผู้ส่ง/log ใน Database และรูปใน Private Storage; แจ้งเตือนเว็บแอดมินพร้อมห้อง/งวดและลิงก์ไปคิวตรวจ อัปเดตทุก 15 วินาทีขณะเปิดหน้า — โค้ดในเครื่อง; ยังไม่ใช่ live UAT
 - [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — สถานะรายการแสดงบน LIFF แล้ว; LINE push หลังอนุมัติ/ปฏิเสธ โค้ดเสร็จ รอตรวจ: [`lib/notify.ts`](../lib/notify.ts) ส่งหลังงานเงินสำเร็จเท่านั้น ไม่ throw, ไม่ส่งซ้ำ (unique), เก็บผล sent/failed/skipped ใน `notifications` (migration `20261018000007` ยังไม่ apply); ไม่มี token = skipped; ยังไม่มี retry อัตโนมัติ — ส่งจริงรอ LINE OA (Q-06)
 
-**เกณฑ์จบ:** ยังไม่ผ่าน — migrations ยังไม่ apply, SlipOK/LINE credentials และบัญชีรับเงินยังไม่ยืนยัน, ไม่มี end-to-end UAT กับสลิปจริง
+**เกณฑ์จบ:** ยังไม่ผ่าน — migrations apply แล้ว แต่ยังไม่มี end-to-end UAT กับ SlipOK/บัญชีรับเงินจริง และยังไม่ได้ทดสอบ LINE notification กับผู้เช่าจริง
 
 ## Phase 4: เอกสารและงานซ่อม — สถานะ: โค้ดหลักมีแล้ว; รอตรวจสิทธิ์และ UAT จริง
 
@@ -107,13 +107,13 @@
 
 **เกณฑ์จบ:** ยังไม่ผ่าน — ยังต้องทดสอบบัญชีแยกกันและ Signed URL บนอุปกรณ์/Storage จริง; Q-07 ยังไม่ตอบ
 
-## ## Phase 5: ส่งข้อความ รวมระบบ และ UAT — สถานะ: บางส่วน
+## Phase 5: ส่งข้อความ รวมระบบ และ UAT — สถานะ: บางส่วน
 
 - [x] ยกเลิก cron ตามที่ผู้ใช้เลือก A (17/10/2569): ลบ route, helper, vercel.json และ CRON_SECRET; สถานะเกินกำหนดคำนวณจากวันครบกำหนดตอนแสดงผล
-- [ ] หน้า `/admin/messages`: เลือกทุกห้อง/รายห้อง/ห้องที่มีบิลรอชำระ แม่แบบและตัวอย่าง ข้อความ LINE ประวัติและส่งซ้ำ — โค้ดครบในเครื่อง รอตรวจใช้งานจริง ([คู่มือ](ADMIN-MESSAGES.md))
-- [ ] ติดตั้ง migration `000007` ก่อนใช้หน้าข้อความบน Cloud และทดสอบด้วย LINE OA จริง (Q-06)
-Webhook LINE สำหรับยืนยัน invite code — [`app/api/line/webhook/route.ts`](../app/api/line/webhook/route.ts), [`lib/line-invites.ts`](../lib/line-invites.ts) — ประมวลผลข้อความและใช้ RPC กัน consume ซ้ำ; ยังต้องทดสอบ event redelivery/LINE จริง
-- [ ] LINE notifications: ผลตรวจสลิปมี dedup, ส่งซ้ำด้วยมือจากประวัติ; แยกการส่งออกจากงานเงิน — โค้ดในเครื่อง รอตรวจจริง ไม่มี retry อัตโนมัติ
+- [x] หน้า `/admin/messages`: เลือกทุกห้อง/รายห้อง/ห้องที่มีบิลรอชำระ แม่แบบและตัวอย่าง ข้อความ LINE ประวัติและส่งซ้ำ — โค้ด commit `b258580`; migration Cloud ลงแล้ว; ยังรอ UAT จริง ([คู่มือ](ADMIN-MESSAGES.md))
+- [ ] ทดสอบส่ง LINE จริงจากหน้า `/admin/messages` และตรวจประวัติ/สถานะส่ง (Q-06)
+- [x] Webhook LINE สำหรับยืนยัน invite code — [`app/api/line/webhook/route.ts`](../app/api/line/webhook/route.ts), [`lib/line-invites.ts`](../lib/line-invites.ts); migration `20261017132926` ลง Cloud แล้ว; ยังต้องทดสอบ event redelivery/LINE จริง
+- [ ] LINE notifications: ผลตรวจสลิปมี dedup, ส่งซ้ำด้วยมือจากประวัติ; migration `20261018000007` ลงแล้ว; รอตรวจ LINE จริง ไม่มี retry อัตโนมัติ
 - [ ] ตรวจ RLS/Storage/API authorization/การเงิน/session บนสภาพแวดล้อมทดสอบจริง — `ยังไม่เริ่ม`
 - [ ] UAT ผู้เช่าจริง 2–3 ห้อง (วงจร สัญญา → บิล → ชำระ → ซ่อม) — `ยังไม่เริ่ม` (รอ Q-06/Q-08 + ผู้ร่วมทดสอบ)
 - [ ] ซ้อม backup/restore + จัดทำคู่มือเจ้าของ/ผู้เช่า — `ยังไม่เริ่ม`
@@ -122,7 +122,7 @@ Webhook LINE สำหรับยืนยัน invite code — [`app/api/line
 
 ## เปิดใช้งาน (Go-live)
 
-- [ ] ขออนุมัติเผยแพร่/ปรับฐานข้อมูลจริง
+- [x] ขออนุมัติและ apply migrations บน Cloud (17/10/2569); [ ] เผยแพร่ production หลัง independent review ผ่าน
 - [ ] ใส่ข้อมูลจริงครบก่อนเชิญผู้เช่า (ไม่เปลี่ยนทั้งระบบโดยไม่มีข้อมูลตั้งต้น)
 - [ ] เดือนแรกเทียบยอดกับวิธีเดิม + ตรวจยอดทุกรอบ (เรียกเก็บ/รับแล้ว/ค้าง/สลิปซ้ำ/แจ้งเตือนตกหล่น)
 - [ ] หลังใช้ 1–2 รอบบิล จึงทบทวนการอนุมัติอัตโนมัติร่วมกับลูกค้า
@@ -151,4 +151,4 @@ Webhook LINE สำหรับยืนยัน invite code — [`app/api/line
  | 2026-10-17 | `npm run typecheck` · `npm run lint` · `npm run build` (working tree ล่าสุด) | ผ่าน — ไม่ได้รัน test suite; migrations ยังไม่ apply และไม่มีการทดสอบ end-to-end บน Cloud/อุปกรณ์จริง |
  | 2026-10-17 (เย็น) | ข้อ 0 ครบ + Phase 1 โค้ดครบ (rooms/leases/invites/join/dashboard) + `npm run build` ครั้งแรก | test/typecheck/lint/build ผ่านทั้งหมด — รอทดสอบกับ Supabase จริง + UAT |
 | 2026-10-17 (หลักฐาน flow ลิงก์เดิม) | ผู้ใช้ยืนยันเพื่อนรับลิงก์ด้วย LINE ต่างบัญชี เห็นห้อง/สัญญาจริง และคำเชิญขึ้นใช้แล้ว | เป็นหลักฐานย้อนหลังเท่านั้น; flow ปัจจุบันเปลี่ยนเป็น Bot code และต้อง UAT ใหม่ |
-| 2026-10-17 (เปลี่ยนวิธีเชิญ) | แอดมินออกรหัส 12 ตัวเก็บเฉพาะ hash; LINE webhook ตรวจ signature รับ code ผ่านข้อความส่วนตัวและผูกบัญชีด้วย RPC เดิม; API ลิงก์เก่า 410 | Local implementation; ยังไม่ทดสอบ LINE จริงหรือ Cloud |
+| 2026-10-17 (เปลี่ยนวิธีเชิญ) | แอดมินออกรหัส 12 ตัวเก็บเฉพาะ hash; LINE webhook ตรวจ signature รับ code ผ่านข้อความส่วนตัวและผูกบัญชีด้วย RPC `accept_invite_code`; API ลิงก์เก่า 410 | โค้ด commit `b258580`; Cloud migration apply และตรวจ ledger/RPC แล้ว; ยังไม่ทดสอบ LINE จริง |
