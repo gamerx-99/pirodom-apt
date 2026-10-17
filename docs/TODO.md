@@ -83,14 +83,14 @@
 ## Phase 3: รับชำระและตรวจสลิป — สถานะ: กำลังทำ (flow และคิวตรวจเขียนแล้ว; รอ env/ข้อมูลจริงและ UAT)
 
 - [x] Adapter SlipOK ฝั่ง Server — [`app/api/slipok/verify/route.ts`](../app/api/slipok/verify/route.ts); ผลไม่ตรง/ตรวจไม่ได้เข้าคิวตรวจมือ; รอ credentials และตรวจบัญชีจริง
-- [ ] QR PromptPay ตามบัญชีรับเงินที่ยืนยัน — `รอข้อมูล (Q-06)`
+- [ ] QR PromptPay ตามบัญชีรับเงินที่ยืนยัน — โค้ดเสร็จ รอตรวจ: [`lib/promptpay.ts`](../lib/promptpay.ts) (EMVCo + CRC, เทสต์ `tests/promptpay.test.mjs`) แสดงบนหน้าบิลที่รอชำระ; เลขรับเงินจาก env `PROMPTPAY_ID`/`PROMPTPAY_ACCOUNT_NAME` เท่านั้น ไม่ตั้ง = แสดง "รอข้อมูลบัญชีรับเงิน" — ยังต้องยืนยันบัญชีจริงและสแกนทดสอบกับแอปธนาคาร `รอข้อมูล (Q-06)`
 - [x] อัปโหลดสลิป → Private Storage + ตรวจชนิดไฟล์/ขนาดฝั่ง Server (รูป 4 MB)
 - [x] เทียบยอดและ reference; unique reference + unique open payment + RPC transaction กันอนุมัติซ้ำ — migration `20261018000004_payment_workflow.sql` (ยังไม่ apply)
 - [x] คิวตรวจแอดมิน: อนุมัติยอดเต็ม/ปฏิเสธพร้อมเหตุผล + audit log — [`app/admin/payments/`](../app/admin/payments/page.tsx)
 - [x] Provider ล่ม/ไม่มี env/ข้อมูลไม่ตรง → pending/manual review; ห้าม auto mark paid
 - [x] **[P1 โค้ดในเครื่อง; ผู้ใช้สั่งแก้ต่อ]** กู้คืนจาก `payment_verifications` ของรายการเดิมโดยไม่อัปโหลดหรือเรียก SlipOK ซ้ำ; สถานะ payment/บิล/audit บันทึกใน transaction เดียว และยังให้แอดมินตรวจยืนยันก่อน paid — ดู [การเก็บสลิปและแจ้งเตือน](PAYMENT-RECOVERY.md); migration `20261018000006` ยังไม่ apply บน Cloud
 - [x] เก็บรายการสลิป/ผู้ส่ง/log ใน Database และรูปใน Private Storage; แจ้งเตือนเว็บแอดมินพร้อมห้อง/งวดและลิงก์ไปคิวตรวจ อัปเดตทุก 15 วินาทีขณะเปิดหน้า — โค้ดในเครื่อง; ยังไม่ใช่ live UAT
-- [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — สถานะรายการแสดงบน LIFF แล้ว; LINE push ยังรอ Q-06
+- [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — สถานะรายการแสดงบน LIFF แล้ว; LINE push หลังอนุมัติ/ปฏิเสธ โค้ดเสร็จ รอตรวจ: [`lib/notify.ts`](../lib/notify.ts) ส่งหลังงานเงินสำเร็จเท่านั้น ไม่ throw, ไม่ส่งซ้ำ (unique), เก็บผล sent/failed/skipped ใน `notifications` (migration `20261018000007` ยังไม่ apply); ไม่มี token = skipped; ยังไม่มี retry อัตโนมัติ — ส่งจริงรอ LINE OA (Q-06)
 
 **เกณฑ์จบ:** ยังไม่ผ่าน — migrations ยังไม่ apply, SlipOK/LINE credentials และบัญชีรับเงินยังไม่ยืนยัน, ไม่มี end-to-end UAT กับสลิปจริง
 

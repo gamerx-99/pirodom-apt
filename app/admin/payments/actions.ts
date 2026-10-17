@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireStaff, toNumberOrNull } from "@/lib/phase1";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { notifyPaymentResult } from "@/lib/notify";
 
 export type PaymentActionResult = { ok: boolean; message: string };
 const fail = (message: string): PaymentActionResult => ({ ok: false, message });
@@ -21,6 +22,7 @@ export async function approvePayment(_previous: PaymentActionResult | null, form
       if (error.message.includes("not eligible")) return fail("รายการนี้ยังอนุมัติไม่ได้ ถ้าบันทึกผลตรวจค้าง ให้กดนำผลตรวจเดิมกลับเข้าคิวก่อน โดยไม่ต้องส่งสลิปใหม่");
       return fail("อนุมัติไม่สำเร็จ กรุณาตรวจสถานะบิลและรายการชำระ");
     }
+    await notifyPaymentResult(createAdminClient(), paymentId, "approved");
     revalidatePath("/admin/payments");
     revalidatePath("/admin/billing");
     revalidatePath("/liff");
@@ -59,6 +61,7 @@ export async function rejectPayment(_previous: PaymentActionResult | null, form:
     if (!id || !reason) return fail("กรุณาระบุเหตุผลที่ปฏิเสธ");
     const { error } = await client.rpc("reject_invoice_payment", { p_payment_id: id, p_reason: reason });
     if (error) return fail(error.message.includes("not open for review") ? "รายการนี้ถูกตรวจแล้วหรือเปลี่ยนสถานะไปแล้ว" : "ปฏิเสธไม่สำเร็จ กรุณาลองใหม่");
+    await notifyPaymentResult(createAdminClient(), id, "rejected");
     revalidatePath("/admin/payments");
     revalidatePath("/admin/billing");
     revalidatePath("/liff");

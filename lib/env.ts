@@ -14,6 +14,8 @@ export const ENV_KEYS = [
   "SLIPOK_API_KEY",
   "SLIPOK_BRANCH_ID",
   "CRON_SECRET",
+  "PROMPTPAY_ID",
+  "PROMPTPAY_ACCOUNT_NAME",
 ] as const;
 
 export type EnvKey = (typeof ENV_KEYS)[number];

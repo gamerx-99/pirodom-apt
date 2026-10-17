@@ -135,6 +135,7 @@ test('saved slip is recoverable without reupload/provider call; log, reference a
       '@/lib/phase1': { requireStaff: async () => { if (role !== 'admin') throw Error('staff only'); return { userId: ADMIN }; } },
       '@/lib/supabase/server': { createClient: async () => ({}) },
       '@/lib/supabase/admin': { createAdminClient: () => admin },
+      '@/lib/notify': { notifyPaymentResult: async () => {} },
     });
     const recovery = new FormData(); recovery.set('payment_id', payment.id);
     assert.equal((await recoverPayment(null, recovery)).ok, false);

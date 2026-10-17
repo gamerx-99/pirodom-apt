@@ -1,8 +1,10 @@
 import Link from "next/link";
+import QRCode from "qrcode";
 import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
-import { isSupabaseConfigured } from "@/lib/env";
+import { getEnv, isSupabaseConfigured } from "@/lib/env";
 import { formatDateTH, formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib/format";
 import { INVOICE_STATUS_LABEL, PAYMENT_STATUS_LABEL } from "@/lib/mock";
+import { promptPayPayload } from "@/lib/promptpay";
 import { createClient } from "@/lib/supabase/server";
 import { SlipUpload } from "./slip-upload";
 
@@ -34,6 +36,25 @@ const ITEM_LABEL: Record<string, string> = {
   discount: "ส่วนลด",
   penalty: "ค่าปรับ",
 };
+
+async function PromptPayQr({ amount }: { amount: number }) {
+  const promptPayId = getEnv("PROMPTPAY_ID");
+  const payload = promptPayId ? promptPayPayload(promptPayId, amount) : null;
+  if (!payload) {
+    return <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800">รอข้อมูลบัญชีรับเงิน: ยังแสดง QR PromptPay ไม่ได้ กรุณาสอบถามช่องทางโอนจากเจ้าหน้าที่</p>;
+  }
+  const src = await QRCode.toDataURL(payload, { margin: 1, width: 240 });
+  const name = getEnv("PROMPTPAY_ACCOUNT_NAME");
+  return (
+    <div className="flex flex-col items-center gap-1 rounded-lg bg-white p-3 text-center ring-1 ring-gray-100">
+      {/* eslint-disable-next-line @next/next/no-img-element -- data URL; กดค้างเพื่อบันทึกรูปไปสแกนในแอปธนาคารได้ */}
+      <img src={src} alt={`QR PromptPay ยอด ${formatTHB(amount)}`} width={240} height={240} />
+      <p className="text-sm font-semibold">สแกนจ่าย {formatTHB(amount)}</p>
+      {name && <p className="text-xs text-gray-500">บัญชี {name}</p>}
+      <p className="text-xs text-gray-500">โอนแล้วส่งสลิปด้านล่าง</p>
+    </div>
+  );
+}
 
 const badgeTone = (status: string) =>
   status === "paid" ? "green" : status === "overdue" ? "red" : "amber";
@@ -165,6 +186,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
         ) : status === "issued" || status === "overdue" ? (
           <div className="space-y-3">
             {latestRejected?.review_reason && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">สลิปก่อนหน้าถูกปฏิเสธ: {latestRejected.review_reason}</p>}
+            <PromptPayQr amount={Number(invoice.total)} />
             <SlipUpload invoiceId={invoice.id} />
           </div>
         ) : <p className="text-sm text-gray-500">ยังส่งสลิปไม่ได้ในสถานะบิลปัจจุบัน</p>}
