@@ -92,15 +92,35 @@ assert.equal((await as(A, "select id from room_invitations")).rows.length, 0);
 // แอดมินเห็นทั้งหมด
 assert.equal((await as(ADMIN, "select id from invoices")).rows.length, 2);
 
-// สร้าง payment ได้เฉพาะบิลตัวเอง และส่งได้แค่ invoice_id + slip_path
-await as(A, "insert into payments (invoice_id, slip_path) values ('30000000-0000-0000-0000-000000000001', 'a.jpg')");
-await rejects(as(A, "insert into payments (invoice_id, slip_path) values ('30000000-0000-0000-0000-000000000002', 'b.jpg')"), /row-level security/);
+// สร้าง payment จาก client ไม่ได้เลย ต้องผ่าน /api/slipok/verify (service role) ที่ตรวจ SlipOK/reference ซ้ำ
+await rejects(as(A, "insert into payments (invoice_id, slip_path) values ('30000000-0000-0000-0000-000000000001', 'a.jpg')"), /permission denied/);
+await rejects(as(A, "insert into payments (invoice_id, slip_path) values ('30000000-0000-0000-0000-000000000002', 'b.jpg')"), /permission denied/);
 await rejects(as(A, "insert into payments (invoice_id, slip_path, status) values ('30000000-0000-0000-0000-000000000001', 'a.jpg', 'approved')"), /permission denied/);
-await rejects(as(A, "insert into payments (invoice_id, slip_path, amount) values ('30000000-0000-0000-0000-000000000001', 'a.jpg', 1)"), /permission denied/);
 
 // แก้บิล/สถานะจาก client ไม่ได้ แม้เป็นแอดมิน (ต้องผ่าน server)
 await rejects(as(A, "update invoices set status = 'paid'"), /permission denied/);
 await rejects(as(ADMIN, "update invoices set total = 0"), /permission denied/);
+
+// ---------- อนุมัติชำระ: staff เท่านั้น, ยอดเต็มบิล, อนุมัติซ้ำไม่ได้, บิลชำระแล้วล็อก ----------
+const INV1 = "30000000-0000-0000-0000-000000000001";
+const PAY = (await db.query(
+  "insert into payments (invoice_id, slip_path, status) values ($1, 's.jpg', 'pending_review') returning id::text as id",
+  [INV1],
+)).rows[0].id;
+// หนึ่งรายการเปิดต่อบิล
+await rejects(db.query("insert into payments (invoice_id, slip_path) values ($1, 'dup.jpg')", [INV1]), /duplicate key/);
+const approve = (uid, amount) => as(uid, `select public.approve_invoice_payment('${PAY}', ${amount})`);
+await rejects(approve(A, 3500), /staff authorization required/);
+await rejects(approve(ADMIN, 3000), /full invoice amount/);
+await approve(ADMIN, 3500);
+assert.equal((await db.query("select status from payments where id = $1", [PAY])).rows[0].status, "approved");
+assert.equal((await db.query("select status from invoices where id = $1", [INV1])).rows[0].status, "paid");
+await rejects(approve(ADMIN, 3500), /not eligible/);
+await rejects(db.query("update invoices set total = 1 where id = $1", [INV1]), /immutable/);
+await rejects(
+  db.query("insert into invoice_items (invoice_id, type, unit_price, amount) values ($1, 'extra', 1, 1)", [INV1]),
+  /only change while the invoice is a draft/,
+);
 
 // ห้องเดียวกันคนละสัญญา: เห็นมิเตอร์/งานซ่อมเฉพาะช่วงสัญญาตัวเอง
 assert.deepEqual((await as(A, "select period::text from meter_readings")).rows, [{ period: "2026-11-01" }]);

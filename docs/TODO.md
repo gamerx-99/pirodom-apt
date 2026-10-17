@@ -49,7 +49,7 @@
 - [ ] ทดสอบ Admin guard กับ Supabase env จริง: role ทุกแบบ + ออกจากระบบ + session หมดอายุ — `รอตรวจ`
 - [ ] ตรวจ migration/RLS/GRANT/Storage บนฐานข้อมูล Supabase ทดสอบจริง (PGlite ยังจำลอง Auth/Storage) — `รอตรวจ` (รอ Q-08)
   - 17/10/2569 ผู้ใช้อนุมัติและลง migration ครบ 6 ไฟล์บน `jxvlexoqwqynctlpgafi` แล้ว: 16 ตารางเปิด RLS, 4 private buckets, 10 Storage policies; live SQL role/claim tests ผ่าน 30 assertions และ rollback fixtures หมด; RPC grants ตรวจผ่าน — ยังเหลือ authenticated HTTP/Storage upload/signed URL และ advisor WARN 8 รายการ ดู [หลักฐานล่าสุด](SUPABASE-PHASE0-AUDIT.md)
-  - 17/10/2569 (`supabase migration list --linked`): Cloud ยังไม่มี `20261018000002_tighten_storage_policies`, `20261018000003_billing_snapshots`, `20261018000004_payment_workflow` — สองไฟล์หลังเปลี่ยนชื่อจาก `20261017085823`/`20261017090621` ให้เรียงต่อจากไฟล์ที่ลงแล้ว
+  - 17/10/2569 (`supabase migration list --linked`): Cloud ยังไม่มี `20261018000002_tighten_storage_policies`, `20261018000003_billing_snapshots`, `20261018000004_payment_workflow`, `20261018000005_payments_server_only` (ถอนสิทธิ์ผู้เช่า insert payments ตรง ตามผลรีวิว) — สองไฟล์หลังเปลี่ยนชื่อจาก `20261017085823`/`20261017090621` ให้เรียงต่อจากไฟล์ที่ลงแล้ว
 - [x] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน: ผู้ใช้ยืนยันบัญชี LINE “C - Game” คือบัญชี lannatc แล้ว; ตั้ง owner พร้อม audit และผู้ใช้ส่งภาพเข้า Admin ได้จริง (17/10/2569)
 - [ ] แยก env ทดสอบ/จริง และ secret management — `รอข้อมูล (Q-08)`
 - [ ] ขั้นตอน deployment ทดสอบบน Vercel + ติดตาม error + วิธีย้อนกลับ — `รอข้อมูล (Q-08)`
