@@ -13,6 +13,7 @@ const ROOM_101 = "10000000-0000-0000-0000-000000000001";
 const ROOM_205 = "10000000-0000-0000-0000-000000000002";
 const REQ_101 = "40000000-0000-0000-0000-000000000001";
 const REQ_205 = "40000000-0000-0000-0000-000000000002";
+const REQ_OLD = "40000000-0000-0000-0000-000000000003"; // งานของผู้เช่าเดิม ห้อง 101 (ก่อนสัญญาปัจจุบัน)
 
 await db.exec(`
   insert into auth.users values ('${A}'), ('${B}'), ('${C}'), ('${ADMIN}');
@@ -33,7 +34,8 @@ await db.exec(`
   -- งานซ่อมของแต่ละห้อง (created_at อยู่ในช่วงสัญญาปัจจุบันของแต่ละคน)
   insert into maintenance_requests (id, room_id, category, priority, created_at) values
     ('${REQ_101}', '${ROOM_101}', 'ไฟฟ้า', 'high', '2026-11-05'),
-    ('${REQ_205}', '${ROOM_205}', 'ประปา', 'normal', '2026-11-06');
+    ('${REQ_205}', '${ROOM_205}', 'ประปา', 'normal', '2026-11-06'),
+    ('${REQ_OLD}', '${ROOM_101}', 'แอร์', 'normal', '2026-06-10');
   -- งวดมิเตอร์: งวดของผู้เช่าเก่า + งวดปัจจุบัน (ต้องมีแถว meter_readings ไม่งั้น policy รูปมิเตอร์จะไม่ให้เห็นไฟล์)
   insert into meter_readings (room_id, period, prev_value, curr_value, photo_path, recorded_by) values
     ('${ROOM_101}', '2026-09-01', 220, 300, null, '${ADMIN}'),
@@ -85,11 +87,22 @@ assert.deepEqual(await maintFiles(C), []);
 assert.equal(await count(ADMIN, "select id from storage.objects where bucket_id = 'meters'"), 3);
 
 // ---------- 2. อัปโหลดรูปเข้าห้องที่ไม่ได้เช่าไม่ได้ ----------
+// (ก) ผู้เช่าอัปโหลดเข้าโฟลเดอร์งานของตัวเองได้
+await asUser(db, A, `insert into storage.objects (bucket_id, name) values
+  ('maintenance', '${ROOM_101}/${REQ_101}/own.jpg')`);
+// (ข) งานเก่าของผู้เช่าเดิมในห้องเดียวกัน — ผู้เช่าปัจจุบันอัปโหลดเข้าไม่ได้
+// กติกาใน 20261018000002: งานต้องเกิดในช่วงสัญญาของผู้เช่าคนนั้น
+await rejects(
+  asUser(db, A, `insert into storage.objects (bucket_id, name) values
+    ('maintenance', '${ROOM_101}/${REQ_OLD}/sneak.jpg')`),
+  /row-level security/,
+);
 await rejects(
   asUser(db, B, `insert into storage.objects (bucket_id, name) values
     ('maintenance', '${ROOM_101}/${REQ_101}/sneak.jpg')`),
   /row-level security/,
 );
+// B เห็นเฉพาะไฟล์ของงานในห้องตัวเอง (ไฟล์ที่ A เพิ่งอัปโหลดไม่ทำให้ B เห็น)
 assert.equal(await count(B, "select id from storage.objects where bucket_id = 'maintenance'"), 1);
 // bucket meters ไม่มี insert policy สำหรับผู้เช่าทุกคน
 await rejects(
@@ -159,7 +172,12 @@ assert.ok((await db.query(`select 1 from maintenance_requests where id = '${REQ_
 // ผู้เช่าอ่านงานของห้องอื่นไม่ได้ (RLS เดิมใช้ช่วงสัญญา)
 assert.equal(await count(A, "select id from maintenance_requests"), 2); // งานเดิมของ 101 + งานที่เพิ่งแจ้ง
 assert.equal(await count(B, "select id from maintenance_requests"), 1);
-assert.equal(await count(C, "select id from maintenance_requests"), 0);
+// ผู้เช่าเก่าเห็นเฉพาะงานที่เกิดในช่วงสัญญาของตัวเอง (REQ_OLD) ไม่เห็นงานหลังย้ายออก
+assert.equal(await count(C, "select id from maintenance_requests"), 1);
+assert.equal(
+  (await asUser(db, C, "select id::text as id from maintenance_requests")).rows[0].id,
+  REQ_OLD,
+);
 
 // ---------- 5. รูปงานซ่อมหลายรูป: ตารางใหม่ + RLS ----------
 await db.exec(`
