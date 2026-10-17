@@ -103,18 +103,22 @@ export async function POST(request: Request) {
 
     if (existing) {
       // แตะแค่ข้อมูลแสดงผล ห้ามแตะ role เด็ดขาด
-      await admin
+      const { error: updateError } = await admin
         .from("profiles")
         .update({ line_user_id: lineUserId, display_name: claims.name ?? undefined })
         .eq("id", existing.id);
+      if (updateError) throw new Error(updateError.message);
     } else {
       // ตั้ง tenant เฉพาะแถวที่สร้างใหม่ครั้งแรกเท่านั้น
-      await admin.from("profiles").insert({
+      // ต้องเช็ค error: ถ้า insert ล้มเงียบ ๆ การลองใหม่จะเข้าเส้นทาง "มีอยู่แล้ว"
+      // แล้ว profile ค้างไว้ค่า line_user_id ว่าง ผู้ใช้ล็อกอินไม่ได้เลย
+      const { error: insertError } = await admin.from("profiles").insert({
         id: profileId,
         line_user_id: lineUserId,
         display_name: claims.name ?? null,
         role: "tenant",
       });
+      if (insertError) throw new Error(insertError.message);
     }
 
     // verify ฝั่ง server เพื่อตั้ง session cookie
