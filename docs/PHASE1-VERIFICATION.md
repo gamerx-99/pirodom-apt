@@ -1,6 +1,32 @@
 # Phase 1 verification — 2026-10-17
 
-**Verdict: backend checks passed; full Phase 1 exit remains OPEN.**
+**Verdict: Phase 1 CLOSED / accepted on 2026-10-17.**
+
+## Closure record: real tenant acceptance plus existing live database evidence
+
+The user requested closure and push after reporting this actual acceptance path:
+
+1. Generated an invitation from the deployed application's `/admin/leases` page.
+2. A friend opened the invitation using the friend's own LINE account, separate from the owner's account (user explicitly confirmed this).
+3. The user supplied the resulting room/lease information: room 101, active lease starting 2026-10-17, due day 31/end of month, rent 1,500/month, water 0, electricity 7/unit, deposit 1,500, and one primary tenant. Personal name, phone number and invitation identifier are intentionally omitted from this public record.
+4. The invitation list displayed “ใช้แล้ว” (used).
+
+This is **user-reported real-account acceptance evidence**, not a browser session independently observed by Codex. “Used” alone is not proof that a second attempt was rejected.
+
+| Phase 1 exit criterion | Evidence accepted for closure |
+| --- | --- |
+| Create room/lease, invite an actual tenant, and show correct data | User-reported deployed flow above, using a different real LINE account |
+| Expired and reused invitations rejected | Previously executed real Supabase `supabase/tests/live-phase1.sql`: expired/revoked/unknown rejection, another user's reuse rejected, same-user retry idempotent without duplicate membership; all fixtures rolled back |
+| Isolation across rooms and lease periods | Previously executed real Supabase `supabase/tests/live-rls.sql`: tenant A/B and former-tenant allow/deny checks, 30 assertions, fixtures rolled back; see [Phase 0 audit](SUPABASE-PHASE0-AUDIT.md) |
+| Owner/admin entry | Earlier user screenshot of the real owner admin screen; tenant account for this invitation was different |
+
+Closure combines the user-reported live application flow with recorded real PostgreSQL negative-case/RLS checks. No new live tests or database writes were performed to produce this closure record. Local test/typecheck/lint/build and independent Claude review passed for code commit `479686c` before its push.
+
+**Evidence limits / follow-up, not represented as completed:** negative cases have not been replayed through an independently observed authenticated browser/HTTP session; simultaneous invitation acceptance is not independently verified; new room edit/delete UI still needs browser/device acceptance. These remain recorded verification limits, not new customer steps. Phase 1 acceptance does not close Phase 0, later-phase UAT, pending storage migration or full production security review.
+
+The previous OPEN verdict and requests below are retained as historical observations. The closure record above supersedes the missing real-login/invitation evidence and the earlier requirement to collect every negative case again through a browser before recording acceptance.
+
+## Historical verification record (before user acceptance)
 
 ## Update: authorized Preview deployment is READY
 
@@ -51,7 +77,7 @@ Runnable database check:
 supabase db query --linked --project-ref jxvlexoqwqynctlpgafi --file supabase/tests/live-phase1.sql --output-format json
 ```
 
-## Actual end-to-end blockers
+## Historical end-to-end blockers
 
 1. User supplied `https://jxvlexoqwqynctlpgafi.supabase.co/callback` as the possible LIFF Endpoint URL. Read-only request returned HTTP 404, JSON. This is not the frontend `/liff` endpoint. No LINE console setting was changed.
 2. Vercel CLI verified project `dormitory-line`, team `maehongson` (`team_kALNj7LZswF1BM18OJwHg24n`), project ID `prj_D7M08SKjVrvK4og8nz9y2QVAFuPL`. Only listed deployment: `https://dormitory-line-7a5qa5whc-maehongson.vercel.app`, Production, Error. Build logs show source `71082f0` and uncached/runtime data outside Suspense on `/liff/bills/[id]`. Current local source has the route handling changes and builds successfully. It has not been redeployed by this task.
@@ -60,11 +86,11 @@ supabase db query --linked --project-ref jxvlexoqwqynctlpgafi --file supabase/te
 
 Vercel connector could list the project but returned 403/404 for deployment/domain reads. CLI fallback using the exact same team/project succeeded in reading deployment/build logs; this is not a reason to assume another target.
 
-## Completion evidence still required
+## Historical completion checklist
 
 - Deploy a testable HTTPS frontend with the required Supabase/LINE public ID configuration and server key kept server-side. Deployment/environment writes need explicit approval under `Z:\knowledge\AGENTS.md` section 3.2.
 - Configure LINE LIFF Endpoint URL to that frontend's `/liff` URL and the app's `NEXT_PUBLIC_APP_URL` to its origin; verify redirect behavior with invite token preserved.
 - Use an actual LINE test account to complete login, receive a Supabase session, accept a generated invitation, and see the correct room/lease/dashboard. Verify owner/admin access with an authorized account.
 - Verify invitation errors and access isolation through real authenticated HTTP/browser requests. Actual simultaneous invite acceptance is not established by the sequential SQL test.
 
-Do not mark Phase 1 complete until these end-to-end checks have recorded evidence.
+This was the checklist before the closure record above; remaining unobserved browser cases are explicitly listed in its evidence limits.
