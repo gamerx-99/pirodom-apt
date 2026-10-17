@@ -100,11 +100,11 @@ function checkRow(
   if (row.curr < row.prev) {
     return {
       units: null,
-      error: `เลขปัจจุบัน ${row.curr} ต่ำกว่าเลขก่อนหน้า ${row.prev} — ตรวจรูปมิเตอร์อีกครั้งก่อนบันทึก`,
+      error: `เลขปัจจุบัน ${row.curr} ต่ำกว่าเลขก่อนหน้า ${row.prev}: กรุณาตรวจสอบรูปมิเตอร์อีกครั้งก่อนบันทึก`,
     };
   }
   if (alreadyInPeriod) {
-    return { units: null, error: "จดห้องนี้ในงวดนี้ไปแล้ว — แก้งวดเดิมแทน" };
+    return { units: null, error: "จดห้องนี้ในงวดนี้ไปแล้ว: กรุณาแก้ไขจากงวดเดิม" };
   }
 
   const units = Math.round((row.curr - row.prev) * 100) / 100;
@@ -114,7 +114,7 @@ function checkRow(
     warns.push(`เลขก่อนหน้าไม่ตรงกับเลขที่จบงวด ${last.period} (${Number(last.curr_value)})`);
   }
   if (units === 0) {
-    warns.push("ใช้ไฟ 0 หน่วย — เช็กว่ามิเตอร์เดินและอ่านถูกห้อง");
+    warns.push("ใช้ไฟ 0 หน่วย (กรุณาตรวจสอบว่ามิเตอร์ทำงานปกติและอ่านถูกต้อง)");
   }
   const recent = history
     .slice(0, ABNORMAL_MIN_SAMPLES + 1)
@@ -194,7 +194,7 @@ export async function recordMeters(
     if (rejected.length > 0) {
       return {
         ok: false,
-        error: `ยังไม่บันทึกทั้งงวด — ตรวจ ${rejected.length} ห้องที่มีปัญหาแล้วส่งใหม่`,
+        error: `ยังไม่บันทึกข้อมูล: พบปัญหา ${rejected.length} ห้อง กรุณาตรวจสอบแล้วส่งใหม่อีกครั้ง`,
         period,
         saved: [],
         rejected,

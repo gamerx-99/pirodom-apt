@@ -8,8 +8,8 @@ export default function LiffNav() {
     ["/liff/maintenance", "แจ้งซ่อม"],
   ];
   return (
-    <nav className="fixed inset-x-0 bottom-0 border-t border-gray-200 bg-white">
-      <div className="mx-auto grid max-w-xl grid-cols-4">
+    <nav aria-label="เมนูผู้เช่า" className="fixed inset-x-0 bottom-0 z-20 border-t border-gray-200 bg-white pb-[env(safe-area-inset-bottom)]">
+      <div className="mx-auto grid max-w-3xl grid-cols-4">
         {items.map(([href, label]) => (
           <Link
             key={href}

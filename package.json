@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "node supabase/tests/rls.test.mjs && node supabase/tests/path-a.test.mjs && node supabase/tests/path-b.test.mjs",
+    "test": "node supabase/tests/rls.test.mjs && node supabase/tests/path-a.test.mjs && node supabase/tests/path-b.test.mjs && npm run test:rooms",
+    "test:rooms": "node --test tests/rooms.test.mjs",
     "test:rls": "node supabase/tests/rls.test.mjs",
     "test:path-a": "node supabase/tests/path-a.test.mjs",
     "test:path-b": "node supabase/tests/path-b.test.mjs"

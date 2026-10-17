@@ -9,7 +9,7 @@ export default function Page() {
         <h1 className="text-xl font-bold text-gray-900">คิวตรวจสลิป</h1>
         <p className="text-sm text-gray-500">เทียบสลิปกับบิล เห็นความผิดปกติ แล้วตัดสินใจพร้อมเหตุผล</p>
       </div>
-      <DemoBanner text="ยังไม่เลือกผู้ให้บริการตรวจสลิป (Okslip/SlipOK) — ผลตรวจผ่านไม่เท่ากับอนุมัติแล้ว" />
+      <DemoBanner text="ระบบตรวจสลิปอัตโนมัติด้วย SlipOK: ผลตรวจเบื้องต้นยังต้องรอเจ้าหน้าที่ตรวจสอบยืนยันยอดเงิน" />
       <Card title={`รอตรวจ ${MOCK_PAYMENTS.length} รายการ`} desc="อนุมัติ/ปฏิเสธจะเปิดเมื่อมีฐานข้อมูลจริง">
         <ul className="space-y-3">
           {MOCK_PAYMENTS.map((p) => (

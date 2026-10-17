@@ -54,7 +54,7 @@ export default async function Page() {
           <h1 className="text-xl font-bold text-gray-900">งานซ่อม</h1>
           <p className="text-sm text-gray-500">รับเรื่อง เปลี่ยนสถานะ และแนบรูปผล</p>
         </div>
-        <DemoBanner text="ยังไม่เชื่อม Supabase — คิวงานจริงจะแสดงเมื่อเชื่อมแล้ว" />
+        <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: คิวงานจริงจะแสดงเมื่อเชื่อมต่อระบบแล้ว" />
         <EmptyState
           title="ยังไม่มีงานซ่อม"
           desc="งานที่ผู้เช่าแจ้งผ่าน LINE จะเข้าคิวนี้อัตโนมัติ"
@@ -191,7 +191,7 @@ export default async function Page() {
                   {nextList.length === 0 && (
                     <p className="text-xs text-gray-400">
                       {r.status === "done"
-                        ? "รอผู้เช่ายืนยันปิดงานจาก LINE — ยังเปิดงานใหม่ไม่ได้จนกว่าจะตกลงกับผู้ดูแล"
+                        ? "อยู่ระหว่างรอผู้เช่ายืนยันปิดงานผ่าน LINE"
                         : "งานนี้ปิดแล้ว"}
                     </p>
                   )}
@@ -231,7 +231,7 @@ export default async function Page() {
                         <li key={u.id} className="border-l-2 border-gray-100 pl-2">
                           {formatDateTH(u.created_at)} · {statusLabel(u.status)} ·{" "}
                           {u.profiles?.display_name ?? "เจ้าหน้าที่"}
-                          {u.note ? ` — ${u.note}` : ""}
+                          {u.note ? ` (${u.note})` : ""}
                         </li>
                       ))}
                     </ol>

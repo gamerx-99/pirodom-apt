@@ -97,7 +97,7 @@ export async function deleteDocument(form: FormData): Promise<void> {
     .maybeSingle();
   if (!doc) throw new Error("ไม่พบเอกสารนี้");
   if (doc.lease_id !== lease_id) {
-    throw new Error("เอกสารนี้ไม่ได้อยู่ในสัญญาที่เลือก — ยกเลิกการลบ");
+    throw new Error("เอกสารนี้ไม่ได้อยู่ในสัญญาที่เลือก: ยกเลิกการลบ");
   }
 
   // ลบแถวก่อน เพื่อไม่ให้มีโอกาสออก Signed URL ของไฟล์ที่กำลังเอาออก

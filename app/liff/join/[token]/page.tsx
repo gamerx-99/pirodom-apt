@@ -34,14 +34,14 @@ export default async function Page({ params }: { params: Promise<{ token: string
     return <Problem title="ลิงก์ไม่ถูกต้อง" desc="ลิงก์เชิญไม่สมบูรณ์" />;
   }
   if (!isSupabaseConfigured()) {
-    return <Problem title="ระบบยังไม่พร้อม" desc="ยังไม่เชื่อมฐานข้อมูล — ให้ผู้ดูแลส่งลิงก์ใหม่หลังระบบพร้อม" />;
+    return <Problem title="ระบบยังไม่พร้อม" desc="ยังไม่ได้เชื่อมต่อฐานข้อมูล: กรุณาขอลิงก์ใหม่จากผู้ดูแลเมื่อระบบพร้อมใช้งาน" />;
   }
 
   let admin: ReturnType<typeof createAdminClient>;
   try {
     admin = createAdminClient();
   } catch {
-    return <Problem title="ระบบยังไม่พร้อม" desc="ยังไม่เชื่อมฐานข้อมูล — ให้ผู้ดูแลส่งลิงก์ใหม่หลังระบบพร้อม" />;
+    return <Problem title="ระบบยังไม่พร้อม" desc="ยังไม่ได้เชื่อมต่อฐานข้อมูล: กรุณาขอลิงก์ใหม่จากผู้ดูแลเมื่อระบบพร้อมใช้งาน" />;
   }
 
   // ตรวจ token ฝั่ง server เท่านั้น — ไม่ log token ดิบ
@@ -51,10 +51,10 @@ export default async function Page({ params }: { params: Promise<{ token: string
     .eq("token_hash", hashInviteToken(token))
     .maybeSingle();
   if (!invite) return <Problem title="ลิงก์ไม่ถูกต้อง" desc="ไม่พบคำเชิญนี้" />;
-  if (invite.used_at) return <Problem title="ลิงก์ถูกใช้ไปแล้ว" desc="ลิงก์ใช้ได้ครั้งเดียว — ขอลิงก์ใหม่จากผู้ดูแล" />;
-  if (invite.revoked_at) return <Problem title="ลิงก์ถูกเพิกถอน" desc="ผู้ดูแลยกเลิกคำเชิญนี้แล้ว — ขอลิงก์ใหม่" />;
+  if (invite.used_at) return <Problem title="ลิงก์ถูกใช้ไปแล้ว" desc="ลิงก์นี้ถูกใช้งานไปแล้ว กรุณาติดต่อผู้ดูแลเพื่อขอรับลิงก์ใหม่" />;
+  if (invite.revoked_at) return <Problem title="ลิงก์ถูกเพิกถอน" desc="คำเชิญนี้ถูกยกเลิกแล้ว กรุณาติดต่อผู้ดูแลเพื่อขอรับลิงก์ใหม่" />;
   if (new Date(invite.expires_at) < new Date()) {
-    return <Problem title="ลิงก์หมดอายุ" desc="ลิงก์มีอายุ 7 วัน — ขอลิงก์ใหม่จากผู้ดูแล" />;
+    return <Problem title="ลิงก์หมดอายุ" desc="ลิงก์หมดอายุ (มีอายุ 7 วัน) กรุณาติดต่อผู้ดูแลเพื่อขอรับลิงก์ใหม่" />;
   }
 
   const { data: leaseRaw } = await admin
@@ -71,7 +71,7 @@ export default async function Page({ params }: { params: Promise<{ token: string
     <div className="space-y-4 pb-20">
       <div>
         <h1 className="text-xl font-bold text-gray-900">ยืนยันการผูกบัญชี</h1>
-        <p className="text-sm text-gray-500">ลิงก์ตรวจผ่าน Server แล้ว — อายุ 7 วัน ใช้ครั้งเดียว</p>
+        <p className="text-sm text-gray-500">คำเชิญถูกต้อง: ลิงก์มีอายุ 7 วันและใช้งานได้ครั้งเดียว</p>
       </div>
       <Card title="ห้องที่เชิญ" desc={`เริ่มสัญญา ${lease.start_date}`}>
         <p className="text-sm">

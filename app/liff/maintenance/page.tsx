@@ -189,7 +189,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
       .select("id");
     if (error) throw new Error(`ปิดงานไม่สำเร็จ: ${error.message}`);
     if (!updated || updated.length === 0) {
-      throw new Error("สถานะงานเปลี่ยนไปแล้ว — รีเฟรชแล้วลองใหม่");
+      throw new Error("สถานะงานมีการเปลี่ยนแปลง: กรุณารีเฟรชหน้าจอแล้วลองใหม่อีกครั้ง");
     }
     const { error: timelineError } = await admin.from("maintenance_updates").insert({
       request_id: id,
@@ -297,13 +297,13 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
 
       {notice.sent && (
         <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-          แจ้งซ่อมแล้ว — เจ้าหน้าที่จะเข้ามารับเรื่อง
+          ส่งเรื่องแจ้งซ่อมเรียบร้อย: เจ้าหน้าที่จะดำเนินการรับเรื่องโดยเร็ว
           {notice.photo === "failed" && " · บางรูปอัปโหลดไม่สำเร็จ ถ้าจำเป็นแจ้งรูปเพิ่มได้"}
         </p>
       )}
       {notice.closed && (
         <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-          ยืนยันปิดงานแล้ว — ขอบคุณที่แจ้งปัญหา
+          ยืนยันปิดงานเรียบร้อย: ขอบคุณที่แจ้งปัญหาให้เราทราบ
         </p>
       )}
 
@@ -443,7 +443,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
                         <li key={u.id} className="border-l-2 border-gray-100 pl-2">
                           {formatDateTH(u.created_at)} · {statusLabel(u.status)} ·{" "}
                           {u.profiles?.display_name ?? "เจ้าหน้าที่"}
-                          {u.note ? ` — ${u.note}` : ""}
+                          {u.note ? ` (${u.note})` : ""}
                         </li>
                       ))}
                     </ol>
@@ -453,7 +453,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
                     <form action={confirmClosed} className="mt-3 rounded-xl bg-emerald-50 p-3">
                       <input type="hidden" name="id" value={r.id} />
                       <p className="text-sm text-emerald-900">
-                        เจ้าหน้าที่แจ้งว่าซ่อมเสร็จแล้ว — ตรวจงานแล้วใช่ไหม?
+                        เจ้าหน้าที่ดำเนินการเสร็จสิ้นแล้ว: กรุณาตรวจสอบความเรียบร้อยก่อนยืนยันปิดงาน
                       </p>
                       <div className="mt-2 flex flex-wrap gap-2">
                         <input

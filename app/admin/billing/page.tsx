@@ -8,7 +8,7 @@ export default function Page() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold text-gray-900">บิล</h1>
-          <p className="text-sm text-gray-500">ตรวจยอดก่อนออก ติดตามหนี้ และดูประวัติ — ต.ค. 2569</p>
+          <p className="text-sm text-gray-500">ตรวจยอดก่อนออก ติดตามหนี้ และดูประวัติ ประจำงวด ต.ค. 2569</p>
         </div>
         <button
           type="button"
@@ -19,7 +19,7 @@ export default function Page() {
           สร้างบิล (รอฐานข้อมูล)
         </button>
       </div>
-      <DemoBanner text="ยอดจริงและการออกบิลเป็นผลจาก Server — ค่าปรับยังไม่ได้กำหนด" />
+      <DemoBanner text="ยอดจริงและการออกบิลคำนวณจากระบบ: เงื่อนไขค่าปรับยังไม่ได้เปิดใช้งาน" />
       <Card title={`บิลทั้งหมด ${MOCK_INVOICES.length}`} desc="ไม่รวมร่าง/ยกเลิกในยอดเรียกเก็บ">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[680px] text-sm">

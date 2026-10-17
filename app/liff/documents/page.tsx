@@ -146,7 +146,7 @@ export default async function Page() {
 
       <Card title="หมายเหตุ">
         <p className="text-sm text-gray-500">
-          ชนิดเอกสารยังไม่ได้แยกตามห้องพัก/ร้านค้า รอผู้ว่าจะยืนยัน (Q-07) — ตอนนี้เจ้าหน้าที่ใส่ชื่อเอกสารเอง
+          ขณะนี้เจ้าหน้าที่ระบุชื่อเอกสารตามสัญญาของแต่ละห้อง
         </p>
         <Link href="/liff" className="mt-2 inline-block text-sm font-semibold text-teal-700 hover:underline">
           ← กลับหน้าหลัก

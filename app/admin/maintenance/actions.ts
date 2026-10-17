@@ -48,7 +48,7 @@ export async function updateMaintenanceStatus(form: FormData): Promise<void> {
   const changed = !!next && next !== request.status;
   if (changed && !(NEXT_STATUS[request.status] ?? []).includes(next)) {
     throw new Error(
-      `เปลี่ยนจาก "${request.status}" ไป "${next}" ไม่ได้ — ไล่ตามลำดับ: รอรับเรื่อง → รับเรื่องแล้ว → กำลังดำเนินการ → รออะไหล่ → เสร็จ (ผู้เช่ายืนยันปิดงาน)`,
+      `เปลี่ยนจาก "${request.status}" ไป "${next}" ไม่ได้ (ลำดับการทำงาน: รอรับเรื่อง → รับเรื่องแล้ว → กำลังดำเนินการ → รออะไหล่ → เสร็จ)`,
     );
   }
 
@@ -57,7 +57,7 @@ export async function updateMaintenanceStatus(form: FormData): Promise<void> {
     .filter((f): f is File => f instanceof File && f.size > 0)
     .slice(0, MAX_PHOTOS);
   if (!changed && !note && files.length === 0) {
-    throw new Error("ไม่มีอะไรให้บันทึก — เลือกสถานะ พิมพ์หมายเหตุ หรือแนบรูป");
+    throw new Error("ไม่มีข้อมูลให้บันทึก: กรุณาเลือกสถานะ พิมพ์หมายเหตุ หรือแนบรูปภาพ");
   }
 
   // อัปโหลดก่อนเขียนสถานะ: path ตาม policy เดิม maintenance/<room_id>/<request_id>/<file>
@@ -77,7 +77,7 @@ export async function updateMaintenanceStatus(form: FormData): Promise<void> {
       .select("id");
     if (error) throw new Error(`เปลี่ยนสถานะไม่สำเร็จ: ${error.message}`);
     if (!updated || updated.length === 0) {
-      throw new Error("สถานะงานเปลี่ยนไปแล้วโดยคนอื่น — รีเฟรชแล้วลองใหม่");
+      throw new Error("สถานะงานมีการเปลี่ยนแปลงโดยผู้ใช้อื่น: กรุณารีเฟรชหน้าจอแล้วลองใหม่อีกครั้ง");
     }
     await audit(admin, {
       actor_id: userId,

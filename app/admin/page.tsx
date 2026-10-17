@@ -34,7 +34,7 @@ export default function Page() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold text-gray-900">ภาพรวม</h1>
-          <p className="text-sm text-gray-500">สถานะห้อง ยอดเงิน และงานที่ต้องจัดการ — ต.ค. 2569</p>
+          <p className="text-sm text-gray-500">สถานะห้อง ยอดเงิน และงานที่ต้องจัดการ ประจำเดือน ต.ค. 2569</p>
         </div>
         <div className="flex gap-2">
           <Link
@@ -123,7 +123,7 @@ export default function Page() {
           ))}
         </ul>
       </Card>
-      <p className="text-xs text-gray-400">คิวสลิปตัวอย่าง {MOCK_PAYMENTS.length} รายการ — ดูที่หน้าตรวจสลิป</p>
+      <p className="text-xs text-gray-400">คิวสลิปตัวอย่าง {MOCK_PAYMENTS.length} รายการ (ตรวจสอบได้ที่หน้าตรวจสลิป)</p>
     </div>
   );
 }

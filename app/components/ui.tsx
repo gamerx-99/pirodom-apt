@@ -35,7 +35,7 @@ export function Card({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-gray-100 sm:p-5">
+    <section className="min-w-0 rounded-2xl bg-white p-4 text-gray-900 shadow-sm ring-1 ring-gray-200 sm:p-5">
       {(title || action) && (
         <div className="mb-3 flex items-start justify-between gap-3">
           <div>
@@ -72,7 +72,7 @@ export function DemoBanner({ text }: { text?: string }) {
   return (
     <div className="mb-4 rounded-xl border border-dashed border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
       <span className="font-semibold">ข้อมูลตัวอย่าง</span>
-      {text ? ` — ${text}` : " — ยังไม่เชื่อมฐานข้อมูลจริง ตัวเลขในหน้านี้ใช้สาธิต UI เท่านั้น"}
+      {text ? `: ${text}` : ": ยังไม่เชื่อมฐานข้อมูลจริง ตัวเลขในหน้านี้ใช้เพื่อสาธิตเท่านั้น"}
     </div>
   );
 }

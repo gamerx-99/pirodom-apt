@@ -48,15 +48,18 @@
 - [ ] กรอก LIFF ID + Channel ID จริง และทดสอบ login ด้วย token จริงบนอุปกรณ์ — `รอตรวจ` (ขึ้นกับ Q-08)
 - [ ] ทดสอบ Admin guard กับ Supabase env จริง: role ทุกแบบ + ออกจากระบบ + session หมดอายุ — `รอตรวจ`
 - [ ] ตรวจ migration/RLS/GRANT/Storage บนฐานข้อมูล Supabase ทดสอบจริง (PGlite ยังจำลอง Auth/Storage) — `รอตรวจ` (รอ Q-08)
-- [ ] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน (seed role owner แรก) — `ยังไม่เริ่ม`
+  - 17/10/2569 ผู้ใช้อนุมัติและลง migration ครบ 6 ไฟล์บน `jxvlexoqwqynctlpgafi` แล้ว: 16 ตารางเปิด RLS, 4 private buckets, 10 Storage policies; live SQL role/claim tests ผ่าน 30 assertions และ rollback fixtures หมด; RPC grants ตรวจผ่าน — ยังเหลือ authenticated HTTP/Storage upload/signed URL และ advisor WARN 8 รายการ ดู [หลักฐานล่าสุด](SUPABASE-PHASE0-AUDIT.md)
+- [x] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน: ผู้ใช้ยืนยันบัญชี LINE “C - Game” คือบัญชี lannatc แล้ว; ตั้ง owner พร้อม audit และผู้ใช้ส่งภาพเข้า Admin ได้จริง (17/10/2569)
 - [ ] แยก env ทดสอบ/จริง และ secret management — `รอข้อมูล (Q-08)`
 - [ ] ขั้นตอน deployment ทดสอบบน Vercel + ติดตาม error + วิธีย้อนกลับ — `รอข้อมูล (Q-08)`
 
 **เกณฑ์จบ:** ผู้เช่า login ได้ตัวตนที่ RLS ใช้ได้จริง, ผู้ไม่มีสิทธิ์เข้า Admin/เรียก API สำคัญไม่ได้, มีหลักฐานจากสภาพแวดล้อมทดสอบจริง (ไม่ใช่แค่ build ผ่าน)
 
- ## Phase 1: ห้อง สัญญา ผูกผู้เช่า — สถานะ: รอตรวจ (โค้ดครบ รอทดสอบกับ Supabase จริง)
+ ## Phase 1: ห้อง สัญญา ผูกผู้เช่า — สถานะ: backend ตรวจฐานจริงผ่าน รอ LINE/LIFF end-to-end
 
- - [x] Server operations + UI CRUD ห้อง (residential/commercial) — แทน mock ใน [`app/admin/rooms`](../app/admin/rooms/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: สร้างห้อง + เปลี่ยนสถานะ + audit; ยังไม่ทดสอบกับ Supabase จริง)
+ ตรวจ 17/10/2569: live PostgreSQL invite/tenant scenarios ผ่านและ rollback fixtures หมด; Production พร้อมใช้งานที่ https://pirodom-apt.vercel.app และผู้ใช้ส่งภาพ LINE login/เข้า Admin ได้แล้ว; ยังขาดการรับคำเชิญจนเห็นข้อมูลสัญญาครบบนอุปกรณ์จริง จึงยังปิดเฟสไม่ได้ ดู [หลักฐานและงานค้าง](PHASE1-VERIFICATION.md)
+
+ - [x] Server operations + UI CRUD ห้อง (residential/commercial) — แทน mock ใน [`app/admin/rooms`](../app/admin/rooms/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: สร้าง/แก้ไข/ลบห้องพร้อม audit; ลบต้องพิมพ์เลขห้องยืนยันและห้ามลบห้องที่มีประวัติ; local validation/RLS/FK tests ผ่าน ยังรอตรวจ UI หลัง deploy)
  - [x] CRUD สัญญา + ผู้เช่าร่วม/ผู้เช่าหลัก + ย้ายออก/ถอนสิทธิ์ — [`app/admin/leases/`](../app/admin/leases/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569; ค่าเงินกรอกตามจริง ไม่ hardcode — ข้อมูลจริงรอ Q-02)
  - [x] ลิงก์/QR เชิญผู้เช่า: เก็บเฉพาะ hash, อายุ 7 วัน, ใช้ครั้งเดียว, กันการรับพร้อมกัน — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: `POST /api/invites/accept` + compare-and-set `used_at`)
  - [x] หน้ารับคำเชิญ `/liff/join/[token]` ตรวจ token + ยืนยันชื่อ/เบอร์ + ผูกสัญญาจริง — `รอตรวจ` (โค้ดเสร็จ 17/10/2569)

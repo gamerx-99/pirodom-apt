@@ -50,7 +50,7 @@ export function CreateLeaseForm({ rooms }: { rooms: { id: string; room_no: strin
         </button>
       </div>
       {state && !state.ok && <p className="col-span-2 text-sm text-red-600 sm:col-span-4">{state.error}</p>}
-      {state?.ok && <p className="col-span-2 text-sm text-emerald-700 sm:col-span-4">สร้างสัญญาแล้ว — ออกลิงก์เชิญด้านล่าง</p>}
+      {state?.ok && <p className="col-span-2 text-sm text-emerald-700 sm:col-span-4">สร้างสัญญาเรียบร้อยแล้ว: สามารถออกลิงก์เชิญผู้เช่าได้ด้านล่าง</p>}
     </form>
   );
 }

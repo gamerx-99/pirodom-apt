@@ -25,7 +25,7 @@ export default async function Page() {
       <div className="space-y-4 pb-20">
         <div>
           <h1 className="text-xl font-bold text-gray-900">ประวัติมิเตอร์</h1>
-          <p className="text-sm text-gray-500">โหมดตัวอย่าง — ยังไม่เชื่อมฐานข้อมูล</p>
+          <p className="text-sm text-gray-500">โหมดตัวอย่าง: ยังไม่ได้เชื่อมต่อฐานข้อมูล</p>
         </div>
         <EmptyState
           title="ยังไม่มีข้อมูลมิเตอร์"
@@ -117,7 +117,7 @@ export default async function Page() {
       {readings.length === 0 ? (
         <EmptyState
           title="ยังไม่มีข้อมูลมิเตอร์"
-          desc="ยังไม่มีการบันทึกเลขมิเตอร์ของห้องคุณ — เจ้าหน้าที่จะบันทึกตามรอบของหอพัก ถ้าคิดว่ามีข้อมูลแล้ว แจ้งผู้ดูแลได้"
+          desc="ยังไม่มีการบันทึกเลขมิเตอร์ของห้องคุณ: เจ้าหน้าที่จะบันทึกตามรอบของหอพัก หากต้องการสอบถามข้อมูล แจ้งผู้ดูแลได้ทันที"
         />
       ) : (
         <>

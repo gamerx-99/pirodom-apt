@@ -138,7 +138,7 @@ export const MAINT_STATUS_LABEL: Record<MaintenanceStatus, string> = {
   pending: "รอรับเรื่อง",
   accepted: "รับเรื่องแล้ว",
   in_progress: "กำลังดำเนินการ",
-  waiting: "รออะไหล่/รอ",
+  waiting: "รออะไหล่หรือช่าง",
   done: "ซ่อมเสร็จ รอผู้เช่ายืนยัน",
   closed: "ปิดงานแล้ว",
 };

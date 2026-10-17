@@ -153,7 +153,7 @@ export function MeterForm({
                         drop ? "bg-red-50 text-red-700" : "bg-white text-gray-800"
                       }`}
                     >
-                      {units === null ? "—" : `${units} หน่วย`}
+                      {units === null ? "-" : `${units} หน่วย`}
                     </p>
                   </div>
                   <label className="text-sm">
@@ -168,12 +168,12 @@ export function MeterForm({
                 </div>
                 {drop && (
                   <p className="mt-2 text-xs text-red-600">
-                    เลขปัจจุบันต่ำกว่าเลขก่อนหน้า — ระบบจะไม่บันทึกห้องนี้
+                    เลขปัจจุบันต่ำกว่าเลขก่อนหน้า: ระบบจะไม่บันทึกห้องนี้
                   </p>
                 )}
                 {!drop && mismatch && (
                   <p className="mt-2 text-xs text-amber-700">
-                    เลขก่อนหน้าไม่ตรงกับเลขที่จบงวดก่อน ({last?.curr}) — ตรวจว่ามิเตอร์ถูกเปลี่ยนหรือจดผิดงวด
+                    เลขก่อนหน้าไม่ตรงกับเลขที่จบงวดก่อน ({last?.curr}): กรุณาตรวจสอบมิเตอร์อีกครั้ง
                   </p>
                 )}
               </li>

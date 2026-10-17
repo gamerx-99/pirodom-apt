@@ -6,7 +6,7 @@ export function createClient() {
   const anon = getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
   if (!url || !anon) {
     throw new Error(
-      "Supabase ยังไม่ตั้งค่า (ข้ามส่วนนี้ไปก่อน — ใส่ NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY แล้วลองใหม่)",
+      "Supabase ยังไม่ตั้งค่า: ใส่ NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY แล้วลองใหม่",
     );
   }
   return createBrowserClient(url, anon);

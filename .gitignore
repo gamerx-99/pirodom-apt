@@ -49,3 +49,8 @@ supabase/.temp
 
 # word/excel lock files
 ~$*
+
+.vercel
+.env*
+# Playwright CLI output (may contain credentials)
+.playwright-cli/

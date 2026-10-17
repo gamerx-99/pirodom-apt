@@ -8,7 +8,7 @@ export function createAdminClient() {
   const serviceKey = getEnv("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !serviceKey) {
     throw new Error(
-      "Supabase Admin ยังไม่ตั้งค่า (ข้ามส่วนนี้ไปก่อน — ใส่ NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY แล้วลองใหม่)",
+      "Supabase Admin ยังไม่ตั้งค่า: ใส่ NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY แล้วลองใหม่",
     );
   }
   return createClient(url, serviceKey, { auth: { persistSession: false } });

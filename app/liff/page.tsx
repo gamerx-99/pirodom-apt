@@ -13,7 +13,7 @@ export default async function Page() {
     return (
       <div className="space-y-4 pb-20">
         <div>
-          <p className="text-sm text-gray-500">โหมดตัวอย่าง — ยังไม่เชื่อม Supabase</p>
+          <p className="text-sm text-gray-500">โหมดตัวอย่าง: ยังไม่ได้เชื่อมต่อระบบฐานข้อมูล</p>
           <h1 className="text-xl font-bold text-gray-900">สวัสดี · ห้อง 101</h1>
         </div>
         <Card title="ยอดค้างชำระ" desc="ครบกำหนด 30 ก.ย. 2569">
@@ -91,7 +91,7 @@ export default async function Page() {
             ดูบิลและชำระเงิน
           </Link>
         ) : (
-          <p className="mt-1 text-sm text-emerald-700">ไม่มีบิลค้าง — ชำระครบแล้ว</p>
+          <p className="mt-1 text-sm text-emerald-700">ไม่มีบิลค้าง (ชำระครบถ้วนแล้ว)</p>
         )}
       </Card>
       <Card title="บิลของฉัน" desc="เฉพาะบิลที่ยังไม่ชำระ">

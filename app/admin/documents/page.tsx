@@ -38,7 +38,7 @@ export default async function Page() {
           <h1 className="text-xl font-bold text-gray-900">เอกสารสัญญา</h1>
           <p className="text-sm text-gray-500">อัปโหลดสัญญา/เอกสารแนบ แล้วผูกกับสัญญาห้องนั้น</p>
         </div>
-        <DemoBanner text="ยังไม่เชื่อม Supabase — ฟอร์มอัปโหลดและรายการเอกสารจะใช้ได้เมื่อเชื่อมแล้ว" />
+        <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: ฟอร์มอัปโหลดและรายการเอกสารจะเปิดใช้งานเมื่อเชื่อมต่อระบบแล้ว" />
         <Card title="ตัวอย่างรายการ">
           <p className="text-sm text-gray-500">เชื่อม Supabase แล้วเอกสารจริงจะแสดงที่นี่</p>
         </Card>
@@ -133,7 +133,7 @@ export default async function Page() {
               อัปโหลดและผูกกับสัญญา
             </button>
             <p className="mt-1 text-xs text-gray-400">
-              ช่องชื่อเอกสารยังไม่ได้แยกประเภทห้องพัก/ร้านค้าตามที่ผู้ว่าจะยืนยัน (รอ Q-07) จึงพิมพ์อิสระได้
+              สามารถพิมพ์ระบุชื่อเอกสารหรือประเภทสัญญาได้อิสระ
             </p>
           </div>
         </form>
@@ -176,7 +176,7 @@ export default async function Page() {
                       เปิดไฟล์
                     </a>
                   ) : (
-                    <span className="text-xs text-gray-400">เปิดไม่ได้ (ไฟล์อาจหาย)</span>
+                    <span className="text-xs text-gray-400">ไม่สามารถเปิดไฟล์ได้</span>
                   )}
                   <form action={deleteDocument}>
                     <input type="hidden" name="id" value={doc.id} />

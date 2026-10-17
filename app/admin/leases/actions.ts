@@ -56,7 +56,7 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
       .select("id")
       .single();
     if (error) {
-      if (error.code === "23505") return fail("ห้องนี้มีสัญญา active อยู่แล้ว — ปิดสัญญาเดิมก่อน");
+      if (error.code === "23505") return fail("ห้องนี้มีสัญญา active อยู่แล้ว: กรุณาปิดสัญญาเดิมก่อน");
       return fail(`สร้างสัญญาไม่สำเร็จ: ${error.message}`);
     }
     await admin.from("rooms").update({ status: "occupied" }).eq("id", room_id);
@@ -82,7 +82,7 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
    // วันที่ตามเวลาไทย ไม่ใช่ UTC (toISOString คืนวันก่อนหน้า 1 วันช่วง 00:00–07:00)
    const today = todayTH();
    if (today < lease.start_date) {
-     throw new Error("สัญญานี้ยังไม่เริ่ม — ตั้งวันเริ่มสัญญาให้ถูกก่อนปิด");
+     throw new Error("สัญญานี้ยังไม่เริ่ม: กรุณาตั้งวันเริ่มสัญญาให้ถูกต้องก่อนปิดสัญญา");
    }
    const { error } = await admin.from("leases").update({ status: "ended", end_date: today }).eq("id", id).eq("status", "active");
    if (error) throw new Error(`ปิดสัญญาไม่สำเร็จ: ${error.message}`);
@@ -115,7 +115,8 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
     if (error) return fail(`ออกคำเชิญไม่สำเร็จ: ${error.message}`);
     await audit(admin, { actor_id: userId, action: "invite.create", table_name: "room_invitations", record_id: data.id, after: { lease_id } });
     revalidatePath("/admin/leases");
-    const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ?? "";
+    const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
     return { ok: true, inviteUrl: `${base}/liff/join/${token}` };
   } catch (e) {
     return fail(e instanceof Error ? e.message : "ออกคำเชิญไม่สำเร็จ");
@@ -154,7 +155,7 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
    const code = String(data ?? "ok");
    if (code === "not_found") throw new Error("ไม่พบผู้เช่าคนนี้ในสัญญา");
    if (code === "is_primary") {
-     throw new Error("ถอนผู้เช่าหลักไม่ได้ — ตั้งผู้เช่าหลักคนใหม่ก่อน หรือปิดสัญญาถ้าเป็นคนสุดท้าย");
+     throw new Error("ถอนผู้เช่าหลักไม่ได้: กรุณาตั้งผู้เช่าหลักคนใหม่ก่อน หรือปิดสัญญาหากเป็นผู้เช่าคนสุดท้าย");
    }
    await audit(admin, { actor_id: userId, action: "lease.unbind", table_name: "lease_tenants", after: { lease_id, profile_id } });
    revalidatePath("/admin/leases");

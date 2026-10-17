@@ -3,10 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { audit, cleanRoomNo, requireStaff } from "@/lib/phase1";
+import { audit, requireStaff } from "@/lib/phase1";
+import { parseRoomInput, type RoomResult } from "@/lib/rooms";
 
 const ROOM_STATUS = ["vacant", "reserved", "occupied", "moving_out", "maintenance"] as const;
-const UNIT_TYPES = ["residential", "commercial"] as const;
 
 function fail(message: string): { ok: false; error: string } {
   return { ok: false, error: message };
@@ -19,15 +19,9 @@ export async function createRoom(
   try {
     const supabase = await createClient();
     const { userId } = await requireStaff(supabase);
-    const room_no = cleanRoomNo(form.get("room_no"));
-    const unit_type = String(form.get("unit_type") ?? "residential");
-    const floorRaw = String(form.get("floor") ?? "").trim();
-    const status = String(form.get("status") ?? "vacant");
-    if (!room_no) return fail("กรุณากรอกเลขห้อง/ยูนิต");
-    if (!UNIT_TYPES.includes(unit_type as (typeof UNIT_TYPES)[number])) return fail("ประเภทยูนิตไม่ถูกต้อง");
-    if (!ROOM_STATUS.includes(status as (typeof ROOM_STATUS)[number])) return fail("สถานะห้องไม่ถูกต้อง");
-    const floor = floorRaw === "" ? null : Number(floorRaw);
-    if (floor !== null && !Number.isInteger(floor)) return fail("ชั้นต้องเป็นจำนวนเต็ม");
+    const parsed = parseRoomInput(form);
+    if (!parsed.ok) return parsed;
+    const { room_no, unit_type, floor, status } = parsed.value;
 
     const admin = createAdminClient();
     const { error } = await admin.from("rooms").insert({ room_no, unit_type, floor, status });
@@ -40,6 +34,57 @@ export async function createRoom(
     return { ok: true };
   } catch (e) {
     return fail(e instanceof Error ? e.message : "สร้างห้องไม่สำเร็จ");
+  }
+}
+
+export async function updateRoom(_prev: RoomResult | null, form: FormData): Promise<RoomResult> {
+  try {
+    const { userId } = await requireStaff(await createClient());
+    const id = String(form.get("id") ?? "");
+    if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) return fail("ไม่พบรหัสห้องที่ถูกต้อง");
+    const parsed = parseRoomInput(form);
+    if (!parsed.ok) return parsed;
+    const admin = createAdminClient();
+    const { data: before, error: readError } = await admin.from("rooms")
+      .select("id,room_no,unit_type,floor,status").eq("id", id).maybeSingle();
+    if (readError) return fail("อ่านข้อมูลห้องไม่สำเร็จ กรุณาลองใหม่");
+    if (!before) return fail("ไม่พบห้องนี้ อาจถูกลบไปแล้ว");
+    const { data, error } = await admin.from("rooms").update(parsed.value).eq("id", id).select("id").maybeSingle();
+    if (error?.code === "23505") return fail(`เลขห้อง "${parsed.value.room_no}" มีอยู่แล้ว`);
+    if (error) return fail("แก้ไขห้องไม่สำเร็จ กรุณาลองใหม่");
+    if (!data) return fail("ไม่พบห้องนี้ อาจถูกลบไปแล้ว");
+    await audit(admin, { actor_id: userId, action: "room.update", table_name: "rooms", record_id: id, before, after: parsed.value });
+    revalidatePath("/admin/rooms");
+    revalidatePath("/admin/leases");
+    revalidatePath("/liff");
+    return { ok: true };
+  } catch (e) {
+    return fail(e instanceof Error ? e.message : "แก้ไขห้องไม่สำเร็จ");
+  }
+}
+
+export async function deleteRoom(_prev: RoomResult | null, form: FormData): Promise<RoomResult> {
+  try {
+    const { userId } = await requireStaff(await createClient());
+    const id = String(form.get("id") ?? "");
+    if (!/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) return fail("ไม่พบรหัสห้องที่ถูกต้อง");
+    const admin = createAdminClient();
+    const { data: before, error: readError } = await admin.from("rooms")
+      .select("id,room_no,unit_type,floor,status").eq("id", id).maybeSingle();
+    if (readError) return fail("อ่านข้อมูลห้องไม่สำเร็จ กรุณาลองใหม่");
+    if (!before) return fail("ไม่พบห้องนี้ อาจถูกลบไปแล้ว");
+    if (form.get("confirm_room_no") !== before.room_no) return fail("พิมพ์เลขห้องให้ตรงเพื่อยืนยันการลบ");
+    // Foreign keys protect every reference, including a concurrent lease creation.
+    const { data, error } = await admin.from("rooms").delete().eq("id", id).eq("room_no", before.room_no).select("id").maybeSingle();
+    if (error?.code === "23503") return fail("ลบห้องนี้ไม่ได้ เพราะมีสัญญา ประวัติมิเตอร์ หรืองานซ่อมอ้างอิงอยู่");
+    if (error) return fail("ลบห้องไม่สำเร็จ กรุณาลองใหม่");
+    if (!data) return fail("ไม่พบห้องนี้ อาจถูกลบไปแล้ว");
+    await audit(admin, { actor_id: userId, action: "room.delete", table_name: "rooms", record_id: id, before });
+    revalidatePath("/admin/rooms");
+    revalidatePath("/admin/leases");
+    return { ok: true };
+  } catch (e) {
+    return fail(e instanceof Error ? e.message : "ลบห้องไม่สำเร็จ");
   }
 }
 

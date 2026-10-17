@@ -17,7 +17,7 @@ export async function verifyLineIdToken(idToken: string): Promise<LineIdTokenCla
   const channelId = getEnv("LINE_LOGIN_CHANNEL_ID");
   if (!channelId) {
     throw new Error(
-      "ยังไม่มี LINE_LOGIN_CHANNEL_ID (ข้ามส่วนนี้ไปก่อน — ใส่ Channel ID ของ LINE Login แล้วลองใหม่)",
+      "ยังไม่มี LINE_LOGIN_CHANNEL_ID: ใส่ Channel ID ของ LINE Login แล้วลองใหม่",
     );
   }
   const res = await fetch("https://api.line.me/oauth2/v2.1/verify", {

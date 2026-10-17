@@ -31,7 +31,7 @@ export default async function Page() {
           <h1 className="text-xl font-bold text-gray-900">บันทึกมิเตอร์</h1>
           <p className="text-sm text-gray-500">จดเลขหลายห้องพร้อมกันในหน้าเดียว</p>
         </div>
-        <DemoBanner text="ยังไม่เชื่อม Supabase — ตัวเลขด้านล่างเป็นข้อมูลตัวอย่าง จดจริงเมื่อเชื่อมแล้ว" />
+        <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: ข้อมูลด้านล่างเป็นข้อมูลตัวอย่างสำหรับการสาธิต" />
         <Card title="ตัวอย่างการใช้งาน">
           <ul className="space-y-1 text-sm text-gray-600">
             {MOCK_METER_HISTORY.map((m) => (
@@ -83,13 +83,13 @@ export default async function Page() {
       <div>
         <h1 className="text-xl font-bold text-gray-900">บันทึกมิเตอร์</h1>
         <p className="text-sm text-gray-500">
-          จดหลายห้องพร้อมกัน แนบรูป และตรวจเลขลดลงกับการใช้ไฟผิดปกติก่อนบันทึก — งวดนี้ {period}
+          จดหลายห้องพร้อมกัน แนบรูป และตรวจสอบความถูกต้องก่อนบันทึก: งวด {period}
         </p>
       </div>
 
       <Card
         title="จดมิเตอร์เป็นชุด"
-        desc="เลือกห้อง → กรอกเลขก่อนหน้า/ปัจจุบัน → แนบรูป → บันทึก · งวดเก็บเป็นวันแรกของเดือน (ช่วงใช้ไฟจริงรอ Q-04)"
+        desc="เลือกห้อง → กรอกเลขก่อนหน้า/ปัจจุบัน → แนบรูป → บันทึก · งวดบันทึกเป็นวันแรกของเดือน"
       >
         {formRooms.length === 0 ? (
           <EmptyState

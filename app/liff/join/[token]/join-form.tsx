@@ -4,12 +4,12 @@ import { useState } from "react";
 
 const ERROR_TH: Record<string, string> = {
   invalid_token: "ลิงก์ไม่ถูกต้อง",
-  already_used: "ลิงก์นี้ถูกใช้ไปแล้ว — ขอลิงก์ใหม่จากผู้ดูแล",
-  revoked: "ลิงก์นี้ถูกเพิกถอนแล้ว — ขอลิงก์ใหม่จากผู้ดูแล",
-  expired: "ลิงก์หมดอายุ (7 วัน) — ขอลิงก์ใหม่จากผู้ดูแล",
-  lease_closed: "สัญญานี้ปิดแล้ว — ติดต่อผู้ดูแล",
+  already_used: "ลิงก์นี้ถูกใช้งานไปแล้ว กรุณาขอลิงก์ใหม่จากผู้ดูแล",
+  revoked: "คำเชิญนี้ถูกยกเลิกแล้ว กรุณาขอลิงก์ใหม่จากผู้ดูแล",
+  expired: "ลิงก์หมดอายุ (มีอายุ 7 วัน) กรุณาขอลิงก์ใหม่จากผู้ดูแล",
+  lease_closed: "สัญญานี้สิ้นสุดแล้ว กรุณาติดต่อผู้ดูแล",
   name_required: "กรุณากรอกชื่อ-นามสกุล",
-  invalid_phone: "เบอร์โทรไม่ถูกต้อง (ตัวเลข 9–15 หลัก)",
+  invalid_phone: "เบอร์โทรไม่ถูกต้อง (ตัวเลข 9 ถึง 15 หลัก)",
   unauthorized: "กรุณาเข้าสู่ระบบด้วย LINE ก่อน",
   bind_failed: "ผูกบัญชีไม่สำเร็จ ลองใหม่อีกครั้ง",
 };
@@ -65,7 +65,7 @@ export function JoinForm({ token }: { token: string }) {
       </label>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       <button disabled={pending} className="mt-4 w-full rounded-xl bg-teal-600 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50">
-        {pending ? "กำลังผูกบัญชี…" : "ยืนยันผูกบัญชี"}
+        {pending ? "กำลังผูกบัญชี..." : "ยืนยันผูกบัญชี"}
       </button>
     </form>
   );

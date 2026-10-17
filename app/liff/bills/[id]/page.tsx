@@ -27,10 +27,10 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
         </ul>
       </Card>
       <Card title="ชำระเงิน" desc="โอนตามบัญชีที่ยืนยัน แล้วส่งสลิป">
-        <p className="text-sm">[ชื่อบัญชี] · [พร้อมเพย์] — QR จะแสดงเมื่อมีข้อมูลรับเงินจริง</p>
+        <p className="text-sm">[ชื่อบัญชี] · [พร้อมเพย์] (QR Code จะแสดงเมื่อตั้งค่าบัญชีรับเงิน)</p>
         <label className="mt-3 block text-sm">
           แนบสลิป
-          <input type="file" accept="image/*" className="mt-1 w-full text-sm" />
+            <input type="file" accept="image/*" className="mt-1 w-full text-sm" />
         </label>
         <button
           type="button"
@@ -40,7 +40,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
         >
           ส่งสลิปเพื่อตรวจสอบ (รอเชื่อมต่อ)
         </button>
-        <p className="mt-2 text-xs text-gray-400">อัปโหลดสำเร็จ ≠ ชำระสำเร็จ — รอผลอนุมัติจากเจ้าหน้าที่</p>
+        <p className="mt-2 text-xs text-gray-400">การส่งสลิปยังไม่ใช่การชำระเสร็จสมบูรณ์: อยู่ระหว่างรอเจ้าหน้าที่ตรวจสอบยอดเงิน</p>
       </Card>
     </div>
   );
