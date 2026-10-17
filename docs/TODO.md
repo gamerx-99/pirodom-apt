@@ -88,6 +88,7 @@
 - [x] เทียบยอดและ reference; unique reference + unique open payment + RPC transaction กันอนุมัติซ้ำ — migration `20261018000004_payment_workflow.sql` (ยังไม่ apply)
 - [x] คิวตรวจแอดมิน: อนุมัติยอดเต็ม/ปฏิเสธพร้อมเหตุผล + audit log — [`app/admin/payments/`](../app/admin/payments/page.tsx)
 - [x] Provider ล่ม/ไม่มี env/ข้อมูลไม่ตรง → pending/manual review; ห้าม auto mark paid
+- [ ] **[P1 เลื่อนไปหลังจบ Phase 4 ตามผู้ใช้สั่ง]** กู้คืนสลิปที่บันทึกผลล้มเหลว: SlipOK ผ่าน + เก็บ reference แล้ว แต่อัปเดต payment ล้ม → ค้าง `uploaded` อนุมัติไม่ได้; ปฏิเสธแล้วส่งสลิปเดิมใหม่จะชน reference เดิมเป็น `mismatch` อนุมัติไม่ได้อีก — ต้องมีทางบันทึกผลเดิมซ้ำจาก `payment_verifications` ที่เก็บไว้ (รีวิว Codex `cb92b4e..e11c9f9`)
 - [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — สถานะรายการแสดงบน LIFF แล้ว; LINE push ยังรอ Q-06
 
 **เกณฑ์จบ:** ยังไม่ผ่าน — migrations ยังไม่ apply, SlipOK/LINE credentials และบัญชีรับเงินยังไม่ยืนยัน, ไม่มี end-to-end UAT กับสลิปจริง
