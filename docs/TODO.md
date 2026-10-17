@@ -1,6 +1,6 @@
 # Todo — ระบบจัดการหอพักผ่าน LINE
 
-จัดทำ 17 ตุลาคม 2569 (2026-10-17) · ฐานตรวจ: working tree ล่าสุดของ `dormitory-line` (หลัง commit `1a93b88`)
+จัดทำ 17 ตุลาคม 2569 (2026-10-17) · ฐานตรวจ: working tree ล่าสุดของ `dormitory-line` (ต่อจาก commit `f1bf4bb`; งานหน้าส่งข้อความยังไม่ commit)
 
 อ่านคู่กับ [Roadmap](ROADMAP.md) (เกณฑ์จบเฟส) และ [Blueprint](BLUEPRINT.md) (โครงสร้างระบบ)
 
@@ -56,14 +56,17 @@
 
 **เกณฑ์จบ:** ผู้เช่า login ได้ตัวตนที่ RLS ใช้ได้จริง, ผู้ไม่มีสิทธิ์เข้า Admin/เรียก API สำคัญไม่ได้, มีหลักฐานจากสภาพแวดล้อมทดสอบจริง (ไม่ใช่แค่ build ผ่าน)
 
- ## Phase 1: ห้อง สัญญา ผูกผู้เช่า — สถานะ: ผ่านเกณฑ์ / ปิดเฟส 17/10/2569
+ ## Phase 1: ห้อง สัญญา ผูกผู้เช่า — สถานะ: กำลังทำ (เปลี่ยน flow เชิญเป็นยืนยันผ่าน LINE Bot)
 
- ปิดตามคำขอผู้ใช้: สร้างลิงก์จาก `/admin/leases` ให้เพื่อนใช้ LINE คนละบัญชีกับแอดมินรับคำเชิญแล้วเห็นข้อมูลห้อง 101/สัญญา และคำเชิญขึ้น “ใช้แล้ว” (หลักฐานจากผู้ใช้); เคสหมดอายุ/ใช้ซ้ำ/แยกสิทธิ์อ้างผลทดสอบ Supabase จริงที่บันทึกไว้ ไม่อ้างว่าได้ตรวจซ้ำผ่าน browser ดู [บันทึกปิดเฟสและขอบเขตหลักฐาน](PHASE1-VERIFICATION.md)
+ หลักฐานเดิม 17/10/2569 ยืนยันเฉพาะ flow ลิงก์ที่ถูกแทนแล้ว: เพื่อนใช้ LINE คนละบัญชีกับแอดมินรับคำเชิญและเห็นข้อมูลห้อง 101/สัญญา; ผลนี้ไม่ยืนยัน flow Bot ใหม่ จึงยังไม่ปิด Phase 1 จนกว่า UAT แบบออกโค้ด → ส่ง Bot → ผูกบัญชี → เข้า LIFF จะผ่าน ดู [บันทึกเดิมและขอบเขตหลักฐาน](PHASE1-VERIFICATION.md)
 
  - [x] Server operations + UI CRUD ห้อง (residential/commercial) — แทน mock ใน [`app/admin/rooms`](../app/admin/rooms/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: สร้าง/แก้ไข/ลบห้องพร้อม audit; ลบต้องพิมพ์เลขห้องยืนยันและห้ามลบห้องที่มีประวัติ; local validation/RLS/FK tests ผ่าน ยังรอตรวจ UI หลัง deploy)
  - [x] CRUD สัญญา + ผู้เช่าร่วม/ผู้เช่าหลัก + ย้ายออก/ถอนสิทธิ์ — [`app/admin/leases/`](../app/admin/leases/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569; ค่าเงินกรอกตามจริง ไม่ hardcode — ข้อมูลจริงรอ Q-02)
- - [x] ลิงก์/QR เชิญผู้เช่า: เก็บเฉพาะ hash, อายุ 7 วัน, ใช้ครั้งเดียว, กันการรับพร้อมกัน — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: `POST /api/invites/accept` + compare-and-set `used_at`)
- - [x] หน้ารับคำเชิญ `/liff/join/[token]` ตรวจ token + ยืนยันชื่อ/เบอร์ + ผูกสัญญาจริง — `รอตรวจ` (โค้ดเสร็จ 17/10/2569)
+ - [x] เปลี่ยนลิงก์เป็นรหัสสุ่ม 12 ตัว: แสดงครั้งเดียว, เก็บเฉพาะ hash, อายุ 7 วัน — local code done; ยังรอตรวจ LINE จริง
+ - [x] LINE Bot รับรหัสในข้อความส่วนตัว, ใช้ LINE user ID จาก signed webhook, ผูกผ่าน RPC transaction เดิม — local code done; ยังรอตรวจ LINE จริง
+ - [ ] ทดสอบ flow จริง: แอดมินออกรหัส → ผู้เช่าส่ง Bot → บัญชีถูกผูก → เข้า LIFF เห็นเฉพาะสัญญาตนเอง — `รอตรวจ`
+ - [ ] ยืนยัน LINE Login/LIFF และ Messaging API channels อยู่ใน LINE Developers Provider เดียวกัน ก่อน UAT
+ - [x] ปิด API รับลิงก์เก่า (410) และหน้า `/liff/join/[token]` แจ้งวิธีขอรหัสใหม่
  - [x] ปิดสัญญา / ยกเลิกคำเชิญ / ถอนสิทธิ์เมื่อย้ายออก — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: `endLease` เพิกถอนคำเชิญค้าง + คืนห้องว่าง; migration `revoked_at` + กัน active ซ้อน)
  - [x] Dashboard ผู้เช่า [`/liff`](../app/liff/page.tsx) อ่านข้อมูลจริง + กรณีไม่มีห้อง/ไม่มีบิล — `รอตรวจ` (โค้ดเสร็จ 17/10/2569)
 
@@ -104,16 +107,13 @@
 
 **เกณฑ์จบ:** ยังไม่ผ่าน — ยังต้องทดสอบบัญชีแยกกันและ Signed URL บนอุปกรณ์/Storage จริง; Q-07 ยังไม่ตอบ
 
-## Phase 5: Cron รวมระบบ และ UAT — สถานะ: บางส่วน
+## ## Phase 5: ส่งข้อความ รวมระบบ และ UAT — สถานะ: บางส่วน
 
-- [ ] Handler 5 งาน Cron ให้ครบ (idempotent + กู้รอบพลาด + job log) — [`app/api/cron/[job]/route.ts`](../app/api/cron/%5Bjob%5D/route.ts):
-  - [ ] `meter-reminder` (วันที่ 1)
-  - [ ] `issue-invoices` (วันที่ 25 และ 5)
-  - [ ] `due-reminder` (ทุกวัน)
-  - [x] `mark-overdue` (ทุกวัน; idempotent, ไม่คิดค่าปรับ, audit)
-  - [ ] `lease-expiry` (รายสัปดาห์)
-- [ ] Webhook LINE ประมวลผล event + deduplication + log — [`app/api/line/webhook/route.ts`](../app/api/line/webhook/route.ts) ตรวจ signature แล้วแต่ยังไม่ประมวลผล — `รอ Q-06/การกำหนด events`
-- [ ] LINE notifications จริง + dedup/retry + แยกความสำเร็จของการส่งออกจากงานเงิน — `ยังไม่เริ่ม`
+- [x] ยกเลิก cron ตามที่ผู้ใช้เลือก A (17/10/2569): ลบ route, helper, vercel.json และ CRON_SECRET; สถานะเกินกำหนดคำนวณจากวันครบกำหนดตอนแสดงผล
+- [ ] หน้า `/admin/messages`: เลือกทุกห้อง/รายห้อง/ห้องที่มีบิลรอชำระ แม่แบบและตัวอย่าง ข้อความ LINE ประวัติและส่งซ้ำ — โค้ดครบในเครื่อง รอตรวจใช้งานจริง ([คู่มือ](ADMIN-MESSAGES.md))
+- [ ] ติดตั้ง migration `000007` ก่อนใช้หน้าข้อความบน Cloud และทดสอบด้วย LINE OA จริง (Q-06)
+Webhook LINE สำหรับยืนยัน invite code — [`app/api/line/webhook/route.ts`](../app/api/line/webhook/route.ts), [`lib/line-invites.ts`](../lib/line-invites.ts) — ประมวลผลข้อความและใช้ RPC กัน consume ซ้ำ; ยังต้องทดสอบ event redelivery/LINE จริง
+- [ ] LINE notifications: ผลตรวจสลิปมี dedup, ส่งซ้ำด้วยมือจากประวัติ; แยกการส่งออกจากงานเงิน — โค้ดในเครื่อง รอตรวจจริง ไม่มี retry อัตโนมัติ
 - [ ] ตรวจ RLS/Storage/API authorization/การเงิน/session บนสภาพแวดล้อมทดสอบจริง — `ยังไม่เริ่ม`
 - [ ] UAT ผู้เช่าจริง 2–3 ห้อง (วงจร สัญญา → บิล → ชำระ → ซ่อม) — `ยังไม่เริ่ม` (รอ Q-06/Q-08 + ผู้ร่วมทดสอบ)
 - [ ] ซ้อม backup/restore + จัดทำคู่มือเจ้าของ/ผู้เช่า — `ยังไม่เริ่ม`
@@ -150,4 +150,5 @@
 | 2026-10-16 | ตรวจครั้งแรกตาม ROADMAP §7 | test/typecheck/lint ผ่าน (commit `1a93b88`) |
  | 2026-10-17 | `npm run typecheck` · `npm run lint` · `npm run build` (working tree ล่าสุด) | ผ่าน — ไม่ได้รัน test suite; migrations ยังไม่ apply และไม่มีการทดสอบ end-to-end บน Cloud/อุปกรณ์จริง |
  | 2026-10-17 (เย็น) | ข้อ 0 ครบ + Phase 1 โค้ดครบ (rooms/leases/invites/join/dashboard) + `npm run build` ครั้งแรก | test/typecheck/lint/build ผ่านทั้งหมด — รอทดสอบกับ Supabase จริง + UAT |
-| 2026-10-17 (ปิด Phase 1) | ผู้ใช้ยืนยันเพื่อนรับลิงก์ด้วย LINE ต่างบัญชี เห็นห้อง/สัญญาจริง และคำเชิญขึ้นใช้แล้ว; รวมผล negative/RLS บนฐานจริงที่บันทึกก่อนหน้า | ปิด Phase 1 ตามคำขอผู้ใช้; ข้อจำกัดหลักฐานระบุใน PHASE1-VERIFICATION.md |
+| 2026-10-17 (หลักฐาน flow ลิงก์เดิม) | ผู้ใช้ยืนยันเพื่อนรับลิงก์ด้วย LINE ต่างบัญชี เห็นห้อง/สัญญาจริง และคำเชิญขึ้นใช้แล้ว | เป็นหลักฐานย้อนหลังเท่านั้น; flow ปัจจุบันเปลี่ยนเป็น Bot code และต้อง UAT ใหม่ |
+| 2026-10-17 (เปลี่ยนวิธีเชิญ) | แอดมินออกรหัส 12 ตัวเก็บเฉพาะ hash; LINE webhook ตรวจ signature รับ code ผ่านข้อความส่วนตัวและผูกบัญชีด้วย RPC เดิม; API ลิงก์เก่า 410 | Local implementation; ยังไม่ทดสอบ LINE จริงหรือ Cloud |

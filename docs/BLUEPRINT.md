@@ -29,8 +29,8 @@ flowchart TB
     APP --> ST["Private Storage · Signed URL"]
     APP --> PAY["บริการตรวจสลิป · รอยืนยันผู้ให้บริการ"]
     APP --> LINE["LINE Messaging API"]
-    CRON["Cron · ตรวจ secret และป้องกันรันซ้ำ"] --> APP
-    WH["LINE Webhook · ตรวจ signature"] --> APP
+    MESSAGES["แอดมินส่งข้อความ · LINE และประวัติการส่ง"] --> APP
+    WH["LINE Webhook · ตรวจ signature + รับ invite code"] --> APP
 ```
 
 เทคโนโลยีตาม `package.json`: Next.js 16.4.2, React 19.3.0, Supabase client/SSR และ LIFF SDK เป็นค่าที่ประกาศในโครงการ ไม่ใช่การรับรองเวอร์ชันล่าสุดของผู้ให้บริการ
@@ -52,7 +52,7 @@ Supabase Realtime อยู่ในสถาปัตยกรรมบรี�
 | Route ที่มีไฟล์แล้ว | หน้าที่เป้าหมาย | ข้อมูลสำคัญ |
 |---|---|---|
 | `/liff` | ภาพรวมของผู้เช่า | ห้อง ยอดค้าง วันครบกำหนด ปุ่มลัด และกราฟการใช้ไฟ |
-| `/liff/join/[token]` | ยืนยันรับคำเชิญ | ตรวจ token ยืนยันชื่อ/เบอร์ และแสดงผลผูกสัญญา |
+| `/liff/join/[token]` | แจ้งวิธีใหม่สำหรับลิงก์เก่า | แจ้งให้ขอรหัสจากแอดมินและส่งหา LINE Bot; ไม่มีการรับลิงก์เดิม |
 | `/liff/bills/[id]` | รายละเอียดบิลและส่งสลิป | รายการคิดเงิน QR ผลตรวจ และเหตุผลที่ต้องแก้ไข |
 | `/liff/meters` | ดูประวัติใช้ไฟ | เลขเดิม/ใหม่ หน่วย รูป และกราฟตามสิทธิ์ |
 | `/liff/documents` | ดูสัญญาและหลักฐาน | PDF สัญญา สลิป และเอกสารที่มีจริง; ใบเสร็จอัตโนมัติเป็นงานต่อยอด |
@@ -198,11 +198,13 @@ MVP เก็บสัญญา PDF ที่ลูกค้ายืนยั�
 |---|---|---|
 | ห้อง | `vacant`, `reserved`, `occupied`, `moving_out`, `maintenance` | เปลี่ยนให้สัมพันธ์กับสัญญา ไม่เปิดเช่าซ้ำขณะมีสัญญาขัดกัน |
 | สัญญา | `active`, `ended` | ตรวจช่วงเวลา การปิดสัญญา และสิทธิ์หลังย้ายออก |
-| บิล | `draft`, `issued`, `verifying`, `pending_review`, `paid`, `overdue`, `void` | ล็อก paid; ไม่เปลี่ยน paid เป็น overdue จาก Cron; กำหนดการแก้/ยกเลิกพร้อม audit |
+| บิล | `draft`, `issued`, `verifying`, `pending_review`, `paid`, `overdue`, `void` | ล็อก paid; แสดง overdue จากวันครบกำหนดเฉพาะบิลรอชำระ; กำหนดการแก้/ยกเลิกพร้อม audit |
 | การชำระ | `uploaded`, `slipok_passed`, `slipok_failed`, `mismatch`, `approved`, `rejected` | แยกผล provider กับผลรับชำระ; อนุมัติซ้ำไม่เพิ่มยอด; เปลี่ยนชื่อเมื่อยืนยัน provider |
 | ซ่อม | `pending`, `accepted`, `in_progress`, `waiting`, `done`, `closed` | ตรวจผู้เปลี่ยนสถานะและบันทึกทุกครั้ง |
 
 งานบิล การรับคำเชิญ และการอนุมัติต้องมี transaction/concurrency protection การมี unique constraint อย่างเดียวไม่รับประกันว่าบิลและรายการย่อยหรือการส่งข้อความจะสมบูรณ์พร้อมกัน
+
+คำเชิญผู้เช่าใช้รหัสสุ่ม 12 ตัว อายุ 7 วัน แสดงให้แอดมินครั้งเดียวและเก็บเฉพาะ hash ผู้เช่าส่งรหัสทางแชทส่วนตัวกับ LINE Bot; Server ต้องตรวจ webhook signature และใช้ `source.userId` จาก LINE event เท่านั้นก่อนเรียก RPC `accept_invite_code` รหัสหมดอายุ/ใช้แล้ว/ถูกยกเลิกต้องไม่ผูกบัญชี ลิงก์เชิญเดิมถูกปิดและหน้าเดิมแจ้งให้ขอรหัสใหม่ LINE Login/LIFF และ Messaging API ต้องอยู่ใต้ Provider เดียวกันเพื่อให้ LINE user ID ตรงกัน
 
 ## 8. ไฟล์และความปลอดภัย
 
@@ -225,25 +227,21 @@ MVP เก็บสัญญา PDF ที่ลูกค้ายืนยั�
 | `POST /api/auth/line` | ใช้งานได้ (ตรวจ ID token ผูกตัวตน ตั้ง session) | ต้องการ LIFF ID + Channel ID จริง และทดสอบด้วย token จริง |
 | `POST /api/slipok/verify` | stub 501 | auth, upload, provider adapter, ตรวจเงิน และผลอนุมัติ |
 | `POST /api/line/webhook` | ตรวจ signature แล้วตอบ ok | ประมวลผล event, deduplication และ log ผล |
-| `GET /api/cron/[job]` | ตรวจ bearer secret/ชื่อ job | handler จริง การรันซ้ำ และบันทึกผล |
+| `/admin/messages` Server Actions | ตรวจ owner/admin ก่อนส่ง LINE และบันทึกประวัติ | ตรวจใช้งานกับ LINE OA จริง |
 
 ยังไม่มี Server operations สำหรับ CRUD ห้อง/สัญญา รับคำเชิญ จดมิเตอร์ ออกบิล อนุมัติ เอกสาร และงานซ่อม ต้องกำหนด contract ตอนพัฒนา ไม่ถือว่า route หน้าจอเป็น API ที่ทำงานแล้ว
 
-## 10. ตารางงานอัตโนมัติ
+## ## 10. การส่งข้อความด้วยแอดมิน
 
-ตารางนี้อ่านจาก `vercel.json` และแปลงเป็นเวลาไทย UTC+7 งานจริงทุกตัวยังเป็น TODO
+ผู้ใช้เลือก A เมื่อ 17/10/2569: ยกเลิก cron ทั้งหมดและให้แอดมินส่งข้อความจาก `/admin/messages` แทน
 
-| Job | กำหนดเวลาไทยจาก config | ผลลัพธ์เป้าหมาย |
-|---|---|---|
-| `meter-reminder` | วันที่ 1 เวลา 09:00 | เตือนเจ้าหน้าที่จดมิเตอร์ |
-| `issue-invoices` | วันที่ 25 และ 5 เวลา 09:00 | สร้างบิลตามกติกาสัญญาที่ตกลง |
-| `due-reminder` | ทุกวัน 09:00 | เตือนก่อนครบกำหนด 3 วันและวันครบกำหนด |
-| `mark-overdue` | ทุกวัน 00:05 | เปลี่ยนบิลเลยกำหนด; ค่าปรับต้องมีนโยบายที่ยืนยัน |
-| `lease-expiry` | วันจันทร์ 09:00 | แจ้งสัญญาจะหมดภายใน 30 วัน |
+- เลือกทุกห้องที่มีสัญญาใช้งาน รายห้อง หรือห้องที่มีบิลรอชำระ
+- พิมพ์เองหรือเลือกแม่แบบเตือนชำระ/จดมิเตอร์/ประกาศ พร้อมตัวแปรห้อง ยอด และวันครบกำหนด
+- เก็บข้อความ ผู้ส่ง ผู้รับ สถานะ และข้อผิดพลาดใน `notifications` ส่งซ้ำเฉพาะ failed/skipped ด้วยมือ
+- ไม่มี token หรือ LINE user ID จะบันทึก skipped; pending ที่ค้างต้องตรวจผลก่อนส่งใหม่
+- แสดงสถานะบิลเกินกำหนดจากวันครบกำหนด ไม่มีการออกบิลหรือเตือนตามเวลาอัตโนมัติ
 
-ทุก job ต้องตรวจวันที่ด้วย Asia/Bangkok ป้องกันรันซ้ำและแจ้งซ้ำ บันทึกผลและมีวิธีกู้รอบที่พลาด หากจะรองรับ due_day อื่นนอกจากรอบปัจจุบัน ต้องทบทวน scheduler ด้วย ไม่ใช่เพิ่มค่าในสัญญาแล้วถือว่ารองรับทันที
-
-## 11. การตรวจรับและการดูแลระบบ
+11. การตรวจรับและการดูแลระบบ
 
 | ระดับ | หลักฐานที่ต้องได้ |
 |---|---|
@@ -268,6 +266,6 @@ MVP เก็บสัญญา PDF ที่ลูกค้ายืนยั�
 
 - บรีฟเดิม 6 หน้า (ขอบเขต ยูนิต โมดูล flow สถานะ และแผนเดิม): ถูกนำออกจาก repo เมื่อ 17/10/2569 (เนื้อหาย้ายเข้า Blueprint/Roadmap แล้ว) ไฟล์ต้นฉบับดูได้จากประวัติ git: `git show 378e902:docs/brief.pdf`
 - [migration](../supabase/migrations/20261016000000_init.sql), [RLS test](../supabase/tests/rls.test.mjs): ตารางและสิทธิ์ปัจจุบัน
-- [package.json](../package.json), [README](../README.md), [ตัวแปรตัวอย่าง](../.env.example), [Cron config](../vercel.json)
-- [Admin layout](../app/admin/layout.tsx), [LIFF layout](../app/liff/layout.tsx), [LINE auth](../app/api/auth/line/route.ts), [ตรวจ ID token](../lib/line-auth.ts), [ตรวจสลิป](../app/api/slipok/verify/route.ts), [Webhook](../app/api/line/webhook/route.ts), [Cron handler](../app/api/cron/%5Bjob%5D/route.ts)
+- [package.json](../package.json), [README](../README.md), [ตัวแปรตัวอย่าง](../.env.example)
+- [Admin layout](../app/admin/layout.tsx), [LIFF layout](../app/liff/layout.tsx), [LINE auth](../app/api/auth/line/route.ts), [ตรวจ ID token](../lib/line-auth.ts), [ตรวจสลิป](../app/api/slipok/verify/route.ts), [Webhook](../app/api/line/webhook/route.ts), [ส่งข้อความ](../app/admin/messages/page.tsx)
 - ร่าง `../../กฎหมายและช้อตกลง.txt`, `../../สัญญาเช่าห้องพัก.txt`, `../../สัญญาเช่าหอพัก.txt`: ใช้ระบุรายการรอตรวจเท่านั้น ไม่ได้ตรวจรับรองข้อกฎหมายในงานนี้

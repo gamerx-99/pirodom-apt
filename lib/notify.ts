@@ -47,7 +47,7 @@ export async function notifyPaymentResult(
     for (const tenant of invoice.leases?.lease_tenants ?? []) {
       const { data: row, error: insertError } = await admin
         .from("notifications")
-        .insert({ profile_id: tenant.profile_id, type: `payment_${result}`, channel: "line", payment_id: paymentId, status: "pending", sent_at: null })
+        .insert({ profile_id: tenant.profile_id, type: `payment_${result}`, channel: "line", payment_id: paymentId, status: "pending", sent_at: null, message: text })
         .select("id")
         .single();
       if (insertError || !row) continue; // 23505 = แจ้งรายการนี้ไปแล้ว
@@ -58,6 +58,6 @@ export async function notifyPaymentResult(
         .eq("id", row.id);
     }
   } catch {
-    // ponytail: ไม่มี retry อัตโนมัติ แถว failed/skipped ค้างไว้ให้ตรวจ; เพิ่ม cron ส่งซ้ำเมื่อได้ LINE OA จริง (Q-06)
+    // แถว failed/skipped ค้างไว้ให้แอดมินกดส่งซ้ำที่ /admin/messages
   }
 }

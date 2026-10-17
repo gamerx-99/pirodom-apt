@@ -50,7 +50,7 @@ export function CreateLeaseForm({ rooms }: { rooms: { id: string; room_no: strin
         </button>
       </div>
       {state && !state.ok && <p className="col-span-2 text-sm text-red-600 sm:col-span-4">{state.error}</p>}
-      {state?.ok && <p className="col-span-2 text-sm text-emerald-700 sm:col-span-4">สร้างสัญญาเรียบร้อยแล้ว: สามารถออกลิงก์เชิญผู้เช่าได้ด้านล่าง</p>}
+      {state?.ok && <p className="col-span-2 text-sm text-emerald-700 sm:col-span-4">สร้างสัญญาเรียบร้อยแล้ว: สามารถออกรหัสยืนยันให้ผู้เช่าได้ด้านล่าง</p>}
     </form>
   );
 }
@@ -61,13 +61,15 @@ export function InviteButton({ leaseId }: { leaseId: string }) {
     <form action={action} className="mt-2">
       <input type="hidden" name="lease_id" value={leaseId} />
       <button disabled={pending} className="rounded-lg bg-teal-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50">
-        {pending ? "กำลังออก…" : "ออกลิงก์เชิญ (7 วัน)"}
+        {pending ? "กำลังออก…" : "ออกรหัสยืนยัน (7 วัน)"}
       </button>
       {state && !state.ok && <p className="mt-1 text-xs text-red-600">{state.error}</p>}
-      {state?.ok && state.inviteUrl && (
-        <p className="mt-1 break-all text-xs text-emerald-700">
-          ส่งลิงก์นี้ให้ผู้เช่า (แสดงครั้งเดียว): <span className="font-mono">{state.inviteUrl}</span>
-        </p>
+      {state?.ok && state.inviteCode && (
+        <div className="mt-2 rounded-xl bg-teal-50 p-3 text-sm text-teal-900">
+          <p>ส่งรหัสนี้ให้ผู้เช่า แล้วให้พิมพ์ส่งหา LINE Bot ภายใน 7 วัน (รหัสแสดงครั้งเดียว):</p>
+          <p className="mt-2 select-all font-mono text-xl font-bold tracking-[0.2em]">{state.inviteCode}</p>
+          <p className="mt-2 text-xs">LINE Login ของ LIFF และ LINE OA Bot ต้องอยู่ใน LINE Developers Provider เดียวกัน</p>
+        </div>
       )}
     </form>
   );

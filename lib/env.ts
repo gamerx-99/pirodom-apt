@@ -13,7 +13,6 @@ export const ENV_KEYS = [
   "LINE_CHANNEL_ACCESS_TOKEN",
   "SLIPOK_API_KEY",
   "SLIPOK_BRANCH_ID",
-  "CRON_SECRET",
   "PROMPTPAY_ID",
   "PROMPTPAY_ACCOUNT_NAME",
 ] as const;
@@ -67,10 +66,6 @@ export function isLineWebhookConfigured(): boolean {
 
 export function isSlipokConfigured(): boolean {
   return !!getEnv("SLIPOK_API_KEY") && !!getEnv("SLIPOK_BRANCH_ID");
-}
-
-export function isCronConfigured(): boolean {
-  return !!getEnv("CRON_SECRET");
 }
 
 /** ตอบ 503 มาตรฐานเมื่อ service ยังไม่ตั้งค่า */

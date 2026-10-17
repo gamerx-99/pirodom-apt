@@ -1,6 +1,5 @@
 import {
   ENV_KEYS,
-  isCronConfigured,
   isLiffConfigured,
   isLineConfigured,
   isLineWebhookConfigured,
@@ -34,7 +33,6 @@ export async function GET() {
       line: !isLineConfigured(),
       line_webhook: !isLineWebhookConfigured(),
       slipok: !isSlipokConfigured(),
-      cron: !isCronConfigured(),
     },
     missing,
     note: missing.length

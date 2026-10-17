@@ -10,9 +10,9 @@ export default async function Page() {
       <div className="space-y-4">
         <div>
           <h1 className="text-xl font-bold text-gray-900">สัญญาเช่า</h1>
-          <p className="text-sm text-gray-500">เงื่อนไขรายสัญญา ผู้เช่าร่วม และลิงก์เชิญ</p>
+          <p className="text-sm text-gray-500">เงื่อนไขรายสัญญา ผู้เช่าร่วม และรหัสยืนยันทาง LINE Bot</p>
         </div>
-        <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: ฟอร์มสัญญาและลิงก์เชิญจะเปิดใช้งานเมื่อเชื่อมต่อระบบแล้ว" />
+        <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: ฟอร์มสัญญาและรหัสยืนยันจะเปิดใช้งานเมื่อเชื่อมต่อระบบแล้ว" />
         <Card title="สัญญาตัวอย่าง" desc="due_day 31 = วันสุดท้ายของเดือน">
           <p className="text-sm text-gray-500">เชื่อม Supabase แล้วข้อมูลจริงจะแสดงที่นี่</p>
         </Card>
@@ -68,13 +68,13 @@ export default async function Page() {
     <div className="space-y-4">
       <div>
         <h1 className="text-xl font-bold text-gray-900">สัญญาเช่า</h1>
-        <p className="text-sm text-gray-500">สร้างสัญญา เชิญผู้เช่า (ลิงก์ 7 วัน ใช้ครั้งเดียว) และปิดสัญญาเมื่อย้ายออก</p>
+        <p className="text-sm text-gray-500">สร้างสัญญา เชิญผู้เช่าด้วยรหัสยืนยันทาง LINE Bot (7 วัน ใช้ครั้งเดียว) และปิดสัญญาเมื่อย้ายออก</p>
       </div>
       <Card title="สร้างสัญญา" desc="1 ห้องมีสัญญาที่ใช้งานได้ 1 ฉบับ · กรอกอัตราค่าเช่าและเงินประกันตามที่ตกลงในสัญญา">
         <CreateLeaseForm rooms={rooms ?? []} />
       </Card>
       {!leases || leases.length === 0 ? (
-        <EmptyState title="ยังไม่มีสัญญา" desc="สร้างสัญญาแรกจากฟอร์มด้านบน แล้วออกลิงก์เชิญให้ผู้เช่ากดผูกบัญชี" />
+        <EmptyState title="ยังไม่มีสัญญา" desc="สร้างสัญญาแรกจากฟอร์มด้านบน แล้วออกรหัสยืนยันให้ผู้เช่าส่งหา LINE Bot" />
       ) : (
         <div className="space-y-3">
           {leases.map((l) => {
@@ -93,7 +93,7 @@ export default async function Page() {
                 <div className="mt-2">
                   <p className="text-sm font-semibold">ผู้เช่า ({tenants.length})</p>
                   {tenants.length === 0 ? (
-                    <p className="text-sm text-gray-400">ยังไม่มีผู้ผูกบัญชี (สามารถออกลิงก์เชิญได้ที่ส่วนด้านล่าง)</p>
+                    <p className="text-sm text-gray-400">ยังไม่มีผู้ผูกบัญชี (สามารถออกรหัสยืนยันให้ผู้เช่าส่งผ่าน LINE Bot ได้ที่ส่วนด้านล่าง)</p>
                   ) : (
                     <ul className="mt-1 space-y-1">
 {tenants.map((t) => (

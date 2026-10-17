@@ -94,3 +94,6 @@ Vercel connector could list the project but returned 403/404 for deployment/doma
 - Verify invitation errors and access isolation through real authenticated HTTP/browser requests. Actual simultaneous invite acceptance is not established by the sequential SQL test.
 
 This was the checklist before the closure record above; remaining unobserved browser cases are explicitly listed in its evidence limits.
+# ขอบเขตหลักฐานปัจจุบัน
+
+วิธีเชิญแบบลิงก์ที่ตรวจในเอกสารนี้ถูกแทนด้วยรหัสยืนยันผ่าน LINE Bot ในวันที่ 17 ตุลาคม 2569 หลักฐานด้านล่างเป็นประวัติของ flow เดิมเท่านั้น และไม่ใช้ยืนยัน Phase 1 ปัจจุบันจนกว่าจะผ่าน UAT ของ code → Bot → LIFF ใหม่ โดย LINE Login/LIFF กับ Messaging API ต้องใช้ Provider เดียวกัน

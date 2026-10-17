@@ -18,7 +18,7 @@ export default async function Page() {
         </div>
         <Card title="ยอดค้างชำระ" desc="ครบกำหนด 30 ก.ย. 2569">
           <p className="text-3xl font-bold text-gray-900">{formatTHB(3850)}</p>
-          <p className="mt-1 text-sm text-gray-500">เข้าสู่ระบบด้วย LINE แล้วผูกห้องจากลิงก์เชิญเพื่อดูข้อมูลจริง</p>
+          <p className="mt-1 text-sm text-gray-500">ขอรหัสยืนยันจากผู้ดูแล แล้วส่งรหัสหา LINE Bot เพื่อผูกห้องก่อนเข้าสู่ระบบ</p>
         </Card>
         <LiffNav />
       </div>
@@ -31,8 +31,8 @@ export default async function Page() {
     return (
       <div className="space-y-4 pb-20">
         <h1 className="text-xl font-bold text-gray-900">เข้าสู่ระบบด้วย LINE</h1>
-        <Card title="ยังไม่ได้ผูกบัญชี" desc="เปิดลิงก์นี้ผ่าน LINE เพื่อยืนยันตัวตน">
-          <p className="text-sm text-gray-500">ถ้ามีลิงก์เชิญจากผู้ดูแล ให้กดลิงก์นั้นเพื่อผูกห้องก่อน</p>
+        <Card title="ยังไม่ได้ผูกบัญชี" desc="ยืนยันตัวตนผ่าน LINE Bot ก่อน">
+          <p className="text-sm text-gray-500">ขอรหัสจากผู้ดูแล ส่งรหัสหา LINE Bot ของหอพัก แล้วเปิดเมนูระบบผู้เช่าอีกครั้ง</p>
         </Card>
         <LiffNav />
       </div>
@@ -55,7 +55,7 @@ export default async function Page() {
         <h1 className="text-xl font-bold text-gray-900">สวัสดี {profile?.display_name ?? ""}</h1>
         <EmptyState
           title="ยังไม่มีห้องที่ผูกอยู่"
-          desc="ถ้าเพิ่งย้ายเข้าหรือเปลี่ยนเครื่อง ให้ขอ/กดลิงก์เชิญจากผู้ดูแลอีกครั้ง (ลิงก์ใช้ได้ครั้งเดียว 7 วัน)"
+          desc="ถ้าเพิ่งย้ายเข้าหรือเปลี่ยนบัญชี ให้ขอรหัสยืนยันจากผู้ดูแลและส่งหา LINE Bot (รหัสใช้ได้ครั้งเดียว 7 วัน)"
         />
         <LiffNav />
       </div>

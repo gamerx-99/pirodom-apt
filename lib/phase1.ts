@@ -3,10 +3,19 @@ import { createHash, randomBytes } from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export const INVITE_TTL_DAYS = 7;
+export const INVITE_CODE_LENGTH = 12;
+const INVITE_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-/** token ดิบส่งให้ผู้เช่า 1 ครั้ง (แสดงเป็น QR/ลิงก์) — เก็บเฉพาะ hash ใน DB */
-export function generateInviteToken(): string {
-  return randomBytes(32).toString("base64url");
+/** สุ่มรหัสที่พิมพ์ง่าย ส่งให้ผู้เช่าหนึ่งครั้ง และเก็บเฉพาะ hash ใน DB */
+export function generateInviteCode(): string {
+  return [...randomBytes(INVITE_CODE_LENGTH)]
+    .map((byte) => INVITE_CODE_ALPHABET[byte & 31])
+    .join("");
+}
+
+export function normalizeInviteCode(value: string): string | null {
+  const code = value.trim().replace(/[\s-]/g, "").toUpperCase();
+  return new RegExp(`^[${INVITE_CODE_ALPHABET}]{${INVITE_CODE_LENGTH}}$`).test(code) ? code : null;
 }
 
 export function hashInviteToken(token: string): string {

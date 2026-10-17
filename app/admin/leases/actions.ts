@@ -6,14 +6,14 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { todayTH } from "@/lib/format";
 import {
   audit,
-  generateInviteToken,
+  generateInviteCode,
   hashInviteToken,
   inviteExpiry,
   requireStaff,
   toNumberOrNull,
 } from "@/lib/phase1";
 
-type Result = { ok: boolean; error?: string; inviteUrl?: string };
+type Result = { ok: boolean; error?: string; inviteCode?: string };
 
 const fail = (error: string): Result => ({ ok: false, error });
 
@@ -94,7 +94,7 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
    revalidatePath("/admin/rooms");
  }
 
-// ออกลิงก์เชิญ: ส่ง token ดิบกลับครั้งเดียว เก็บเฉพาะ hash อายุ 7 วัน
+// ออกรหัสเชิญ: แสดงรหัสดิบครั้งเดียว เก็บเฉพาะ hash อายุ 7 วัน
  export async function createInvite(_prev: Result | null, form: FormData): Promise<Result> {
    try {
      const supabase = await createClient();
@@ -106,18 +106,16 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
      if (!lease) return fail("ไม่พบสัญญานี้");
      if (lease.status !== "active") return fail("สัญญาไม่ active ออกคำเชิญไม่ได้");
  
-    const token = generateInviteToken();
+    const code = generateInviteCode();
     const { data, error } = await admin
       .from("room_invitations")
-      .insert({ lease_id, token_hash: hashInviteToken(token), expires_at: inviteExpiry() })
+      .insert({ lease_id, token_hash: hashInviteToken(code), expires_at: inviteExpiry() })
       .select("id")
       .single();
     if (error) return fail(`ออกคำเชิญไม่สำเร็จ: ${error.message}`);
     await audit(admin, { actor_id: userId, action: "invite.create", table_name: "room_invitations", record_id: data.id, after: { lease_id } });
     revalidatePath("/admin/leases");
-    const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") ||
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
-    return { ok: true, inviteUrl: `${base}/liff/join/${token}` };
+    return { ok: true, inviteCode: code };
   } catch (e) {
     return fail(e instanceof Error ? e.message : "ออกคำเชิญไม่สำเร็จ");
   }

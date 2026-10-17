@@ -19,7 +19,6 @@ export default function Page() {
           <Badge tone="gray">Supabase: ยังไม่ได้เชื่อมต่อ</Badge>
           <Badge tone="gray">LINE: ยังไม่ได้เชื่อมต่อ</Badge>
           <Badge tone="gray">ตรวจสลิป: ยังไม่ได้เปิดใช้งาน</Badge>
-          <Badge tone="gray">Cron: ยังไม่ได้เชื่อมต่อ</Badge>
         </div>
       </Card>
     </div>

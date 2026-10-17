@@ -78,7 +78,7 @@ export async function createInvoiceDraft(
     const admin = createAdminClient();
     const { data: rawLease, error: leaseError } = await admin
       .from("leases")
-      .select("id,room_id,start_date,end_date,rent_amount,water_fee,electric_rate,status,rooms(room_no),lease_tenants(profile_id)")
+      .select("id,room_id,start_date,end_date,rent_amount,water_fee,electric_rate,status,room:rooms(room_no),lease_tenants(profile_id)")
       .eq("id", leaseId)
       .maybeSingle();
     if (leaseError || !rawLease) return fail("ไม่พบสัญญาที่เลือก");
