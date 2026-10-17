@@ -1,5 +1,5 @@
 // ทดสอบ migration + RLS บน PGlite (ไม่ต้องใช้ Docker): npm test
-// จำลองส่วนของ Supabase ที่ migration ใช้: auth.users, auth.uid(), storage.buckets, role anon/authenticated
+// จำลองส่วนของ Supabase ที่ migration ใช้: auth.users, auth.uid(), storage.buckets, storage.objects, role anon/authenticated
 import { PGlite } from "@electric-sql/pglite";
 import { readdirSync, readFileSync } from "node:fs";
 import assert from "node:assert/strict";
@@ -12,8 +12,17 @@ await db.exec(`
   create function auth.uid() returns uuid language sql stable as
     $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
   create table storage.buckets (id text primary key, name text, public boolean);
-  grant usage on schema public, auth to anon, authenticated;
+  create table storage.objects (
+    id uuid primary key default gen_random_uuid(),
+    bucket_id text,
+    name text,
+    owner uuid,
+    created_at timestamptz default now()
+  );
+  grant usage on schema public, auth, storage to anon, authenticated;
   alter default privileges in schema public grant all on tables to anon, authenticated;
+  alter default privileges in schema storage grant all on tables to anon, authenticated;
+  grant all on storage.objects to anon, authenticated;
 `);
 
 const dir = new URL("../migrations/", import.meta.url);
@@ -95,5 +104,43 @@ await rejects(as(A, "insert into maintenance_requests (room_id, category) values
 
 // กันสร้างบิลซ้ำ (lease_id, period)
 await rejects(db.exec("insert into invoices (lease_id, period, due_date) values ('20000000-0000-0000-0000-000000000001', '2026-12-01', '2026-11-30')"), /duplicate key/);
+
+// ---------- storage.objects: path ต้องตรงกับสิทธิ์ ----------
+// slips/<lease_id>/<invoice_id>/<file> — tenant อ่าน/อัปโหลดเฉพาะบิลตัวเอง
+await as(A, `insert into storage.objects (bucket_id, name) values
+  ('slips', '20000000-0000-0000-0000-000000000001/30000000-0000-0000-0000-000000000001/a.jpg')`);
+await rejects(as(B, `insert into storage.objects (bucket_id, name) values
+  ('slips', '20000000-0000-0000-0000-000000000001/30000000-0000-0000-0000-000000000001/b.jpg')`), /row-level security/);
+assert.equal((await as(A, "select id from storage.objects where bucket_id = 'slips'")).rows.length, 1);
+assert.equal((await as(B, "select id from storage.objects where bucket_id = 'slips'")).rows.length, 0);
+assert.equal((await as(ADMIN, "select id from storage.objects where bucket_id = 'slips'")).rows.length, 1);
+// staff อัปโหลดแทนได้ทุกบิล
+await as(ADMIN, `insert into storage.objects (bucket_id, name) values
+  ('slips', '20000000-0000-0000-0000-000000000002/30000000-0000-0000-0000-000000000002/staff.jpg')`);
+
+// documents/<lease_id>/<file> — tenant อ่านเฉพาะสัญญาตัวเอง อัปโหลดเองไม่ได้
+await as(ADMIN, `insert into storage.objects (bucket_id, name) values
+  ('documents', '20000000-0000-0000-0000-000000000001/contract.pdf'),
+  ('documents', '20000000-0000-0000-0000-000000000002/other.pdf')`);
+assert.equal((await as(A, "select id from storage.objects where bucket_id = 'documents'")).rows.length, 1);
+await rejects(as(A, "insert into storage.objects (bucket_id, name) values ('documents', 'x/y.pdf')"), /row-level security/);
+
+// meters/<room_id>/<period>/<file> — tenant อ่านเฉพาะงวดในช่วงสัญญาตัวเอง
+await as(ADMIN, `insert into storage.objects (bucket_id, name) values
+  ('meters', '10000000-0000-0000-0000-000000000001/2026-11-01/m.jpg'),
+  ('meters', '10000000-0000-0000-0000-000000000001/2026-09-01/old.jpg')`);
+assert.deepEqual(
+  (await as(A, "select name from storage.objects where bucket_id = 'meters'")).rows,
+  [{ name: "10000000-0000-0000-0000-000000000001/2026-11-01/m.jpg" }],
+);
+
+// maintenance/<room_id>/<request_id>/<file> — แจ้งซ่อมของตัวเองเท่านั้น
+const maintId = (await as(A, "select id::text as id from maintenance_requests")).rows[0].id;
+await as(A, `insert into storage.objects (bucket_id, name) values
+  ('maintenance', '10000000-0000-0000-0000-000000000001/${maintId}/photo.jpg')`);
+assert.equal((await as(A, "select id from storage.objects where bucket_id = 'maintenance'")).rows.length, 1);
+await rejects(as(B, `insert into storage.objects (bucket_id, name) values
+  ('maintenance', '10000000-0000-0000-0000-000000000001/${maintId}/other.jpg')`), /row-level security/);
+assert.equal((await as(B, "select id from storage.objects where bucket_id = 'maintenance'")).rows.length, 0);
 
 console.log("rls.test: all passed");

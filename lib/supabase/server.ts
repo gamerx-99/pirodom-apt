@@ -1,12 +1,17 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { getEnv } from "@/lib/env";
 
 export async function createClient() {
+  const url = getEnv("NEXT_PUBLIC_SUPABASE_URL");
+  const anon = getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  if (!url || !anon) {
+    throw new Error(
+      "Supabase ยังไม่ตั้งค่า (ข้ามส่วนนี้ไปก่อน — ใส่ NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY แล้วลองใหม่)",
+    );
+  }
   const cookieStore = await cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  return createServerClient(url, anon, {
       cookies: {
         getAll: () => cookieStore.getAll(),
         setAll: (toSet) => {
@@ -17,6 +22,6 @@ export async function createClient() {
           }
         },
       },
-    },
-  );
+    });
 }
+
