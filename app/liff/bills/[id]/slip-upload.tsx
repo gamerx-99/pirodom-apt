@@ -16,11 +16,13 @@ export function SlipUpload({ invoiceId }: { invoiceId: string }) {
       const result = await response.json() as { error?: string; message?: string };
       if (!response.ok) throw new Error(result.error ?? "ส่งสลิปไม่สำเร็จ");
       setMessage(result.message ?? "รับสลิปแล้ว");
-      router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "ส่งสลิปไม่สำเร็จ");
     } finally {
       setBusy(false);
+      // Even an error response may follow a saved upload. Show that existing
+      // submission instead of inviting the tenant to upload the same slip again.
+      router.refresh();
     }
   }
 

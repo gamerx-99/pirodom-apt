@@ -158,6 +158,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
         {status === "paid" ? <p className="text-sm text-emerald-700">บิลนี้ชำระแล้ว</p> : activePayment ? (
           <div className="space-y-1 text-sm">
             <p className="font-medium">{PAYMENT_STATUS_LABEL[activePayment.status as keyof typeof PAYMENT_STATUS_LABEL] ?? "รอตรวจ"}</p>
+            {activePayment.status === "uploaded" && <p className="text-amber-800">ระบบเก็บสลิปไว้แล้ว เจ้าหน้าที่จะตรวจสอบรายการเดิม ไม่ต้องโอนเงินหรือส่งสลิปใหม่</p>}
             <p className="text-gray-500">ส่งเมื่อ {formatDateTH(activePayment.created_at)}{activePayment.amount == null ? "" : ` · ผลตรวจยอด ${formatTHB(Number(activePayment.amount))}`}</p>
             {activePayment.review_reason && <p className="text-red-700">เหตุผล: {activePayment.review_reason}</p>}
           </div>

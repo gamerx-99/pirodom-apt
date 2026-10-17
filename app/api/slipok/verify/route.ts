@@ -4,6 +4,7 @@ import { getEnv, isSlipokConfigured } from "@/lib/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { removePrivateFile, storagePath, uploadPrivateFile } from "@/lib/storage";
+import { OPEN_PAYMENT_STATUSES } from "@/lib/payment-status";
 
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 const MAX_REQUEST_BYTES = 4_500_000;
@@ -12,7 +13,6 @@ const IMAGE_TYPES: Record<string, string> = {
   "image/png": "png",
   "image/webp": "webp",
 };
-const ACTIVE_PAYMENT_STATUSES = ["uploaded", "slipok_passed", "slipok_failed", "mismatch", "pending_review"];
 
 type SlipokPayload = {
   success?: boolean;
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
       .from("payments")
       .select("id")
       .eq("invoice_id", invoice.id)
-      .in("status", ACTIVE_PAYMENT_STATUSES)
+      .in("status", OPEN_PAYMENT_STATUSES)
       .limit(1)
       .maybeSingle();
     if (openError) return Response.json({ error: "ตรวจสอบรายการส่งสลิปเดิมไม่สำเร็จ" }, { status: 500 });
@@ -95,20 +95,27 @@ export async function POST(request: Request) {
       return Response.json({ error: "อัปโหลดสลิปไม่สำเร็จ" }, { status: 400 });
     }
 
-    const { data: payment, error: paymentError } = await admin
+    const registered = await admin
       .from("payments")
-      .insert({ invoice_id: invoice.id, slip_path: slipPath, status: "uploaded" })
+      .insert({ invoice_id: invoice.id, slip_path: slipPath, status: "uploaded", submitted_by: user.id })
       .select("id")
       .single();
+    let payment = registered.data;
+    const paymentError = registered.error;
     if (paymentError || !payment) {
-      await removePrivateFile("slips", slipPath).catch(() => undefined);
-      return Response.json(
-        { error: paymentError?.code === "23505" ? "มีสลิปของบิลนี้รอตรวจอยู่แล้ว" : "บันทึกรายการสลิปไม่สำเร็จ" },
-        { status: paymentError?.code === "23505" ? 409 : 500 },
-      );
+      // A lost INSERT response does not prove rollback. Look up the unique
+      // uploaded path before deleting a file that a committed row may reference.
+      const receipt = await admin.from("payments").select("id").eq("slip_path", slipPath).maybeSingle();
+      if (receipt.data) {
+        payment = receipt.data;
+      } else if (paymentError?.code === "23505" && !receipt.error) {
+        await removePrivateFile("slips", slipPath).catch(() => undefined);
+        return Response.json({ error: "มีสลิปของบิลนี้รอตรวจอยู่แล้ว" }, { status: 409 });
+      } else {
+        await audit(admin, { actor_id: user.id, action: "payment.upload.record_uncertain", table_name: "payments", after: { invoice_id: invoice.id, slip_path: slipPath } });
+        return Response.json({ saved: true, error: "เก็บไฟล์สลิปแล้ว แต่ยืนยันการบันทึกรายการไม่สำเร็จ กรุณาแจ้งเจ้าหน้าที่โดยไม่ต้องส่งสลิปซ้ำ" }, { status: 500 });
+      }
     }
-
-    await admin.from("invoices").update({ status: "verifying" }).eq("id", invoice.id).in("status", ["issued", "overdue"]);
 
     let reviewStatus: "slipok_passed" | "slipok_failed" | "mismatch" | "pending_review" = "pending_review";
     let verifiedAmount: number | null = null;
@@ -168,25 +175,35 @@ export async function POST(request: Request) {
       raw_response: null,
     });
     if (verificationError) {
-      reviewStatus = "mismatch";
-      verification = { status: reviewStatus, reason: verificationError.code === "23505" ? "duplicate_reference" : "verification_record_failed" };
-      await admin.from("payment_verifications").insert({
-        payment_id: payment.id,
-        provider: "slipok",
-        result: JSON.stringify(verification),
-        provider_reference: null,
-        raw_response: null,
-      });
+      // A lost response may hide a successful insert. Reuse that payment's log
+      // before recording a duplicate-reference failure; never overwrite it.
+      const { data: existing } = await admin.from("payment_verifications")
+        .select("id").eq("payment_id", payment.id).limit(1).maybeSingle();
+      if (!existing) {
+        if (verificationError.code !== "23505") {
+          return Response.json({ saved: true, error: "เก็บสลิปแล้ว แต่บันทึกผลตรวจยังไม่สำเร็จ กรุณาแจ้งเจ้าหน้าที่โดยไม่ต้องส่งสลิปใหม่" }, { status: 500 });
+        }
+        reviewStatus = "mismatch";
+        verification = { status: reviewStatus, reason: "duplicate_reference" };
+        const { error: fallbackError } = await admin.from("payment_verifications").insert({
+          payment_id: payment.id,
+          provider: "slipok",
+          result: JSON.stringify(verification),
+          provider_reference: null,
+          raw_response: null,
+        });
+        if (fallbackError) {
+          return Response.json({ saved: true, error: "เก็บสลิปแล้ว แต่บันทึกผลตรวจยังไม่สำเร็จ กรุณาแจ้งเจ้าหน้าที่โดยไม่ต้องส่งสลิปใหม่" }, { status: 500 });
+        }
+      }
     }
 
-    // บันทึกผลตรวจไม่สำเร็จ = รายการค้าง 'uploaded' ซึ่ง RPC ไม่ยอมให้อนุมัติ ห้ามตอบว่าสำเร็จ
-    const { data: recorded, error: recordError } = await admin
-      .from("payments")
-      .update({ amount: verifiedAmount, status: reviewStatus })
-      .eq("id", payment.id)
-      .eq("status", "uploaded")
-      .select("id")
-      .maybeSingle();
+    // Payment + invoice + audit change together. A failed transaction leaves the
+    // saved image/log available for staff to retry WITHOUT uploading or rechecking.
+    const { data: recorded, error: recordError } = await admin.rpc("finalize_invoice_payment_verification", {
+      p_payment_id: payment.id,
+      p_actor_id: user.id,
+    });
     if (recordError || !recorded) {
       await audit(admin, {
         actor_id: user.id,
@@ -196,24 +213,22 @@ export async function POST(request: Request) {
         after: { invoice_id: invoice.id, intended_status: reviewStatus },
       });
       return Response.json(
-        { error: "รับสลิปแล้วแต่บันทึกผลตรวจไม่สำเร็จ: เจ้าหน้าที่จะตรวจสอบรายการนี้ กรุณาแจ้งเจ้าหน้าที่" },
+        { saved: true, error: "เก็บสลิปและผลตรวจแล้ว เจ้าหน้าที่นำรายการเดิมกลับเข้าคิวได้ กรุณาแจ้งเจ้าหน้าที่โดยไม่ต้องส่งสลิปใหม่" },
         { status: 500 },
       );
     }
-    const { error: invoiceStatusError } = await admin.from("invoices").update({ status: "pending_review" }).eq("id", invoice.id).eq("status", "verifying");
-    if (invoiceStatusError) return Response.json({ error: "บันทึกสถานะบิลไม่สำเร็จ กรุณาแจ้งเจ้าหน้าที่" }, { status: 500 });
     await audit(admin, {
       actor_id: user.id,
       action: "payment.submit",
       table_name: "payments",
       record_id: payment.id,
-      after: { invoice_id: invoice.id, status: reviewStatus, amount: verifiedAmount, has_slip: true },
+      after: { invoice_id: invoice.id, status: recorded, amount: verifiedAmount, has_slip: true },
     });
 
     return Response.json({
       ok: true,
-      status: reviewStatus,
-      message: reviewStatus === "slipok_passed"
+      status: recorded,
+      message: recorded === "slipok_passed"
         ? "SlipOK ตรวจเบื้องต้นผ่านแล้ว: รอเจ้าหน้าที่ตรวจและยืนยัน"
         : "รับสลิปแล้ว: รายการอยู่ในคิวให้เจ้าหน้าที่ตรวจสอบ",
     });
