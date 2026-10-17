@@ -5,23 +5,9 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { audit, requireStaff } from "@/lib/phase1";
 import { signedUrl, storagePath, uploadPrivateFile } from "@/lib/storage";
-
-/** ลำดับสถานะงานซ่อม: ผู้เช่าแจ้ง → รับเรื่อง → กำลังทำ → รอ/กลับมาทำ → เสร็จ → ผู้เช่ายืนยันปิด */
-const NEXT_STATUS: Record<string, string[]> = {
-  pending: ["accepted"],
-  accepted: ["in_progress", "waiting"],
-  in_progress: ["waiting", "done"],
-  waiting: ["in_progress", "done"],
-  done: [],
-  closed: [],
-};
+import { NEXT_STATUS } from "./status";
 
 const MAX_PHOTOS = 8;
-
-/** สถานะที่เปลี่ยนได้จากสถานะปัจจุบัน — ใช้ทั้งที่หน้าเลือกและที่ฝั่ง server ตรวจซ้ำ */
-export async function statusOptions(current: string): Promise<string[]> {
-  return NEXT_STATUS[current] ?? [];
-}
 
 function safeFileName(name: string): string {
   const ext = /\.(jpg|jpeg|png|webp)$/i.exec(name)?.[0].toLowerCase() ?? ".jpg";

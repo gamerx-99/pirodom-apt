@@ -26,6 +26,18 @@ export function storagePath(...parts: (string | number)[]): string {
 }
 
 /**
+ * ชื่อ object ใน storage ไม่เอาชื่อ bucket นำหน้า
+ * policy อ่าน split_part(name,'/',1) เป็น lease_id / room_id ถ้าเหลือส่วนนำหน้าไว้
+ * policy จะไม่มีวันตรงกับไฟล์ที่แอปเขียน (fail-closed: ผู้เช่าอ่านตรงไม่ได้เลย)
+ * ส่วน file_path ในฐานข้อมูลเก็บพร้อม prefix ไว้ตามรูปแบบที่ constraint กำหนด
+ */
+export function objectName(bucket: Bucket, path: string): string {
+  const clean = storagePath(path);
+  const prefix = `${bucket}/`;
+  return clean.startsWith(prefix) ? clean.slice(prefix.length) : clean;
+}
+
+/**
  * อัปโหลดเข้า private bucket ผ่าน service role
  * คืน path ที่เก็บลง DB — ห้ามเก็บ URL เต็ม เพราะ path ต้องตรงกับ policy
  */
@@ -43,7 +55,7 @@ export async function uploadPrivateFile(
     throw new Error(`ไฟล์ใหญ่เกิน ${MAX_BYTES / 1024 / 1024} MB`);
   }
   const admin = createAdminClient();
-  const { error } = await admin.storage.from(bucket).upload(clean, file, {
+  const { error } = await admin.storage.from(bucket).upload(objectName(bucket, clean), file, {
     cacheControl: "3600",
     contentType: file.type,
     upsert: false,
@@ -64,7 +76,9 @@ export async function signedUrl(
   const clean = storagePath(path);
   if (!clean) throw new Error("path ไฟล์ว่าง");
   const admin = createAdminClient();
-  const { data, error } = await admin.storage.from(bucket).createSignedUrl(clean, seconds);
+  const { data, error } = await admin.storage
+    .from(bucket)
+    .createSignedUrl(objectName(bucket, clean), seconds);
   if (error || !data?.signedUrl) {
     throw new Error(error?.message ?? "ออก Signed URL ไม่ได้");
   }

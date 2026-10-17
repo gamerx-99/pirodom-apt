@@ -46,3 +46,6 @@ supabase/.temp
  
  # temp work files
  tmp/
+
+# word/excel lock files
+~$*

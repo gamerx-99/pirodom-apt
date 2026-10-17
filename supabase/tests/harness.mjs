@@ -37,6 +37,17 @@ export async function createTestDb() {
   return db;
 }
 
+/**
+ * ชื่อ object ใน storage ตามที่แอปเขียนจริง (ดู lib/storage.ts objectName)
+ * ต้องไม่มีชื่อ bucket นำหน้า เพราะ policy อ่าน split_part(name,'/',1) เป็น lease_id / room_id
+ * ถ้าชุดทดสอบใส่ชื่อไฟล์ต่างจากที่แอปเขียน policy จะผ่านทั้งที่ใช้จริงไม่ได้
+ */
+export function toObjectName(bucket, path) {
+  const clean = String(path).trim().replace(/^\/+|\/+$/g, "");
+  const prefix = `${bucket}/`;
+  return clean.startsWith(prefix) ? clean.slice(prefix.length) : clean;
+}
+
 /** รันคำสั่งในฐานข้อมูลในมุมของผู้ใช้ที่เข้าสู่ระบบแล้ว (RLS มีผล) */
 export async function asUser(db, uid, sql) {
   return asRole(db, "authenticated", uid, sql);

@@ -62,16 +62,15 @@ create policy tenant_slips_insert on storage.objects for insert to authenticated
     )
   );
 
--- tenant อ่านเอกสารเฉพาะสัญญาที่ยัง active ของตัวเอง (อัปโหลดโดย staff เท่านั้น)
--- ต้องกรองสถานะสัญญาด้วย ไม่เช่นนั้นผู้เช่าที่ย้ายออกแล้วยังเห็น metadata ของไฟล์เก่า
+-- tenant อ่านเอกสารเฉพาะสัญญาของตัวเอง (อัปโหลดโดย staff เท่านั้น)
+-- หมายเหตุ: เวอร์ชันนี้ถูกลงฐานข้อมูลจริงแล้ว จึงแก้ไฟล์ให้ตรงกับที่ลงไป
+-- การกรองสถานะสัญญาเพิ่มเติมอยู่ใน 20261018000002_tighten_storage_policies.sql
 create policy tenant_documents_select on storage.objects for select to authenticated
   using (
     bucket_id = 'documents'
     and exists (
       select 1 from public.lease_tenants lt
-      join public.leases l on l.id = lt.lease_id
       where lt.profile_id = auth.uid()
-        and l.status = 'active'
         and lt.lease_id::text = split_part(storage.objects.name, '/', 1)
     )
   );
@@ -88,18 +87,18 @@ create policy tenant_meters_select on storage.objects for select to authenticate
     )
   );
 
--- tenant อัปโหลดรูปซ่อมได้เฉพาะห้องที่เช่าอยู่ และต้องเป็นโฟลเดอร์ของงานซ่อมในห้องนั้นจริง
--- (เดิมเช็กแค่ room_id ทำให้อัปโหลดเข้าโฟลเดอร์ของงานอื่นในห้องตัวเองได้)
+-- tenant อัปโหลดรูปซ่อมเฉพาะห้องที่เช่าอยู่ และอ่านเฉพาะไฟล์ของงานในช่วงสัญญาตัวเอง
+-- หมายเหตุ: เวอร์ชันนี้ถูกลงฐานข้อมูลจริงแล้ว จึงแก้ไฟล์ให้ตรงกับที่ลงไป
+-- การบังคับให้เป็นโฟลเดอร์ของงานจริงอยู่ใน 20261018000002_tighten_storage_policies.sql
 create policy tenant_maintenance_insert on storage.objects for insert to authenticated
   with check (
     bucket_id = 'maintenance'
     and exists (
-      select 1 from public.maintenance_requests mr
-      join public.leases l on l.id = (select l2.id from public.leases l2 where l2.room_id = mr.room_id and l2.status = 'active')
+      select 1 from public.leases l
       join public.lease_tenants lt on lt.lease_id = l.id
       where lt.profile_id = auth.uid()
-        and mr.room_id::text = split_part(storage.objects.name, '/', 1)
-        and mr.id::text = split_part(storage.objects.name, '/', 2)
+        and l.status = 'active'
+        and l.room_id::text = split_part(storage.objects.name, '/', 1)
     )
   );
 create policy tenant_maintenance_select on storage.objects for select to authenticated

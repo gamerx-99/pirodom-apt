@@ -135,9 +135,12 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
       }
     }
     if (paths.length > 0) {
-      await admin
+      // ต้องเช็ค error: ถ้า insert รูปล้ม ไฟล์จะอยู่ใน storage แต่ไม่มีแถวอ้างอิง
+      // ผู้เช่าจะเห็นงานที่ไม่มีรูป และไฟล์จะค้างโดยไม่มีใครเห็น
+      const { error: photoError } = await admin
         .from("maintenance_photos")
         .insert(paths.map((file_path) => ({ request_id: requestId, kind: "reported", file_path, uploaded_by: user.id })));
+      if (photoError) throw new Error(`บันทึกรูปไม่สำเร็จ: ${photoError.message}`);
     }
     await audit(admin, {
       actor_id: user.id,
@@ -188,12 +191,13 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
     if (!updated || updated.length === 0) {
       throw new Error("สถานะงานเปลี่ยนไปแล้ว — รีเฟรชแล้วลองใหม่");
     }
-    await admin.from("maintenance_updates").insert({
+    const { error: timelineError } = await admin.from("maintenance_updates").insert({
       request_id: id,
       status: "closed",
       note: String(form.get("note") ?? "").trim().slice(0, 500) || "ผู้เช่ายืนยันปิดงาน",
       created_by: user.id,
     });
+    if (timelineError) throw new Error(`บันทึกประวัติงานไม่สำเร็จ: ${timelineError.message}`);
     await audit(admin, {
       actor_id: user.id,
       action: "maintenance.tenant_close",

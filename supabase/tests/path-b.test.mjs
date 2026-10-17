@@ -6,7 +6,7 @@
 //   4. ผู้เช่าอัปโหลดเข้า storage.objects เองไม่ได้
 // บอกให้รู้: ชุดนี้ไม่ยิงเครือข่ายและไม่แตะ service role จริง พิสูจน์แค่ชั้น policy
 import assert from "node:assert/strict";
-import { asRole, asUser, createTestDb } from "./harness.mjs";
+import { asRole, asUser, createTestDb, toObjectName } from "./harness.mjs";
 
 const db = await createTestDb();
 
@@ -192,5 +192,8 @@ assert.deepEqual(storagePolicies.rows, [
 for (const name of [`${L1}/contract-101.pdf`, `${L2}/contract-205.pdf`, `${L3}/old-101.pdf`]) {
   assert.equal(name.split("/").length, 2);
 }
+
+// ชื่อ object ต้องตรงกับที่ lib/storage.ts เขียนจริง คือไม่มีชื่อ bucket นำหน้า
+assert.equal(toObjectName("documents", `documents/${L1}/contract-101.pdf`), `${L1}/contract-101.pdf`);
 
 console.log("path-b.test: all passed");

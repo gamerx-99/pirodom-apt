@@ -1,7 +1,7 @@
 // ทดสอบเฉพาะเส้นทาง A (Phase 2a มิเตอร์ + Phase 4b งานซ่อม) บน PGlite: npm run test:path-a
 // ใช้ harness กลางเดียวกับ rls.test.mjs — ไม่ต้องใช้ Docker และไม่ต้องมี Supabase จริง
 import assert from "node:assert/strict";
-import { asRole, asUser, createTestDb } from "./harness.mjs";
+import { asRole, asUser, createTestDb, toObjectName } from "./harness.mjs";
 
 const db = await createTestDb();
 
@@ -47,6 +47,11 @@ const statusOf = async (id) =>
   (await db.query("select status from maintenance_requests where id = $1", [id])).rows[0].status;
 
 // ---------- 1. ผู้เช่าคนอื่นอ่านรูปของห้องอื่นไม่ได้ (meters + maintenance) ----------
+// ชื่อ object ต้องตรงกับที่ lib/storage.ts เขียนจริง คือไม่มีชื่อ bucket นำหน้า
+// (ถ้าใส่ prefix ไว้ policy จะไม่มีวันตรงกับไฟล์จริง แต่เทสต์นี้ยังผ่าน = หลอกตัวเอง)
+assert.equal(toObjectName("meters", `meters/${ROOM_101}/2026-11-01/m101.jpg`), `${ROOM_101}/2026-11-01/m101.jpg`);
+assert.equal(toObjectName("maintenance", `maintenance/${ROOM_101}/${REQ_101}/p1.jpg`), `${ROOM_101}/${REQ_101}/p1.jpg`);
+
 // meters/<room_id>/<YYYY-MM-DD>/<file>
 await asUser(db, ADMIN, `insert into storage.objects (bucket_id, name) values
   ('meters', '${ROOM_101}/2026-11-01/m101.jpg'),

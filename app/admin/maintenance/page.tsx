@@ -3,7 +3,8 @@ import { MAINT_STATUS_LABEL, type MaintenanceStatus } from "@/lib/mock";
 import { isSupabaseConfigured } from "@/lib/env";
 import { formatDateTH } from "@/lib/format";
 import { createClient } from "@/lib/supabase/server";
-import { maintenancePhotoUrls, statusOptions, updateMaintenanceStatus } from "./actions";
+import { maintenancePhotoUrls, updateMaintenanceStatus } from "./actions";
+import { statusOptions } from "./status";
 
 type Request = {
   id: string;
