@@ -4,7 +4,7 @@
 โครงการ: Dormitory (Customer) / `dormitory-line`  
 สถานะเอกสาร: แผนพัฒนาเพื่อทบทวนขอบเขตและใช้ติดตามงาน ยังไม่ใช่กำหนดส่งที่ตกลงกับลูกค้า
 
-อ่านคู่กับ [Blueprint](BLUEPRINT.md) ซึ่งอธิบายโครงสร้างและกติกาของระบบ เอกสารนี้จัดลำดับการพัฒนาใหม่จากบรีฟและโค้ดที่ตรวจพบ โดยเก็บ [บรีฟเดิม](brief.pdf) ไว้เป็นหลักฐานต้นทาง
+อ่านคู่กับ [Blueprint](BLUEPRINT.md) ซึ่งอธิบายโครงสร้างและกติกาของระบบ เอกสารนี้จัดลำดับการพัฒนาใหม่จากบรีฟและโค้ดที่ตรวจพบ โดยบรีฟเดิมซึ่งเป็นหลักฐานต้นทางถูกนำออกจาก repo เมื่อ 17/10/2569 (เนื้อหาย้ายเข้า Blueprint/Roadmap แล้ว) ไฟล์ต้นฉบับดูได้จากประวัติ git: `git show 378e902:docs/brief.pdf`
 
 ## 1. เป้าหมายและขอบเขต
 
@@ -201,7 +201,7 @@ flowchart LR
 
 ## 8. เอกสารอ้างอิงภายใน
 
-- [Blueprint](BLUEPRINT.md) และ [บรีฟเดิม](brief.pdf)
+- [Blueprint](BLUEPRINT.md) · บรีฟเดิมถูกนำออกจาก repo เมื่อ 17/10/2569 (เนื้อหาย้ายเข้า Blueprint/Roadmap แล้ว) ไฟล์ต้นฉบับดูได้จากประวัติ git: `git show 378e902:docs/brief.pdf`
 - [README](../README.md), [package.json](../package.json), [migration](../supabase/migrations/20261016000000_init.sql), [RLS test](../supabase/tests/rls.test.mjs)
 - [Admin layout](../app/admin/layout.tsx), [LIFF layout](../app/liff/layout.tsx), [LINE auth](../app/api/auth/line/route.ts), [ตรวจ ID token](../lib/line-auth.ts), [ตรวจสลิป](../app/api/slipok/verify/route.ts), [Cron](../app/api/cron/%5Bjob%5D/route.ts), [ตารางเวลา](../vercel.json)
 - ร่างที่ใช้เทียบเงื่อนไข: `../../กฎหมายและช้อตกลง.txt`, `../../สัญญาเช่าห้องพัก.txt`, `../../สัญญาเช่าหอพัก.txt` ยังไม่ยืนยันเป็นเอกสารใช้จริง

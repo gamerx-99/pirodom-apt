@@ -97,7 +97,7 @@ export async function createInvoiceDraft(
       .eq("period", bounds.period)
       .maybeSingle();
     if (existingError) return fail("ตรวจบิลซ้ำไม่สำเร็จ");
-    if (existing) return fail("สัญญานี้มีบิลของงวดดังกล่าวแล้ว");
+    if (existing) return fail("สัญญานี้มีบิลของงวดดังกล่าวแล้ว: ถ้าเป็นร่างที่กรอกผิด ให้ลบร่างในตารางบิลก่อนสร้างใหม่");
 
     const { data: rawMeter, error: meterError } = await admin
       .from("meter_readings")
@@ -116,6 +116,8 @@ export async function createInvoiceDraft(
     if (![rent, water, units, rate, electric, total].every(Number.isFinite) || total < 0) {
       return fail("ยอดรวมไม่ถูกต้อง: ตรวจสอบอัตราและรายการในสัญญาก่อน");
     }
+    // ระบบปิดบิลได้ทางเดียวคืออนุมัติสลิปยอดเต็ม (> 0) บิลยอด 0 จึงจะค้างตลอด
+    if (total === 0) return fail("ยอดรวมเป็น 0 บาท: ระบบยังไม่รองรับบิลที่ไม่ต้องชำระ กรุณาตรวจส่วนลด");
     if (rent < 0 || water < 0 || rate < 0) return fail("อัตราค่าเช่า ค่าน้ำ และค่าไฟในสัญญาต้องไม่ติดลบ");
 
     const { data: invoice, error: invoiceError } = await admin
@@ -201,6 +203,7 @@ export async function issueInvoiceDraft(form: FormData): Promise<void> {
   if (itemError || !items?.length) throw new Error("บิลนี้ไม่มีรายการคิดเงิน");
   const sum = roundMoney(items.reduce((value, item) => value + Number(item.amount), 0));
   if (sum !== Number(invoice.total)) throw new Error("ยอดรวมไม่ตรงกับรายการในบิล: กรุณาสร้างร่างใหม่");
+  if (sum <= 0) throw new Error("ออกบิลยอด 0 บาทไม่ได้: ระบบยังไม่รองรับบิลที่ไม่ต้องชำระ");
 
   const { data: updated, error } = await admin
     .from("invoices")
@@ -218,6 +221,34 @@ export async function issueInvoiceDraft(form: FormData): Promise<void> {
     record_id: invoiceId,
     before: { status: "draft" },
     after: { status: "issued", lease_id: invoice.lease_id, period: invoice.period, due_date: invoice.due_date, total: invoice.total },
+  });
+  revalidatePath("/admin/billing");
+  revalidatePath("/liff");
+}
+
+/** Remove a draft that staff found wrong so the same lease/period can be drafted again. */
+export async function deleteInvoiceDraft(form: FormData): Promise<void> {
+  const sessionClient = await createClient();
+  const { userId } = await requireStaff(sessionClient);
+  const invoiceId = String(form.get("invoice_id") ?? "").trim();
+  if (!invoiceId) throw new Error("ไม่พบรหัสบิล");
+
+  const admin = createAdminClient();
+  const { data: deleted, error } = await admin
+    .from("invoices")
+    .delete()
+    .eq("id", invoiceId)
+    .eq("status", "draft")
+    .select("id,lease_id,period,due_date,total")
+    .maybeSingle();
+  if (error || !deleted) throw new Error("ลบร่างไม่สำเร็จ: ลบได้เฉพาะบิลที่ยังเป็นร่าง");
+
+  await audit(admin, {
+    actor_id: userId,
+    action: "invoice.draft.delete",
+    table_name: "invoices",
+    record_id: invoiceId,
+    before: { status: "draft", lease_id: deleted.lease_id, period: deleted.period, due_date: deleted.due_date, total: deleted.total },
   });
   revalidatePath("/admin/billing");
   revalidatePath("/liff");

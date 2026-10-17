@@ -122,6 +122,37 @@ await rejects(
   /only change while the invoice is a draft/,
 );
 
+// 'uploaded' (ยังไม่มีผลตรวจ) อนุมัติไม่ได้; ปฏิเสธคืนสถานะบิลใน transaction เดียว
+const INV2 = "30000000-0000-0000-0000-000000000002";
+await db.query("update invoices set status = 'pending_review' where id = $1", [INV2]);
+const PAY2 = (await db.query(
+  "insert into payments (invoice_id, slip_path, status) values ($1, 'u.jpg', 'uploaded') returning id::text as id",
+  [INV2],
+)).rows[0].id;
+await rejects(as(ADMIN, `select public.approve_invoice_payment('${PAY2}', 3500)`), /not eligible/);
+const reject = (uid, reason) => as(uid, `select public.reject_invoice_payment('${PAY2}', '${reason}') as s`);
+await rejects(reject(B, "x"), /staff authorization required/);
+await rejects(reject(ADMIN, " "), /reason required/);
+const rejected = (await reject(ADMIN, "สลิปไม่ชัด")).rows[0].s;
+assert.ok(["issued", "overdue"].includes(rejected));
+assert.equal((await db.query("select status from invoices where id = $1", [INV2])).rows[0].status, rejected);
+assert.equal((await db.query("select status from payments where id = $1", [PAY2])).rows[0].status, "rejected");
+await rejects(reject(ADMIN, "ซ้ำ"), /not open for review/);
+
+// ย้ายรายการออกจากบิลที่ออกแล้วไปบิลร่างไม่ได้
+const draftOf = async (period) => (await db.query(
+  "insert into invoices (lease_id, period, due_date, total) values ('20000000-0000-0000-0000-000000000002', $1, $1, 100) returning id::text as id",
+  [period],
+)).rows[0].id;
+const ISSUED = await draftOf("2027-01-01");
+const DRAFT = await draftOf("2027-02-01");
+await db.query("insert into invoice_items (invoice_id, type, unit_price, amount) values ($1, 'rent', 100, 100)", [ISSUED]);
+await db.query("update invoices set status = 'issued' where id = $1", [ISSUED]);
+await rejects(
+  db.query("update invoice_items set invoice_id = $1 where invoice_id = $2", [DRAFT, ISSUED]),
+  /only change while the invoice is a draft/,
+);
+
 // ห้องเดียวกันคนละสัญญา: เห็นมิเตอร์/งานซ่อมเฉพาะช่วงสัญญาตัวเอง
 assert.deepEqual((await as(A, "select period::text from meter_readings")).rows, [{ period: "2026-11-01" }]);
 assert.deepEqual((await as(C, "select period::text from meter_readings")).rows, [{ period: "2026-09-01" }]);

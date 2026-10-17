@@ -266,7 +266,7 @@ MVP เก็บสัญญา PDF ที่ลูกค้ายืนยั�
 
 แหล่งอ้างอิง:
 
-- [บรีฟเดิม 6 หน้า](brief.pdf): ขอบเขต ยูนิต โมดูล flow สถานะ และแผนเดิม
+- บรีฟเดิม 6 หน้า (ขอบเขต ยูนิต โมดูล flow สถานะ และแผนเดิม): ถูกนำออกจาก repo เมื่อ 17/10/2569 (เนื้อหาย้ายเข้า Blueprint/Roadmap แล้ว) ไฟล์ต้นฉบับดูได้จากประวัติ git: `git show 378e902:docs/brief.pdf`
 - [migration](../supabase/migrations/20261016000000_init.sql), [RLS test](../supabase/tests/rls.test.mjs): ตารางและสิทธิ์ปัจจุบัน
 - [package.json](../package.json), [README](../README.md), [ตัวแปรตัวอย่าง](../.env.example), [Cron config](../vercel.json)
 - [Admin layout](../app/admin/layout.tsx), [LIFF layout](../app/liff/layout.tsx), [LINE auth](../app/api/auth/line/route.ts), [ตรวจ ID token](../lib/line-auth.ts), [ตรวจสลิป](../app/api/slipok/verify/route.ts), [Webhook](../app/api/line/webhook/route.ts), [Cron handler](../app/api/cron/%5Bjob%5D/route.ts)

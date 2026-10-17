@@ -6,7 +6,7 @@
 - [Blueprint: โครงสร้างและกติกาของระบบ](docs/BLUEPRINT.md)
 - [Todo: รายการงานและสถานะปัจจุบัน](docs/TODO.md)
 - [Prompt ออกแบบรายหน้า: แอดมินและผู้เช่า 14 หน้า](docs/prompts/README.md)
-- [บรีฟเดิม](docs/brief.pdf)
+- บรีฟเดิมถูกนำออกจาก repo เมื่อ 17/10/2569 (เนื้อหาย้ายเข้า Blueprint/Roadmap แล้ว) ไฟล์ต้นฉบับดูได้จากประวัติ git: `git show 378e902:docs/brief.pdf`
 
 Next.js + Supabase + Vercel + LINE Login/LIFF + LINE Messaging API + SlipOK
 

@@ -179,12 +179,29 @@ export async function POST(request: Request) {
       });
     }
 
-    await admin
+    // บันทึกผลตรวจไม่สำเร็จ = รายการค้าง 'uploaded' ซึ่ง RPC ไม่ยอมให้อนุมัติ ห้ามตอบว่าสำเร็จ
+    const { data: recorded, error: recordError } = await admin
       .from("payments")
       .update({ amount: verifiedAmount, status: reviewStatus })
       .eq("id", payment.id)
-      .eq("status", "uploaded");
-    await admin.from("invoices").update({ status: "pending_review" }).eq("id", invoice.id).eq("status", "verifying");
+      .eq("status", "uploaded")
+      .select("id")
+      .maybeSingle();
+    if (recordError || !recorded) {
+      await audit(admin, {
+        actor_id: user.id,
+        action: "payment.submit.record_failed",
+        table_name: "payments",
+        record_id: payment.id,
+        after: { invoice_id: invoice.id, intended_status: reviewStatus },
+      });
+      return Response.json(
+        { error: "รับสลิปแล้วแต่บันทึกผลตรวจไม่สำเร็จ: เจ้าหน้าที่จะตรวจสอบรายการนี้ กรุณาแจ้งเจ้าหน้าที่" },
+        { status: 500 },
+      );
+    }
+    const { error: invoiceStatusError } = await admin.from("invoices").update({ status: "pending_review" }).eq("id", invoice.id).eq("status", "verifying");
+    if (invoiceStatusError) return Response.json({ error: "บันทึกสถานะบิลไม่สำเร็จ กรุณาแจ้งเจ้าหน้าที่" }, { status: 500 });
     await audit(admin, {
       actor_id: user.id,
       action: "payment.submit",

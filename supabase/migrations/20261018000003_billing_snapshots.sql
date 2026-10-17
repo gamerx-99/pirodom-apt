@@ -63,6 +63,16 @@ begin
     raise exception 'invoice items can only change while the invoice is a draft';
   end if;
 
+  -- ย้ายรายการข้ามบิล: บิลต้นทางต้องเป็นร่างด้วย ไม่งั้นดึงรายการออกจากบิลที่ชำระแล้วได้
+  if tg_op = 'UPDATE' and new.invoice_id is distinct from old.invoice_id then
+    select status into invoice_status
+    from public.invoices
+    where id = old.invoice_id;
+    if invoice_status is distinct from 'draft' then
+      raise exception 'invoice items can only change while the invoice is a draft';
+    end if;
+  end if;
+
   if tg_op = 'DELETE' then
     return old;
   end if;

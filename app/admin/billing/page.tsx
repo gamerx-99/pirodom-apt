@@ -4,7 +4,7 @@ import { formatDateTH, formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { InvoiceDraftForm, type DraftLeaseInput } from "./draft-form";
-import { issueInvoiceDraft } from "./actions";
+import { deleteInvoiceDraft, issueInvoiceDraft } from "./actions";
 
 type Invoice = {
   id: string;
@@ -180,12 +180,20 @@ function InvoiceTable({ invoices }: { invoices: (Invoice | (typeof MOCK_INVOICES
                             </li>
                           ))}
                         </ul>
-                        <form action={issueInvoiceDraft} className="mt-2">
-                          <input type="hidden" name="invoice_id" value={invoice.id} />
-                          <button className="rounded-lg bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-800">
-                            ออกบิลหลังตรวจรายการ
-                          </button>
-                        </form>
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          <form action={issueInvoiceDraft}>
+                            <input type="hidden" name="invoice_id" value={invoice.id} />
+                            <button className="rounded-lg bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-800">
+                              ออกบิลหลังตรวจรายการ
+                            </button>
+                          </form>
+                          <form action={deleteInvoiceDraft}>
+                            <input type="hidden" name="invoice_id" value={invoice.id} />
+                            <button className="rounded-lg px-3 py-1.5 text-xs font-semibold text-red-700 ring-1 ring-red-200 hover:bg-red-50">
+                              ลบร่างเพื่อสร้างใหม่
+                            </button>
+                          </form>
+                        </div>
                       </details>
                     )}
                   </td>
