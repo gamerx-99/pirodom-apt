@@ -5,7 +5,7 @@
 อ่านคู่กับ [Roadmap](ROADMAP.md) (เกณฑ์จบเฟส) และ [Blueprint](BLUEPRINT.md) (โครงสร้างระบบ)
 
 **วิธีใช้:** ติ๊ก checkbox เมื่องานผ่านเกณฑ์และมีหลักฐาน — ไม่นับจากจำนวนไฟล์หรือหน้าที่สร้าง
-สถานะกำกับท้ายรายการ: `ยังไม่เริ่ม` (เริ่มได้ทันที) · `รอข้อมูล (Q-xx)` (บล็อกโดยคำถามลูกค้า) · `รอตรวจ` (โค้ดเสร็จ รอทดสอบ/ตรวจจริง)
+สถานะกำกับท้ายรายการ: `ยังไม่เริ่ม` (เริ่มได้ทันที) · `เจ้าของกรอกเอง` (ไม่บล็อก ลูกค้าใส่หลังส่งมอบ) · `รอตรวจ` (โค้ดเสร็จ รอทดสอบ/ตรวจจริง)
 
  **ผลตรวจรอบล่าสุด 18/10/2569:** `npm test` ผ่าน (PGlite + ชุด Phase 1 + Rooms FK + PromptPay CRC) · `npx tsc --noEmit` ผ่าน (0 errors) · `npm run lint` ผ่าน (0 warnings) · `npm run build` ผ่าน 24 หน้า · Live Cloud migrations 13 ไฟล์ apply แล้ว · Production env บน Vercel refreshed และ webhook test 200 ok
 
@@ -19,20 +19,20 @@
  - [x] **ลิงก์เสียใน README** — ทำแล้ว 17/10/2569: สร้าง `docs/prompts/README.md` (ดัชนี 14 หน้า → `ui/` + route)
  - [x] **เพิ่ม `tmp/` ใน `.gitignore`** — ทำแล้ว 17/10/2569: เพิ่ม `tmp/` แล้ว (`tmp/` มีแค่โฟลเดอร์เปล่า `pdfs/` ไม่มีไฟล์ขยะ)
 
-## 1. คำถามรอลูกค้ายืนยัน (บล็อกงานถัดไป) — สถานะ: รอข้อมูล
+## 1. ข้อมูลจากบรีฟ — สถานะ: ไม่มีข้อบล็อก (ปรับ 18/10/2569)
 
-ตาม ROADMAP §3 — ติดตามทีละข้อ ตอบแล้วให้บันทึกคำตอบ + วันที่ลงใน ROADMAP
+หลัก: ทำตามบรีฟ; จุดที่บรีฟไม่ระบุทำเป็นค่าที่เจ้าของตั้งเอง ไม่ตั้งคำถามกลับ ส่งมอบระบบคลีนแล้วลูกค้ากรอกข้อมูลเอง
 
 - [x] **Q-01** ผู้ให้บริการตรวจสลิป — ผู้ใช้ยืนยันว่า Okslip ในบรีฟหมายถึง SlipOK (D-031); ยังต้องใช้ข้อมูลบัญชีและตั้งค่า Q-06 ก่อนตรวจสลิปจริง
-- [ ] **Q-02** รายการยูนิต ค่าเช่า/น้ำ/ไฟ/เงินประกัน ผู้เช่า วันเริ่ม-สิ้นสุดสัญญาจริง — *บล็อก: ตั้งค่าข้อมูลจริง 19 ยูนิต*
+- [x] **Q-02** ยูนิต ราคา ผู้เช่า สัญญาจริง — เจ้าของกรอกเองที่ `/admin/rooms` และ `/admin/leases` หลังส่งมอบ
 - [x] **Q-03** รอบบิล — ผู้ใช้ตัดสิน 18/10/2569: ไม่ fix รอบกลาง ตั้งวันครบกำหนดรายห้อง/รายสัญญา (`rooms.due_day` → `leases.due_day`) บิลขึ้นแล้วจ่ายก็จบ
 - [x] **Q-04** วันจดมิเตอร์ — ผู้ใช้ตัดสิน 18/10/2569: ไม่ fix วันจด จดวันไหนก็ได้ แล้วเลือกแถวมิเตอร์ต่อบิล (มีอยู่แล้ว)
 - [x] **Q-05** ค่าปรับ/ส่วนลด/ยอดชำระ — ผู้ใช้ตัดสิน 18/10/2569: รับชำระเฉพาะเต็มยอดบิล (ไม่รับบางส่วน/เกิน ตรงกับ DB ปัจจุบัน); ค่าปรับ/ส่วนลดใส่เป็นรายการเพิ่ม/ส่วนลดในบิลร่างพร้อมเหตุผล
 - [x] **Q-06** บัญชีรับเงิน/PromptPay, SlipOK, LINE — เจ้าของกรอกเองที่ `/admin/settings` (commit `2a7a78f`); บน production ตั้งค่าครบ สถานะ "พร้อม" ทั้ง 3 (UAT 18/10/2569)
-- [ ] **Q-07** ประเภทสัญญาจริง ผู้ตรวจเอกสาร ข้อมูลส่วนบุคคล ระยะเก็บ — *บล็อก: Phase 4 เอกสาร*
-- [ ] **Q-08** เจ้าของบัญชี Git/Supabase/Vercel/LINE/ตรวจสลิป + งบบริการ — *บล็อก: ตั้งค่า Cloud + deployment*
+- [x] **Q-07** เอกสารสัญญา — เจ้าของอัปโหลดเองที่ `/admin/documents`
+- [x] **Q-08** เจ้าของบัญชี Cloud — ตกลงกันตอนส่งมอบระหว่างผู้พัฒนากับลูกค้า ไม่บล็อกงานพัฒนา (ปัจจุบันใช้บัญชีผู้พัฒนา)
 
-> ระหว่างรอข้อมูล พัฒนาโครงหน้าจอและงานที่ไม่ขึ้นกับคำตอบได้ แต่**ห้ามฝังกติกาที่ขัดแย้งเป็นค่าถาวร** (ตาม ROADMAP §3)
+> ไม่ฝังค่าถาวรที่บรีฟไม่ได้ระบุ: ทำเป็นค่าตั้งค่ารายห้อง/รายบิล/หน้าตั้งค่าแทน
 
 ---
 
@@ -46,14 +46,14 @@
 - [x] Admin guard ฝั่ง server: ไม่มี session → redirect /liff, role ไม่ใช่ owner/admin → 403 — [`app/admin/layout.tsx`](../app/admin/layout.tsx) (โหมดเดโมเมื่อไม่มี env)
 
 **เหลือต้องทำ (เกณฑ์จบเฟสยังไม่ผ่าน):**
-- [ ] กรอก LIFF ID + Channel ID จริง และทดสอบ login ด้วย token จริงบนอุปกรณ์ — `รอตรวจ` (ขึ้นกับ Q-08)
+- [ ] กรอก LIFF ID + Channel ID จริง และทดสอบ login ด้วย token จริงบนอุปกรณ์ — `รอตรวจ`
 - [ ] ทดสอบ Admin guard กับ Supabase env จริง: role ทุกแบบ + ออกจากระบบ + session หมดอายุ — `รอตรวจ`
-- [ ] ตรวจ migration/RLS/GRANT/Storage บนฐานข้อมูล Supabase ทดสอบจริง (PGlite ยังจำลอง Auth/Storage) — `รอตรวจ` (รอ Q-08)
+- [ ] ตรวจ migration/RLS/GRANT/Storage บนฐานข้อมูล Supabase ทดสอบจริง (PGlite ยังจำลอง Auth/Storage) — `รอตรวจ`
   - 17/10/2569 ผู้ใช้อนุมัติและลง migration ครบ 6 ไฟล์บน `jxvlexoqwqynctlpgafi` แล้ว: 16 ตารางเปิด RLS, 4 private buckets, 10 Storage policies; live SQL role/claim tests ผ่าน 30 assertions และ rollback fixtures หมด; RPC grants ตรวจผ่าน — ยังเหลือ authenticated HTTP/Storage upload/signed URL และ advisor WARN 8 รายการ ดู [หลักฐานล่าสุด](SUPABASE-PHASE0-AUDIT.md)
   - 17/10/2569 ผู้ใช้อนุมัติและ apply migrations ที่ค้าง 7 ไฟล์บน Cloud แล้ว: `20261017132926_accept_invite_code_once` และ `20261018000002`–`20261018000007`; ใช้ `supabase db push --linked --include-all --skip-vault --yes` เพราะ invite-code migration มี timestamp ก่อน `20261018000000`/`000001` ที่ลงไปแล้ว; migration ledger และ RPC/trigger smoke query ผ่าน
 - [x] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน: ผู้ใช้ยืนยันบัญชี LINE “C - Game” คือบัญชี lannatc แล้ว; ตั้ง owner พร้อม audit และผู้ใช้ส่งภาพเข้า Admin ได้จริง (17/10/2569)
 - [x] รีเฟรช Production env บน Vercel ครบ 10 ตัวแปรแอป (รวม `LINE_CHANNEL_SECRET`, `NEXT_PUBLIC_APP_URL`) และตั้ง Secret สำหรับคีย์ลับ; deployment บน `pirodom-apt.vercel.app` สถานะ READY; signed webhook ตรวจสอบผ่าน HTTP 200 ok (17/10/2569 ดู [หลักฐาน](PRODUCTION-ENV-REFRESH.md))
-- [ ] แยก env ทดสอบ/จริง และ secret management — `รอข้อมูล (Q-08)`
+- [ ] แยก env ทดสอบ/จริง และ secret management — `ยังไม่เริ่ม`
 - [x] เผยแพร่บน Vercel หลัง independent review — production deployment จาก `8dece5e` เป็น READY (17/10/2569)
 - [ ] จัดขั้นตอนติดตาม error และซ้อม rollback — ยังไม่ทำ
 - [x] หน้า `/admin` อ่านภาพรวมห้อง บิล คิวสลิป และงานซ่อมจากฐานข้อมูลเมื่อเชื่อม Supabase; โหมดไม่มี DB แสดงป้ายข้อมูลตัวอย่าง — ตรวจ local typecheck/lint/test/build ผ่าน, **ยังไม่ deploy การแก้ล่าสุด**
@@ -66,7 +66,7 @@
 
 - [x] Server operations + UI CRUD ห้อง (residential/commercial) — แทน mock ใน [`app/admin/rooms`](../app/admin/rooms/page.tsx)
 - [x] เพิ่มระบบแก้ไขและลบห้องพัก (Room Edit & Delete) สำหรับเจ้าของ/แอดมิน: ตรวจสิทธิ์ server-side, พิมพ์เลขห้องเพื่อยืนยันการลบ, ตรวจสอบ Foreign Keys ป้องกันการลบห้องที่มีประวัติสัญญา/มิเตอร์/งานซ่อม พร้อมชุดทดสอบรีเกรสชันใน `npm test` (17/10/2569 ดู [เอกสาร UI-ROOMS-FIX](UI-ROOMS-FIX.md))
-- [x] CRUD สัญญา + ผู้เช่าร่วม/ผู้เช่าหลัก + ย้ายออก/ถอนสิทธิ์ — [`app/admin/leases/`](../app/admin/leases/page.tsx) (ค่าเงินกรอกตามจริง ไม่ hardcode — ข้อมูลจริงรอ Q-02)
+- [x] CRUD สัญญา + ผู้เช่าร่วม/ผู้เช่าหลัก + ย้ายออก/ถอนสิทธิ์ — [`app/admin/leases/`](../app/admin/leases/page.tsx) (ค่าเงินกรอกตามจริง ไม่ hardcode)
 - [x] เปลี่ยนลิงก์เป็นรหัสสุ่ม 12 ตัว: แสดงครั้งเดียว, เก็บเฉพาะ hash, อายุ 7 วัน — โค้ด commit `b258580`; RPC ลง Cloud แล้ว
 - [x] LINE Bot รับรหัสในข้อความส่วนตัว, ใช้ LINE user ID จาก signed webhook, ผูกผ่าน `accept_invite_code` แบบ transaction — โค้ดและ migration ลง Cloud แล้ว
 - [x] ทดสอบ flow จริง: แอดมินออกรหัส/คำเชิญ → ผู้เช่าเปิดรับคำเชิญ → บัญชีถูกผูก → เข้า LIFF เห็นเฉพาะสัญญาตนเอง — ผ่านการตรวจรับจริง (ผู้ใช้ยืนยันเพื่อนใช้ LINE บัญชีจริงเข้าห้อง 101 เห็นสัญญาและคำเชิญขึ้นใช้แล้ว ดู [PHASE1-VERIFICATION.md](PHASE1-VERIFICATION.md))
@@ -105,7 +105,7 @@
 ## Phase 4: เอกสารและงานซ่อม — สถานะ: โค้ดหลักมีแล้ว; รอตรวจสิทธิ์และ UAT จริง
 
 - [x] อัปโหลด/เปิด PDF/รูปผ่าน Private bucket และ Signed URL ที่ผูกสัญญา — [`app/admin/documents/`](../app/admin/documents/page.tsx), [`app/liff/documents/`](../app/liff/documents/page.tsx)
-- [ ] แยกเอกสารห้องพัก/ร้านค้าตามเอกสารที่ยืนยัน — `รอข้อมูล (Q-07)`
+- [ ] แยกเอกสารห้องพัก/ร้านค้าตามเอกสารที่ยืนยัน — `เจ้าของกรอกเอง`
 - [x] แจ้งซ่อมหลายรูป + หมวด + ความเร่งด่วน + timeline — [`app/liff/maintenance/`](../app/liff/maintenance/page.tsx)
 - [x] แอดมินเปลี่ยนสถานะ/แนบรูปผล + ผู้เช่ายืนยันปิดงาน — [`app/admin/maintenance/`](../app/admin/maintenance/page.tsx)
 - [x] แจ้งเตือนงานซ่อมใหม่ในเว็บแอดมิน: API จำกัด owner/admin, แสดงห้อง/หมวดงาน และรีเฟรชทุก 15 วินาที; เพิ่มเทสต์ auth/error/queue — local ผ่าน; cross-tenant Storage policy tests ผ่านในชุด `npm test`
@@ -121,7 +121,7 @@
 - [x] Webhook LINE สำหรับยืนยัน invite code — [`app/api/line/webhook/route.ts`](../app/api/line/webhook/route.ts), [`lib/line-invites.ts`](../lib/line-invites.ts); migration `20261017132926` ลง Cloud แล้ว; ยังต้องทดสอบ event redelivery/LINE จริง
 - [ ] LINE notifications: ผลตรวจสลิปมี dedup, ส่งซ้ำด้วยมือจากประวัติ; migration `20261018000007` ลงแล้ว; รอตรวจ LINE จริง ไม่มี retry อัตโนมัติ
 - [ ] ตรวจ RLS/Storage/API authorization/การเงิน/session บนสภาพแวดล้อมทดสอบจริง — `ยังไม่เริ่ม`
-- [ ] UAT ผู้เช่าจริง 2–3 ห้อง (วงจร สัญญา → บิล → ชำระ → ซ่อม) — `ยังไม่เริ่ม` (รอ Q-06/Q-08 + ผู้ร่วมทดสอบ)
+- [ ] UAT ผู้เช่าจริง 2–3 ห้อง (วงจร สัญญา → บิล → ชำระ → ซ่อม) — `ยังไม่เริ่ม` (รอผู้ร่วมทดสอบ)
 - [ ] ซ้อม backup/restore + จัดทำคู่มือเจ้าของ/ผู้เช่า — `ยังไม่เริ่ม`
 
 **เกณฑ์จบ:** มีหลักฐาน UAT ที่ลูกค้ายอมรับ — deployment สำเร็จอย่างเดียว**ไม่ทดแทน** UAT
