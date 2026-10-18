@@ -121,7 +121,7 @@
 
 - [x] ยกเลิก cron ตามที่ผู้ใช้เลือก A (17/10/2569): ลบ route, helper, vercel.json และ CRON_SECRET; สถานะเกินกำหนดคำนวณจากวันครบกำหนดตอนแสดงผล
 - [x] หน้า `/admin/messages`: เลือกทุกห้อง/รายห้อง/ห้องที่มีบิลรอชำระ แม่แบบและตัวอย่าง ข้อความ LINE ประวัติและส่งซ้ำ — โค้ด commit `b258580`; migration Cloud ลงแล้ว; ยังรอ UAT จริง ([คู่มือ](ADMIN-MESSAGES.md))
-- [ ] ทดสอบส่ง LINE จริงจากหน้า `/admin/messages` และตรวจประวัติ/สถานะส่ง (Q-06)
+- [x] ทดสอบส่ง LINE จริงจากหน้า `/admin/messages` (19/10/2569): ส่งประกาศถึงห้อง 101 ผู้รับ 2 คนได้รับใน LINE ประวัติขึ้น "ส่งแล้ว 2 · ไม่สำเร็จ 0 · ข้าม 0"; บอทผูกบัญชีห้อง 101 และส่งลิงก์ LIFF สำเร็จ
 - [x] Webhook LINE สำหรับยืนยัน invite code — [`app/api/line/webhook/route.ts`](../app/api/line/webhook/route.ts), [`lib/line-invites.ts`](../lib/line-invites.ts); migration `20261017132926` ลง Cloud แล้ว; ยังต้องทดสอบ event redelivery/LINE จริง
 - [ ] LINE notifications: ผลตรวจสลิปมี dedup, ส่งซ้ำด้วยมือจากประวัติ; migration `20261018000007` ลงแล้ว; รอตรวจ LINE จริง ไม่มี retry อัตโนมัติ
 - [x] ตรวจสิทธิ์บน production (19/10/2569): ไม่ล็อกอิน /admin ถูก redirect ไป /liff ไม่มีข้อมูลหลุด; /api/health, /api/admin/* ตอบ 401, /api/slipok/verify 403, webhook ลายเซ็นผิด 401; ไม่มี grant/policy ให้ client เขียน invoices/invoice_items/payments; session หมดอายุยังไม่ได้ทดสอบด้วยบัญชีจริง
