@@ -1,4 +1,4 @@
-import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
+import { Badge, Card, DemoBanner, EmptyState, StatCard } from "@/app/components/ui";
 import { formatDateTH } from "@/lib/format";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
@@ -35,10 +35,16 @@ export default async function Page() {
     return (
       <div className="space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">เอกสารสัญญา</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">เอกสารสัญญา</h1>
           <p className="text-sm text-gray-500">อัปโหลดสัญญา/เอกสารแนบ แล้วผูกกับสัญญาห้องนั้น</p>
         </div>
         <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: ฟอร์มอัปโหลดและรายการเอกสารจะเปิดใช้งานเมื่อเชื่อมต่อระบบแล้ว" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatCard label="สัญญาทั้งหมด" value="3" icon="contract" />
+          <StatCard label="มีเอกสารแนบแล้ว" value="2" icon="check" tone="green" />
+          <StatCard label="ยังไม่มีเอกสาร" value="1" icon="alert" tone="amber" />
+          <StatCard label="ไฟล์เอกสารทั้งหมด" value="4" icon="folder" tone="blue" />
+        </div>
         <Card title="ตัวอย่างรายการ">
           <p className="text-sm text-gray-500">เชื่อม Supabase แล้วเอกสารจริงจะแสดงที่นี่</p>
         </Card>
@@ -72,13 +78,25 @@ export default async function Page() {
     })),
   );
 
+  const totalLeases = leases.length;
+  const leasesWithDocsCount = new Set(docs.map((d) => d.lease_id)).size;
+  const leasesWithoutDocsCount = Math.max(0, totalLeases - leasesWithDocsCount);
+  const totalDocsCount = docs.length;
+
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">เอกสารสัญญา</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">เอกสารสัญญา</h1>
         <p className="text-sm text-gray-500">
           อัปโหลด PDF หรือรูปภาพ ผูกกับสัญญาที่เลือก · ผู้เช่าเห็นเฉพาะเอกสารของสัญญาตนเอง
         </p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard label="สัญญาทั้งหมด" value={String(totalLeases)} icon="contract" />
+        <StatCard label="มีเอกสารแนบแล้ว" value={String(leasesWithDocsCount)} icon="check" tone="green" />
+        <StatCard label="ยังไม่มีเอกสาร" value={String(leasesWithoutDocsCount)} icon="alert" tone="amber" />
+        <StatCard label="ไฟล์เอกสารทั้งหมด" value={String(totalDocsCount)} icon="folder" tone="blue" />
       </div>
 
       <Card

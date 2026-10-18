@@ -1,4 +1,4 @@
-import { Badge, Card, DemoBanner } from "@/app/components/ui";
+import { DemoBanner, StatCard } from "@/app/components/ui";
 import { isSupabaseAdminConfigured } from "@/lib/env";
 import { SECRET_KEYS, getSettings, isLineConfigured, isSlipokConfigured, type SettingKey } from "@/lib/settings";
 import { SettingsForm } from "./settings-form";
@@ -35,8 +35,16 @@ export default async function Page() {
   if (!isSupabaseAdminConfigured()) {
     return (
       <div className="space-y-4">
-        <h1 className="text-xl font-bold text-gray-900">ตั้งค่า</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ตั้งค่าระบบ</h1>
+          <p className="text-sm text-gray-500">บัญชีรับเงินและการเชื่อมต่อ: บันทึกแล้วมีผลทันที ไม่ต้อง deploy ใหม่</p>
+        </div>
         <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: บันทึกการตั้งค่าได้เมื่อเชื่อมต่อระบบแล้ว" />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <StatCard label="PromptPay" value="ยังไม่ตั้งค่า" sub="รับเงินสแกน QR บนบิล" icon="receipt" />
+          <StatCard label="SlipOK" value="ยังไม่ตั้งค่า" sub="สลิปจะเข้าคิวให้ตรวจมือ" icon="check" tone="amber" />
+          <StatCard label="LINE" value="ยังไม่ครบ" sub="ยังไม่ได้ผูกโทเคน LINE" icon="message" tone="amber" />
+        </div>
       </div>
     );
   }
@@ -53,16 +61,32 @@ export default async function Page() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">ตั้งค่า</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ตั้งค่าระบบ</h1>
         <p className="text-sm text-gray-500">บัญชีรับเงินและการเชื่อมต่อ: บันทึกแล้วมีผลทันที ไม่ต้อง deploy ใหม่</p>
       </div>
-      <Card title="สถานะการเชื่อมต่อ">
-        <div className="flex flex-wrap gap-2">
-          <Badge tone={settings.PROMPTPAY_ID ? "green" : "gray"}>PromptPay: {settings.PROMPTPAY_ID ? "พร้อม" : "ยังไม่ตั้งค่า"}</Badge>
-          <Badge tone={slipok ? "green" : "gray"}>SlipOK: {slipok ? "พร้อม" : "ยังไม่ตั้งค่า"}</Badge>
-          <Badge tone={line ? "green" : "gray"}>LINE: {line ? "พร้อม" : "ยังไม่ครบ"}</Badge>
-        </div>
-      </Card>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <StatCard
+          label="PromptPay"
+          value={settings.PROMPTPAY_ID ? "พร้อม" : "ยังไม่ตั้งค่า"}
+          sub={settings.PROMPTPAY_ACCOUNT_NAME || (settings.PROMPTPAY_ID ? `ID: ${settings.PROMPTPAY_ID}` : "สแกน QR บนบิล")}
+          icon="receipt"
+          tone={settings.PROMPTPAY_ID ? "green" : "default"}
+        />
+        <StatCard
+          label="SlipOK"
+          value={slipok ? "พร้อม" : "ยังไม่ตั้งค่า"}
+          sub={slipok ? "ตรวจสลิปอัตโนมัติเปิดอยู่" : "สลิปจะเข้าคิวให้ตรวจมือ"}
+          icon="check"
+          tone={slipok ? "green" : "amber"}
+        />
+        <StatCard
+          label="LINE"
+          value={line ? "พร้อม" : "ยังไม่ครบ"}
+          sub={line ? "เชื่อมต่อ Messaging API แล้ว" : "ยังไม่ได้ผูกโทเคน LINE"}
+          icon="message"
+          tone={line ? "green" : "amber"}
+        />
+      </div>
       <SettingsForm groups={groups} />
     </div>
   );

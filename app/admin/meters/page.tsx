@@ -1,4 +1,4 @@
-import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
+import { Badge, Card, DemoBanner, EmptyState, StatCard } from "@/app/components/ui";
 import { MOCK_METER_HISTORY } from "@/lib/mock";
 import { isSupabaseConfigured } from "@/lib/env";
 import { formatDateTH, todayTH } from "@/lib/format";
@@ -28,10 +28,16 @@ export default async function Page() {
     return (
       <div className="space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">บันทึกมิเตอร์</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">บันทึกมิเตอร์</h1>
           <p className="text-sm text-gray-500">จดเลขหลายห้องพร้อมกันในหน้าเดียว</p>
         </div>
         <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: ข้อมูลด้านล่างเป็นข้อมูลตัวอย่างสำหรับการสาธิต" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatCard label="ยูนิตทั้งหมด" value="5" icon="building" />
+          <StatCard label="จดงวดนี้แล้ว" value="3" sub="60% ของห้องทั้งหมด" icon="check" tone="green" />
+          <StatCard label="ยังไม่บันทึก" value="2" sub="เหลืออีก 2 ห้อง" icon="meter" tone="amber" />
+          <StatCard label="ไฟใช้รวมงวดนี้" value="240 หน่วย" icon="receipt" tone="blue" />
+        </div>
         <Card title="ตัวอย่างการใช้งาน">
           <ul className="space-y-1 text-sm text-gray-600">
             {MOCK_METER_HISTORY.map((m) => (
@@ -77,14 +83,24 @@ export default async function Page() {
   const thisPeriod = readings.filter((r) => r.period === period);
   const photos = await meterPhotoUrls(thisPeriod.filter((r) => r.photo_path).map((r) => r.id));
   const recent = readings.slice(0, 12);
+  const unrecordedCount = Math.max(0, rooms.length - thisPeriod.length);
+  const totalUnits = thisPeriod.reduce((sum, r) => sum + (Number(r.units) || 0), 0);
+  const pct = rooms.length ? Math.round((thisPeriod.length / rooms.length) * 100) : 0;
 
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">บันทึกมิเตอร์</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">บันทึกมิเตอร์</h1>
         <p className="text-sm text-gray-500">
           จดหลายห้องพร้อมกัน แนบรูป และตรวจสอบความถูกต้องก่อนบันทึก: งวด {period}
         </p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard label="ยูนิตทั้งหมด" value={String(rooms.length)} icon="building" />
+        <StatCard label="จดงวดนี้แล้ว" value={String(thisPeriod.length)} sub={`${pct}% ของห้องทั้งหมด`} icon="check" tone="green" />
+        <StatCard label="ยังไม่บันทึก" value={String(unrecordedCount)} sub={unrecordedCount === 0 ? "ครบทุกห้องแล้ว" : `เหลืออีก ${unrecordedCount} ห้อง`} icon="meter" tone={unrecordedCount > 0 ? "amber" : "default"} />
+        <StatCard label="ไฟใช้รวมงวดนี้" value={`${totalUnits} หน่วย`} icon="receipt" tone="blue" />
       </div>
 
       <Card

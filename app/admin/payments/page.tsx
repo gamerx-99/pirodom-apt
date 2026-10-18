@@ -1,4 +1,4 @@
-import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
+import { Badge, Card, DemoBanner, EmptyState, StatCard } from "@/app/components/ui";
 import { formatDateTH, formatTHB } from "@/lib/format";
 import { PAYMENT_STATUS_LABEL } from "@/lib/mock";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -21,14 +21,39 @@ type PaymentRow = {
 
 export default async function Page() {
   if (!isSupabaseConfigured()) {
-    return <div className="space-y-4"><h1 className="text-xl font-bold">คิวตรวจสลิป</h1><DemoBanner text="เชื่อมฐานข้อมูลแล้วคิวตรวจสลิปจริงจะแสดงที่นี่" /><EmptyState title="ยังไม่มีคิวตรวจจริง" /></div>;
+    return (
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ตรวจสลิป LINE</h1>
+          <p className="text-sm text-gray-500">ตรวจรูปสลิป เทียบยอดเต็มกับบิล และบันทึกผลพร้อม audit log</p>
+        </div>
+        <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: เมื่อเชื่อมต่อแล้วคิวตรวจสลิปจริงจะแสดงที่นี่" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatCard label="คิวรอตรวจ" value="2" icon="receipt" tone="amber" />
+          <StatCard label="SlipOK ผ่าน" value="1" icon="check" tone="green" />
+          <StatCard label="ยอดไม่ตรง/รอตรวจ" value="1" icon="alert" tone="red" />
+          <StatCard label="อนุมัติงวดนี้" value="4" icon="building" tone="blue" />
+        </div>
+        <EmptyState title="ยังไม่มีคิวตรวจจริง" desc="รายการสลิปจะเข้าคิวนี้เมื่อผู้เช่าส่งสลิปผ่าน LINE LIFF" />
+      </div>
+    );
   }
   const supabase = await createClient();
   const { data: raw, error } = await supabase.from("payments")
     .select("id,invoice_id,amount,status,slip_path,created_at,review_reason,invoices(total,period,due_date,leases(rooms(room_no))),payment_verifications(id,result,provider_reference,checked_at)")
     .in("status", OPEN_PAYMENT_STATUSES)
     .order("created_at", { ascending: true });
-  if (error) return <div className="space-y-4"><h1 className="text-xl font-bold">คิวตรวจสลิป</h1><EmptyState title="โหลดคิวไม่สำเร็จ" desc="ตรวจสิทธิ์ฐานข้อมูลและลองเปิดหน้านี้ใหม่" /></div>;
+  if (error) {
+    return (
+      <div className="space-y-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ตรวจสลิป LINE</h1>
+          <p className="text-sm text-gray-500">ตรวจรูปสลิป เทียบยอดเต็มกับบิล และบันทึกผลพร้อม audit log</p>
+        </div>
+        <EmptyState title="โหลดคิวไม่สำเร็จ" desc="ตรวจสิทธิ์ฐานข้อมูลและลองเปิดหน้านี้ใหม่" />
+      </div>
+    );
+  }
   const payments = (raw ?? []) as unknown as PaymentRow[];
   const rows = await Promise.all(payments.map(async (payment) => {
     let url: string | null = null;
@@ -36,11 +61,22 @@ export default async function Page() {
     return { payment, url };
   }));
 
+  const pendingSlipok = payments.filter((p) => p.status === "pending_verification").length;
+  const passedSlipok = payments.filter((p) => p.status === "slipok_passed").length;
+  const mismatchCount = payments.filter((p) => p.status === "mismatch" || p.status === "slipok_failed" || p.status === "manual_review").length;
+
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">คิวตรวจสลิป</h1>
-        <p className="text-sm text-gray-500">ตรวจรูปสลิป เทียบยอดเต็มกับบิล และบันทึกผลพร้อม audit</p>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ตรวจสลิป LINE</h1>
+        <p className="text-sm text-gray-500">ตรวจรูปสลิป เทียบยอดเต็มกับบิล และบันทึกผลพร้อม audit log</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard label="คิวรอตรวจทั้งหมด" value={`${rows.length} รายการ`} icon="receipt" tone={rows.length > 0 ? "amber" : "default"} />
+        <StatCard label="SlipOK ผ่านแล้ว" value={`${passedSlipok} รายการ`} icon="check" tone="green" />
+        <StatCard label="ยอดไม่ตรง/รอตรวจ" value={`${mismatchCount} รายการ`} icon="alert" tone={mismatchCount > 0 ? "red" : "default"} />
+        <StatCard label="รอผล SlipOK" value={`${pendingSlipok} รายการ`} icon="contract" tone="blue" />
       </div>
       <Card title={`รอตรวจ ${rows.length} รายการ`} desc={`ไฟล์เปิดผ่าน Signed URL อายุ ${Math.round(SIGNED_URL_TTL_SECONDS / 60)} นาที`}>
         {rows.length === 0 ? <EmptyState title="ไม่มีรายการรอตรวจ" desc="สลิปใหม่จะเข้าคิวนี้หลังผู้เช่าส่งจากหน้า LIFF" /> : (

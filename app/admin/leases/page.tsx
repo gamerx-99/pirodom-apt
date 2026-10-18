@@ -1,4 +1,4 @@
-import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
+import { Badge, Card, DemoBanner, EmptyState, StatCard } from "@/app/components/ui";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import { CreateLeaseForm, InviteButton } from "./lease-forms";
@@ -9,10 +9,16 @@ export default async function Page() {
     return (
       <div className="space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">สัญญาเช่า</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">สัญญาเช่า</h1>
           <p className="text-sm text-gray-500">เงื่อนไขรายสัญญา ผู้เช่าร่วม และรหัสยืนยันทาง LINE Bot</p>
         </div>
         <DemoBanner text="ยังไม่ได้เชื่อมต่อฐานข้อมูล: ฟอร์มสัญญาและรหัสยืนยันจะเปิดใช้งานเมื่อเชื่อมต่อระบบแล้ว" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatCard label="สัญญาทั้งหมด" value="3" icon="contract" />
+          <StatCard label="กำลังเช่าอยู่" value="3" icon="check" tone="green" />
+          <StatCard label="สิ้นสุดแล้ว" value="0" icon="logout" tone="default" />
+          <StatCard label="มีผู้ผูก LINE" value="3" icon="door" tone="blue" />
+        </div>
         <Card title="สัญญาตัวอย่าง" desc="due_day 31 = วันสุดท้ายของเดือน">
           <p className="text-sm text-gray-500">เชื่อม Supabase แล้วข้อมูลจริงจะแสดงที่นี่</p>
         </Card>
@@ -64,11 +70,22 @@ export default async function Page() {
      invitesByLease.set(inv.lease_id, cur);
    }
 
+  const activeCount = leases.filter((l) => l.status === "active").length;
+  const endedCount = leases.filter((l) => l.status !== "active").length;
+  const boundCount = leases.filter((l) => l.status === "active" && (l.lease_tenants?.length ?? 0) > 0).length;
+  const pendingCount = leases.filter((l) => l.status === "active" && (l.lease_tenants?.length ?? 0) === 0).length;
+
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">สัญญาเช่า</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">สัญญาเช่า</h1>
         <p className="text-sm text-gray-500">สร้างสัญญา เชิญผู้เช่าด้วยรหัสยืนยันทาง LINE Bot (7 วัน ใช้ครั้งเดียว) และปิดสัญญาเมื่อย้ายออก</p>
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard label="สัญญาทั้งหมด" value={String(leases.length)} icon="contract" />
+        <StatCard label="กำลังเช่าอยู่" value={String(activeCount)} icon="check" tone="green" />
+        <StatCard label="สิ้นสุดแล้ว" value={String(endedCount)} icon="logout" tone="default" />
+        <StatCard label="มีผู้ผูก LINE" value={String(boundCount)} sub={pendingCount > 0 ? `รอผูก ${pendingCount} ห้อง` : undefined} icon="door" tone="blue" />
       </div>
       <Card title="สร้างสัญญา" desc="1 ห้องมีสัญญาที่ใช้งานได้ 1 ฉบับ · กรอกอัตราค่าเช่าและเงินประกันตามที่ตกลงในสัญญา">
         <CreateLeaseForm rooms={rooms ?? []} />

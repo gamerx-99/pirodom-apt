@@ -1,4 +1,4 @@
-import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
+import { Badge, Card, DemoBanner, EmptyState, StatCard } from "@/app/components/ui";
 import { INVOICE_STATUS_LABEL, MOCK_INVOICES } from "@/lib/mock";
 import { formatDateTH, formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib/format";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -28,10 +28,16 @@ export default async function Page() {
     return (
       <div className="space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">บิล</h1>
-          <p className="text-sm text-gray-500">รายการบิลและสถานะการชำระ</p>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">บิลและใบแจ้งหนี้</h1>
+          <p className="text-sm text-gray-500">ตรวจสอบยอด ออกบิล และติดตามสถานะการชำระเงิน</p>
         </div>
         <DemoBanner text="รายการด้านล่างเป็นข้อมูลตัวอย่าง ไม่ใช่ยอดเรียกเก็บจริง" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatCard label="บิลทั้งหมด" value="3" icon="receipt" />
+          <StatCard label="ชำระแล้ว" value="1" icon="check" tone="green" />
+          <StatCard label="รอชำระ" value="1" icon="contract" tone="amber" />
+          <StatCard label="ค้างชำระ" value="1" icon="alert" tone="red" />
+        </div>
         <InvoiceTable invoices={MOCK_INVOICES.map((invoice) => ({
           ...invoice,
           period: invoice.period,
@@ -89,11 +95,22 @@ export default async function Page() {
     rooms: { room_no: string } | null; lease_tenants: { profile_id: string }[];
   }[];
   const canPrepareDrafts = !leaseError && !readingError;
+  const today = todayTH();
+  const paidCount = invoices.filter((i) => i.status === "paid").length;
+  const overdueCount = invoices.filter((i) => i.status === "overdue" || (i.status === "issued" && i.due_date < today)).length;
+  const pendingCount = invoices.filter((i) => i.status === "issued" && i.due_date >= today).length;
+
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">บิล</h1>
-        <p className="text-sm text-gray-500">ตรวจสอบยอดและติดตามสถานะการชำระจากข้อมูลจริง</p>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">บิลและใบแจ้งหนี้</h1>
+        <p className="text-sm text-gray-500">ตรวจสอบยอด ออกบิล และติดตามสถานะการชำระเงินจากข้อมูลจริง</p>
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard label="บิลทั้งหมด" value={`${invoices.length} บิล`} icon="receipt" />
+        <StatCard label="ชำระแล้ว" value={`${paidCount} บิล`} icon="check" tone="green" />
+        <StatCard label="รอชำระ" value={`${pendingCount} บิล`} icon="contract" tone="amber" />
+        <StatCard label="ค้างชำระ" value={`${overdueCount} บิล`} icon="alert" tone={overdueCount > 0 ? "red" : "default"} />
       </div>
       <Card title="สร้างบิลร่าง" desc="เลือกงวดมิเตอร์และวันครบกำหนดให้ตรงกับสัญญา ระบบจะบันทึกรายการยอดไว้ให้ตรวจทานก่อนออกบิล">
         <p className="mb-3 text-sm text-amber-800">ระบบยังไม่ตั้งรอบร้านค้าแทนผู้ดูแล และไม่เฉลี่ยค่าเช่าเดือนแรกหรือเดือนสุดท้ายโดยอัตโนมัติ</p>
