@@ -21,10 +21,10 @@ export async function createRoom(
     const { userId } = await requireStaff(supabase);
     const parsed = parseRoomInput(form);
     if (!parsed.ok) return parsed;
-    const { room_no, unit_type, floor, status } = parsed.value;
+    const { room_no, unit_type } = parsed.value;
 
     const admin = createAdminClient();
-    const { error } = await admin.from("rooms").insert({ room_no, unit_type, floor, status });
+    const { error } = await admin.from("rooms").insert(parsed.value);
     if (error) {
       if (error.code === "23505") return fail(`เลขห้อง "${room_no}" มีอยู่แล้ว`);
       return fail(`สร้างห้องไม่สำเร็จ: ${error.message}`);
@@ -46,11 +46,12 @@ export async function updateRoom(_prev: RoomResult | null, form: FormData): Prom
     if (!parsed.ok) return parsed;
     const admin = createAdminClient();
     const { data: before, error: readError } = await admin.from("rooms")
-      .select("id,room_no,unit_type,floor,status").eq("id", id).maybeSingle();
+      .select("id,room_no,unit_type,floor,status,rent_amount,deposit,water_fee,electric_rate,due_day").eq("id", id).maybeSingle();
     if (readError) return fail("อ่านข้อมูลห้องไม่สำเร็จ กรุณาลองใหม่");
     if (!before) return fail("ไม่พบห้องนี้ อาจถูกลบไปแล้ว");
     const { data, error } = await admin.from("rooms").update(parsed.value).eq("id", id).select("id").maybeSingle();
     if (error?.code === "23505") return fail(`เลขห้อง "${parsed.value.room_no}" มีอยู่แล้ว`);
+    if (error?.message?.includes("room_price_locked")) return fail("ห้องนี้มีสัญญาอยู่ ราคาล็อกตามสัญญา: ปิดสัญญา (ผู้เช่าออก) ก่อนจึงแก้ราคาได้");
     if (error) return fail("แก้ไขห้องไม่สำเร็จ กรุณาลองใหม่");
     if (!data) return fail("ไม่พบห้องนี้ อาจถูกลบไปแล้ว");
     await audit(admin, { actor_id: userId, action: "room.update", table_name: "rooms", record_id: id, before, after: parsed.value });

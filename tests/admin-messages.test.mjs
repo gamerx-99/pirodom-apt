@@ -60,7 +60,7 @@ function fixture({ authorized = true } = {}) {
   };
   const actions = loadAction({
     'next/cache': { revalidatePath() {} },
-    '@/lib/env': { getEnv: () => 'test-token' },
+    '@/lib/settings': { getSetting: async () => 'test-token' },
     '@/lib/line-push': { pushLineText: async (_token, to, text) => {
       if (!to) return { status: 'skipped', error: 'profile has no LINE user id' };
       sent.push({ to, text });

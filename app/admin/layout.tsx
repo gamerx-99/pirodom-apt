@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import PaymentNotifications from "./payment-notifications";
+import MaintenanceNotifications from "./maintenance-notifications";
 
 const NAV = [
   ["/admin", "ภาพรวม"],
@@ -71,7 +72,11 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   return (
     <div className="flex min-h-dvh flex-col bg-gray-50 text-gray-900 lg:flex-row">
       <AdminNav />
-      <main className="mx-auto w-full min-w-0 max-w-[1600px] flex-1 p-4 sm:p-6 lg:p-8"><PaymentNotifications />{children}</main>
+      <main className="mx-auto w-full min-w-0 max-w-[1600px] flex-1 p-4 sm:p-6 lg:p-8">
+        <PaymentNotifications />
+        <MaintenanceNotifications />
+        {children}
+      </main>
     </div>
   );
 }

@@ -5,10 +5,31 @@ import { deleteRoom, updateRoom } from "./actions";
 import { ROOM_STATUS_LABEL } from "@/lib/mock";
 import { ROOM_STATUSES } from "@/lib/rooms";
 
-type Room = { id: string; room_no: string; unit_type: string; floor: number | null; status: string };
+import { PRICE_FIELDS } from "@/lib/rooms";
+
+type Prices = { rent_amount: number; deposit: number; water_fee: number; electric_rate: number; due_day: number };
+type Room = { id: string; room_no: string; unit_type: string; floor: number | null; status: string } & Prices;
 const fieldClass = "mt-1 w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 text-gray-900";
 
-export function RoomActions({ room }: { room: Room }) {
+/** ราคาตั้งต้นของห้อง ล็อกไว้ (ส่งค่าเดิมแบบซ่อน) เมื่อห้องมีสัญญา */
+export function PriceFields({ prices, locked = false, className }: { prices?: Prices; locked?: boolean; className: string }) {
+  return (
+    <>
+      {PRICE_FIELDS.map(([key, label]) => (
+        <label key={key} className="block text-sm font-medium">{label} (บาท)
+          <input name={locked ? undefined : key} inputMode="decimal" defaultValue={prices?.[key] ?? 0} disabled={locked} className={className} />
+          {locked && <input type="hidden" name={key} value={prices?.[key] ?? 0} />}
+        </label>
+      ))}
+      <label className="block text-sm font-medium">ครบกำหนดวันที่ (31 = สิ้นเดือน)
+        <input name={locked ? undefined : "due_day"} inputMode="numeric" defaultValue={prices?.due_day ?? 31} disabled={locked} className={className} />
+        {locked && <input type="hidden" name="due_day" value={prices?.due_day ?? 31} />}
+      </label>
+    </>
+  );
+}
+
+export function RoomActions({ room, locked }: { room: Room; locked: boolean }) {
   const [editState, editAction, saving] = useActionState(updateRoom, null);
   const [deleteState, deleteAction, deleting] = useActionState(deleteRoom, null);
   const [confirmation, setConfirmation] = useState("");
@@ -37,6 +58,10 @@ export function RoomActions({ room }: { room: Room }) {
                 {ROOM_STATUSES.map((status) => <option key={status} value={status}>{ROOM_STATUS_LABEL[status]}</option>)}
               </select>
             </label>
+            <div className="grid grid-cols-2 gap-3">
+              <PriceFields prices={room} locked={locked} className={fieldClass} />
+            </div>
+            {locked && <p className="text-xs text-gray-600">ราคาล็อกตามสัญญาปัจจุบัน แก้ได้หลังปิดสัญญา (ผู้เช่าออก)</p>}
             <button type="submit" className="w-full rounded-xl bg-teal-700 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-800">
               {saving ? "กำลังบันทึก…" : "บันทึกการแก้ไข"}
             </button>

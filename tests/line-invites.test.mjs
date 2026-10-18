@@ -131,12 +131,12 @@ test('webhook verifies the signature before processing, then replies to the send
   const accepted = [];
   const route = loadTs('../app/api/line/webhook/route.ts', {
     '@/lib/env': {
-      isLineWebhookConfigured: () => true,
       isSupabaseAdminConfigured: () => true,
       getEnv: () => 'test-token',
       notConfiguredResponse: missing => Response.json({ missing }, { status: 503 }),
     },
-    '@/lib/line': { verifyLineSignature: (_body, signature) => signature === 'valid' },
+    '@/lib/settings': { getSetting: async () => 'test-token' },
+    '@/lib/line': { verifyLineSignature: async (_body, signature) => signature === 'valid' },
     '@/lib/line-invites': { acceptInviteCodeFromLine: async (_admin, input) => {
       accepted.push(input);
       return { ok: true, displayName: input.lineName, roomNo: '101' };

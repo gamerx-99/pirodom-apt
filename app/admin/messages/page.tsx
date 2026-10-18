@@ -1,5 +1,6 @@
 import { Card, EmptyState } from "@/app/components/ui";
-import { isSupabaseConfigured, getEnv } from "@/lib/env";
+import { isSupabaseConfigured } from "@/lib/env";
+import { getSetting } from "@/lib/settings";
 import { requireStaff } from "@/lib/phase1";
 import { loadRecipients } from "@/lib/recipients";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -23,7 +24,7 @@ export default async function Page() {
   return <div className="space-y-4">
     <h1 className="text-xl font-bold">ส่งข้อความถึงผู้เช่า</h1>
     <p className="text-sm text-gray-600">แอดมินกดส่งเองผ่าน LINE ไม่มีการแจ้งเตือนตามเวลาอัตโนมัติ</p>
-    {!getEnv("LINE_CHANNEL_ACCESS_TOKEN") && <p className="rounded-lg bg-amber-50 p-3 text-amber-900">ยังไม่ได้ตั้งค่า LINE OA ข้อความจะบันทึกเป็น “ข้ามการส่ง” แล้วกดส่งซ้ำได้หลังตั้งค่า</p>}
+    {!(await getSetting("LINE_CHANNEL_ACCESS_TOKEN")) && <p className="rounded-lg bg-amber-50 p-3 text-amber-900">ยังไม่ได้ตั้งค่า LINE OA ข้อความจะบันทึกเป็น “ข้ามการส่ง” แล้วกดส่งซ้ำได้หลังตั้งค่า</p>}
     <Card title="สร้างข้อความ">{rooms.length ? <MessageForm rooms={rooms.map((r) => ({ leaseId: r.leaseId, roomNo: r.roomNo, unpaid: r.unpaid, nextDue: r.nextDue, names: r.tenants.map((t) => t.name ?? "ผู้เช่า").join(", ") }))} /> : <EmptyState title="ยังไม่มีผู้เช่าในสัญญาที่ใช้งาน" />}</Card>
     <Card title="ประวัติ LINE ล่าสุด 100 รายการ" desc="รวมข้อความแอดมินและผลตรวจสลิป สถานะส่งแล้วหมายถึง LINE รับคำขอ ไม่ยืนยันว่าผู้เช่าอ่านข้อความแล้ว">
       {logs.length ? <ul className="space-y-3">{logs.map((log) => <li key={log.id} className="rounded-lg border p-3">

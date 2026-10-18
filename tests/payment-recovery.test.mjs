@@ -98,7 +98,7 @@ test('saved slip is recoverable without reupload/provider call; log, reference a
   try {
     const { POST } = load('../app/api/slipok/verify/route.ts', {
       '@/lib/phase1': { audit: async () => {}, toNumberOrNull: v => v == null ? null : Number(v) },
-      '@/lib/env': { getEnv: () => 'fixture-not-a-key', isSlipokConfigured: () => true },
+      '@/lib/settings': { getSetting: async () => 'fixture-not-a-key', isSlipokConfigured: async () => true },
       '@/lib/supabase/admin': { createAdminClient: () => admin },
       '@/lib/supabase/server': { createClient: async () => session },
       '@/lib/payment-status': { OPEN_PAYMENT_STATUSES: ['uploaded', 'slipok_passed', 'slipok_failed', 'mismatch', 'pending_review'] },

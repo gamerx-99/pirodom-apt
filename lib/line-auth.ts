@@ -1,5 +1,5 @@
 import "server-only";
-import { getEnv } from "./env";
+import { getSetting } from "./settings";
 
 export interface LineIdTokenClaims {
   iss: string;
@@ -14,7 +14,7 @@ export interface LineIdTokenClaims {
 
 // ตรวจ LIFF ID token ผ่าน LINE verify endpoint ตรง
 export async function verifyLineIdToken(idToken: string): Promise<LineIdTokenClaims> {
-  const channelId = getEnv("LINE_LOGIN_CHANNEL_ID");
+  const channelId = await getSetting("LINE_LOGIN_CHANNEL_ID");
   if (!channelId) {
     throw new Error(
       "ยังไม่มี LINE_LOGIN_CHANNEL_ID: ใส่ Channel ID ของ LINE Login แล้วลองใหม่",

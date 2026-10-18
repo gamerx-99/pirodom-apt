@@ -1,7 +1,8 @@
 import Link from "next/link";
 import QRCode from "qrcode";
 import { Badge, Card, DemoBanner, EmptyState } from "@/app/components/ui";
-import { getEnv, isSupabaseConfigured } from "@/lib/env";
+import { isSupabaseConfigured } from "@/lib/env";
+import { getSetting } from "@/lib/settings";
 import { formatDateTH, formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib/format";
 import { INVOICE_STATUS_LABEL, PAYMENT_STATUS_LABEL } from "@/lib/mock";
 import { promptPayPayload } from "@/lib/promptpay";
@@ -38,13 +39,13 @@ const ITEM_LABEL: Record<string, string> = {
 };
 
 async function PromptPayQr({ amount }: { amount: number }) {
-  const promptPayId = getEnv("PROMPTPAY_ID");
+  const promptPayId = await getSetting("PROMPTPAY_ID");
   const payload = promptPayId ? promptPayPayload(promptPayId, amount) : null;
   if (!payload) {
     return <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800">รอข้อมูลบัญชีรับเงิน: ยังแสดง QR PromptPay ไม่ได้ กรุณาสอบถามช่องทางโอนจากเจ้าหน้าที่</p>;
   }
   const src = await QRCode.toDataURL(payload, { margin: 1, width: 240 });
-  const name = getEnv("PROMPTPAY_ACCOUNT_NAME");
+  const name = await getSetting("PROMPTPAY_ACCOUNT_NAME");
   return (
     <div className="flex flex-col items-center gap-1 rounded-lg bg-white p-3 text-center ring-1 ring-gray-100">
       {/* eslint-disable-next-line @next/next/no-img-element -- data URL; กดค้างเพื่อบันทึกรูปไปสแกนในแอปธนาคารได้ */}

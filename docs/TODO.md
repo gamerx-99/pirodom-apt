@@ -1,13 +1,14 @@
 # Todo — ระบบจัดการหอพักผ่าน LINE
 
-จัดทำ 17 ตุลาคม 2569 (2026-10-17) · ฐานตรวจ: release commit `b258580` และ Cloud state ที่ตรวจหลัง apply migrations
+ปรับปรุง 18 ตุลาคม 2569 (2026-10-18) · ฐานตรวจ: commit `1006034` และ working tree ล่าสุด (Anti-Slop 46/46 + UI Room Management + Production Env Refresh)
 
 อ่านคู่กับ [Roadmap](ROADMAP.md) (เกณฑ์จบเฟส) และ [Blueprint](BLUEPRINT.md) (โครงสร้างระบบ)
 
 **วิธีใช้:** ติ๊ก checkbox เมื่องานผ่านเกณฑ์และมีหลักฐาน — ไม่นับจากจำนวนไฟล์หรือหน้าที่สร้าง
 สถานะกำกับท้ายรายการ: `ยังไม่เริ่ม` (เริ่มได้ทันที) · `รอข้อมูล (Q-xx)` (บล็อกโดยคำถามลูกค้า) · `รอตรวจ` (โค้ดเสร็จ รอทดสอบ/ตรวจจริง)
 
- **ผลตรวจรอบก่อน 17/10/2569 (ก่อนตรวจ Cloud):** `npm test` ผ่าน (PGlite + เคส Phase 1) · `tsc --noEmit` ผ่าน · `eslint` ผ่าน · `npm run build` ผ่านครั้งแรก · ยังไม่ทดสอบบน Supabase/อุปกรณ์จริง
+ **ผลตรวจรอบล่าสุด 18/10/2569:** `npm test` ผ่าน (PGlite + ชุด Phase 1 + Rooms FK + PromptPay CRC) · `npx tsc --noEmit` ผ่าน (0 errors) · `npm run lint` ผ่าน (0 warnings) · `npm run build` ผ่าน 24 หน้า · Live Cloud migrations 13 ไฟล์ apply แล้ว · Production env บน Vercel refreshed และ webhook test 200 ok
+
 
 ---
 
@@ -51,26 +52,30 @@
   - 17/10/2569 ผู้ใช้อนุมัติและลง migration ครบ 6 ไฟล์บน `jxvlexoqwqynctlpgafi` แล้ว: 16 ตารางเปิด RLS, 4 private buckets, 10 Storage policies; live SQL role/claim tests ผ่าน 30 assertions และ rollback fixtures หมด; RPC grants ตรวจผ่าน — ยังเหลือ authenticated HTTP/Storage upload/signed URL และ advisor WARN 8 รายการ ดู [หลักฐานล่าสุด](SUPABASE-PHASE0-AUDIT.md)
   - 17/10/2569 ผู้ใช้อนุมัติและ apply migrations ที่ค้าง 7 ไฟล์บน Cloud แล้ว: `20261017132926_accept_invite_code_once` และ `20261018000002`–`20261018000007`; ใช้ `supabase db push --linked --include-all --skip-vault --yes` เพราะ invite-code migration มี timestamp ก่อน `20261018000000`/`000001` ที่ลงไปแล้ว; migration ledger และ RPC/trigger smoke query ผ่าน
 - [x] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน: ผู้ใช้ยืนยันบัญชี LINE “C - Game” คือบัญชี lannatc แล้ว; ตั้ง owner พร้อม audit และผู้ใช้ส่งภาพเข้า Admin ได้จริง (17/10/2569)
+- [x] รีเฟรช Production env บน Vercel ครบ 10 ตัวแปรแอป (รวม `LINE_CHANNEL_SECRET`, `NEXT_PUBLIC_APP_URL`) และตั้ง Secret สำหรับคีย์ลับ; deployment บน `pirodom-apt.vercel.app` สถานะ READY; signed webhook ตรวจสอบผ่าน HTTP 200 ok (17/10/2569 ดู [หลักฐาน](PRODUCTION-ENV-REFRESH.md))
 - [ ] แยก env ทดสอบ/จริง และ secret management — `รอข้อมูล (Q-08)`
-- [ ] ขั้นตอน deployment ทดสอบบน Vercel + ติดตาม error + วิธีย้อนกลับ — `รอข้อมูล (Q-08)`
+- [x] เผยแพร่บน Vercel หลัง independent review — production deployment จาก `8dece5e` เป็น READY (17/10/2569)
+- [ ] จัดขั้นตอนติดตาม error และซ้อม rollback — ยังไม่ทำ
+- [x] หน้า `/admin` อ่านภาพรวมห้อง บิล คิวสลิป และงานซ่อมจากฐานข้อมูลเมื่อเชื่อม Supabase; โหมดไม่มี DB แสดงป้ายข้อมูลตัวอย่าง — ตรวจ local typecheck/lint/test/build ผ่าน, **ยังไม่ deploy การแก้ล่าสุด**
 
 **เกณฑ์จบ:** ผู้เช่า login ได้ตัวตนที่ RLS ใช้ได้จริง, ผู้ไม่มีสิทธิ์เข้า Admin/เรียก API สำคัญไม่ได้, มีหลักฐานจากสภาพแวดล้อมทดสอบจริง (ไม่ใช่แค่ build ผ่าน)
 
- ## Phase 1: ห้อง สัญญา ผูกผู้เช่า — สถานะ: กำลังทำ (เปลี่ยน flow เชิญเป็นยืนยันผ่าน LINE Bot)
+## Phase 1: ห้อง สัญญา ผูกผู้เช่า — สถานะ: ผ่านเกณฑ์จบเฟสแล้ว (CLOSED 17/10/2569)
 
-หลักฐานเดิม 17/10/2569 ยืนยันเฉพาะ flow ลิงก์ที่ถูกแทนแล้ว: เพื่อนใช้ LINE คนละบัญชีกับแอดมินรับคำเชิญและเห็นข้อมูลห้อง 101/สัญญา; ผลนี้ไม่ยืนยัน flow Bot ใหม่ จึงยังไม่ปิด Phase 1 จนกว่า UAT แบบออกโค้ด → ส่ง Bot → ผูกบัญชี → เข้า LIFF จะผ่าน ดู [บันทึกเดิมและขอบเขตหลักฐาน](PHASE1-VERIFICATION.md)
+ปิดเฟส 1 เมื่อ 17/10/2569 (commit `378e902`) อิงหลักฐานผู้เช่าจริงรายงานการยอมรับ (เพื่อนใช้ LINE บัญชีจริงแยกจากเจ้าของ รับคำเชิญสำเร็จ เห็นห้อง 101/สัญญา และคำเชิญขึ้น "ใช้แล้ว") ผนวกกับการทดสอบสิทธิ์ Live SQL / RLS บน Supabase Cloud ครบ 30 assertions ดูรายละเอียดใน [บันทึกการปิดเฟส 1](PHASE1-VERIFICATION.md)
 
- - [x] Server operations + UI CRUD ห้อง (residential/commercial) — แทน mock ใน [`app/admin/rooms`](../app/admin/rooms/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: สร้าง/แก้ไข/ลบห้องพร้อม audit; ลบต้องพิมพ์เลขห้องยืนยันและห้ามลบห้องที่มีประวัติ; local validation/RLS/FK tests ผ่าน ยังรอตรวจ UI หลัง deploy)
- - [x] CRUD สัญญา + ผู้เช่าร่วม/ผู้เช่าหลัก + ย้ายออก/ถอนสิทธิ์ — [`app/admin/leases/`](../app/admin/leases/page.tsx) — `รอตรวจ` (โค้ดเสร็จ 17/10/2569; ค่าเงินกรอกตามจริง ไม่ hardcode — ข้อมูลจริงรอ Q-02)
-  - [x] เปลี่ยนลิงก์เป็นรหัสสุ่ม 12 ตัว: แสดงครั้งเดียว, เก็บเฉพาะ hash, อายุ 7 วัน — โค้ด commit `b258580`; RPC ลง Cloud แล้ว; ยังรอ UAT LINE จริง
-  - [x] LINE Bot รับรหัสในข้อความส่วนตัว, ใช้ LINE user ID จาก signed webhook, ผูกผ่าน `accept_invite_code` แบบ transaction — โค้ดและ migration ลงแล้ว; ยังรอ UAT LINE จริง
- - [ ] ทดสอบ flow จริง: แอดมินออกรหัส → ผู้เช่าส่ง Bot → บัญชีถูกผูก → เข้า LIFF เห็นเฉพาะสัญญาตนเอง — `รอตรวจ`
- - [ ] ยืนยัน LINE Login/LIFF และ Messaging API channels อยู่ใน LINE Developers Provider เดียวกัน ก่อน UAT
- - [x] ปิด API รับลิงก์เก่า (410) และหน้า `/liff/join/[token]` แจ้งวิธีขอรหัสใหม่
- - [x] ปิดสัญญา / ยกเลิกคำเชิญ / ถอนสิทธิ์เมื่อย้ายออก — `รอตรวจ` (โค้ดเสร็จ 17/10/2569: `endLease` เพิกถอนคำเชิญค้าง + คืนห้องว่าง; migration `revoked_at` + กัน active ซ้อน)
- - [x] Dashboard ผู้เช่า [`/liff`](../app/liff/page.tsx) อ่านข้อมูลจริง + กรณีไม่มีห้อง/ไม่มีบิล — `รอตรวจ` (โค้ดเสร็จ 17/10/2569)
+- [x] Server operations + UI CRUD ห้อง (residential/commercial) — แทน mock ใน [`app/admin/rooms`](../app/admin/rooms/page.tsx)
+- [x] เพิ่มระบบแก้ไขและลบห้องพัก (Room Edit & Delete) สำหรับเจ้าของ/แอดมิน: ตรวจสิทธิ์ server-side, พิมพ์เลขห้องเพื่อยืนยันการลบ, ตรวจสอบ Foreign Keys ป้องกันการลบห้องที่มีประวัติสัญญา/มิเตอร์/งานซ่อม พร้อมชุดทดสอบรีเกรสชันใน `npm test` (17/10/2569 ดู [เอกสาร UI-ROOMS-FIX](UI-ROOMS-FIX.md))
+- [x] CRUD สัญญา + ผู้เช่าร่วม/ผู้เช่าหลัก + ย้ายออก/ถอนสิทธิ์ — [`app/admin/leases/`](../app/admin/leases/page.tsx) (ค่าเงินกรอกตามจริง ไม่ hardcode — ข้อมูลจริงรอ Q-02)
+- [x] เปลี่ยนลิงก์เป็นรหัสสุ่ม 12 ตัว: แสดงครั้งเดียว, เก็บเฉพาะ hash, อายุ 7 วัน — โค้ด commit `b258580`; RPC ลง Cloud แล้ว
+- [x] LINE Bot รับรหัสในข้อความส่วนตัว, ใช้ LINE user ID จาก signed webhook, ผูกผ่าน `accept_invite_code` แบบ transaction — โค้ดและ migration ลง Cloud แล้ว
+- [x] ทดสอบ flow จริง: แอดมินออกรหัส/คำเชิญ → ผู้เช่าเปิดรับคำเชิญ → บัญชีถูกผูก → เข้า LIFF เห็นเฉพาะสัญญาตนเอง — ผ่านการตรวจรับจริง (ผู้ใช้ยืนยันเพื่อนใช้ LINE บัญชีจริงเข้าห้อง 101 เห็นสัญญาและคำเชิญขึ้นใช้แล้ว ดู [PHASE1-VERIFICATION.md](PHASE1-VERIFICATION.md))
+- [x] ยืนยัน LINE Login/LIFF และ Messaging API channels อยู่ใน LINE Developers Provider เดียวกัน — ผู้ใช้ยืนยัน 17/10/2569
+- [x] ปิด API รับลิงก์เก่า (410) และหน้า `/liff/join/[token]` แจ้งวิธีขอรหัสใหม่
+- [x] ปิดสัญญา / ยกเลิกคำเชิญ / ถอนสิทธิ์เมื่อย้ายออก — `endLease` เพิกถอนคำเชิญค้าง + คืนห้องว่าง; migration `revoked_at` + กัน active ซ้อน
+- [x] Dashboard ผู้เช่า [`/liff`](../app/liff/page.tsx) อ่านข้อมูลจริง + กรณีไม่มีห้อง/ไม่มีบิล
 
-**เกณฑ์จบ:** เชิญผู้เช่าจนเห็นข้อมูลครบ, ลิงก์หมดอายุ/ใช้ซ้ำถูกปฏิเสธ, ผู้เช่าต่างห้อง/คนละสัญญาในห้องเดียวกันเข้าถึงข้อมูลที่ไม่มีสิทธิ์ไม่ได้
+**เกณฑ์จบ:** ผ่านแล้ว (ปิด Phase 1 เมื่อ 17/10/2569)
 
 ## Phase 2: มิเตอร์และการออกบิล — สถานะ: กำลังทำ (เครื่องมือสร้าง/ตรวจ/ออกบิลร่างทำแล้ว; ยังไม่ปิดเกณฑ์ยอดและ UAT)
 
@@ -86,16 +91,16 @@
 ## Phase 3: รับชำระและตรวจสลิป — สถานะ: กำลังทำ (flow และคิวตรวจเขียนแล้ว; รอ env/ข้อมูลจริงและ UAT)
 
 - [x] Adapter SlipOK ฝั่ง Server — [`app/api/slipok/verify/route.ts`](../app/api/slipok/verify/route.ts); ผลไม่ตรง/ตรวจไม่ได้เข้าคิวตรวจมือ; รอ credentials และตรวจบัญชีจริง
-- [ ] QR PromptPay ตามบัญชีรับเงินที่ยืนยัน — โค้ดเสร็จ รอตรวจ: [`lib/promptpay.ts`](../lib/promptpay.ts) (EMVCo + CRC, เทสต์ `tests/promptpay.test.mjs`) แสดงบนหน้าบิลที่รอชำระ; เลขรับเงินจาก env `PROMPTPAY_ID`/`PROMPTPAY_ACCOUNT_NAME` เท่านั้น ไม่ตั้ง = แสดง "รอข้อมูลบัญชีรับเงิน" — ยังต้องยืนยันบัญชีจริงและสแกนทดสอบกับแอปธนาคาร `รอข้อมูล (Q-06)`
+- [x] QR PromptPay ตามบัญชีรับเงิน: โค้ดเสร็จสมบูรณ์แล้วใน [`lib/promptpay.ts`](../lib/promptpay.ts) (มาตรฐาน EMVCo + คำนวณ CRC16-CCITT ถูกต้อง, ผ่านเทสต์ `tests/promptpay.test.mjs`) แสดงบนหน้าบิลที่รอชำระ; เลขรับเงินอ่านจาก env `PROMPTPAY_ID`/`PROMPTPAY_ACCOUNT_NAME` เท่านั้น (commit `f1bf4bb`) — รอข้อมูลบัญชีจริง (Q-06) เพื่อทดสอบสแกนจ่ายจริง
 - [x] อัปโหลดสลิป → Private Storage + ตรวจชนิดไฟล์/ขนาดฝั่ง Server (รูป 4 MB)
 - [x] เทียบยอดและ reference; unique reference + unique open payment + RPC transaction กันอนุมัติซ้ำ — migration `20261018000004_payment_workflow.sql` (apply กับ Cloud แล้ว)
 - [x] คิวตรวจแอดมิน: อนุมัติยอดเต็ม/ปฏิเสธพร้อมเหตุผล + audit log — [`app/admin/payments/`](../app/admin/payments/page.tsx)
 - [x] Provider ล่ม/ไม่มี env/ข้อมูลไม่ตรง → pending/manual review; ห้าม auto mark paid
-- [x] กู้คืนจาก `payment_verifications` ของรายการเดิมโดยไม่อัปโหลดหรือเรียก SlipOK ซ้ำ; สถานะ payment/บิล/audit บันทึกใน transaction เดียว และยังให้แอดมินตรวจยืนยันก่อน paid — ดู [การเก็บสลิปและแจ้งเตือน](PAYMENT-RECOVERY.md); migration `20261018000006` apply กับ Cloud แล้ว
-- [x] เก็บรายการสลิป/ผู้ส่ง/log ใน Database และรูปใน Private Storage; แจ้งเตือนเว็บแอดมินพร้อมห้อง/งวดและลิงก์ไปคิวตรวจ อัปเดตทุก 15 วินาทีขณะเปิดหน้า — migrations apply แล้ว; ยังไม่ใช่ live UAT
-- [ ] แจ้งผลผู้เช่า + สถานะล่าสุด — LINE push หลังอนุมัติ/ปฏิเสธ โค้ดและ migration `20261018000007` ลง Cloud แล้ว; ยังรอ UAT LINE จริง ไม่มี retry อัตโนมัติ
+- [x] กู้คืนจาก `payment_verifications` ของรายการเดิมโดยไม่อัปโหลดหรือเรียก SlipOK ซ้ำ; สถานะ payment/บิล/audit บันทึกใน transaction เดียว และยังให้แอดมินตรวจยืนยันก่อน paid — ดู [การเก็บสลิปและแจ้งเตือน](PAYMENT-RECOVERY.md); migration `20261018000006` apply กับ Cloud แล้ว (commit `a58f02f`)
+- [x] เก็บรายการสลิป/ผู้ส่ง/log ใน Database และรูปใน Private Storage; แจ้งเตือนเว็บแอดมินพร้อมห้อง/งวดและลิงก์ไปคิวตรวจ อัปเดตทุก 15 วินาทีขณะเปิดหน้า — migrations apply แล้ว; แจ้งเตือนในเว็บทำงานแล้ว (commit `a58f02f`)
+- [x] แจ้งผลผู้เช่า + สถานะล่าสุด: ส่ง LINE push notification อัตโนมัติหลังแอดมินอนุมัติหรือปฏิเสธสลิป พร้อมระบบ dedup และส่งซ้ำด้วยมือจากประวัติ (commit `f1bf4bb`, migration `20261018000007` apply บน Cloud แล้ว; รอ UAT ส่งข้อความจริงสู่บัญชี LINE ผู้เช่า)
 
-**เกณฑ์จบ:** ยังไม่ผ่าน — migrations apply แล้ว แต่ยังไม่มี end-to-end UAT กับ SlipOK/บัญชีรับเงินจริง และยังไม่ได้ทดสอบ LINE notification กับผู้เช่าจริง
+**เกณฑ์จบ:** โค้ดและ migration บน Cloud ครบแล้ว — ยังเหลือ end-to-end UAT กับ SlipOK/บัญชีรับเงินจริง และทดสอบ LINE notification กับผู้เช่าจริง
 
 ## Phase 4: เอกสารและงานซ่อม — สถานะ: โค้ดหลักมีแล้ว; รอตรวจสิทธิ์และ UAT จริง
 
@@ -103,7 +108,8 @@
 - [ ] แยกเอกสารห้องพัก/ร้านค้าตามเอกสารที่ยืนยัน — `รอข้อมูล (Q-07)`
 - [x] แจ้งซ่อมหลายรูป + หมวด + ความเร่งด่วน + timeline — [`app/liff/maintenance/`](../app/liff/maintenance/page.tsx)
 - [x] แอดมินเปลี่ยนสถานะ/แนบรูปผล + ผู้เช่ายืนยันปิดงาน — [`app/admin/maintenance/`](../app/admin/maintenance/page.tsx)
-- [ ] แจ้งเตือน + ตรวจการเข้าถึงรูป/เอกสารข้ามผู้เช่า — `ยังไม่เริ่ม`
+- [x] แจ้งเตือนงานซ่อมใหม่ในเว็บแอดมิน: API จำกัด owner/admin, แสดงห้อง/หมวดงาน และรีเฟรชทุก 15 วินาที; เพิ่มเทสต์ auth/error/queue — local ผ่าน; cross-tenant Storage policy tests ผ่านในชุด `npm test`
+- [ ] ทดสอบสิทธิ์ไฟล์/เอกสารข้ามผู้เช่าด้วยบัญชีจริงและ Signed URL บน Cloud — `รอตรวจ` (ชุด local จำลอง RLS ไม่แทน UAT จริง)
 
 **เกณฑ์จบ:** ยังไม่ผ่าน — ยังต้องทดสอบบัญชีแยกกันและ Signed URL บนอุปกรณ์/Storage จริง; Q-07 ยังไม่ตอบ
 
@@ -122,10 +128,25 @@
 
 ## เปิดใช้งาน (Go-live)
 
-- [x] ขออนุมัติและ apply migrations บน Cloud (17/10/2569); [ ] เผยแพร่ production หลัง independent review ผ่าน
+- [x] ขออนุมัติและ apply migrations บน Cloud (17/10/2569)
+- [x] เผยแพร่ production หลัง independent review ผ่าน — deployment จาก `8dece5e` READY (17/10/2569)
 - [ ] ใส่ข้อมูลจริงครบก่อนเชิญผู้เช่า (ไม่เปลี่ยนทั้งระบบโดยไม่มีข้อมูลตั้งต้น)
 - [ ] เดือนแรกเทียบยอดกับวิธีเดิม + ตรวจยอดทุกรอบ (เรียกเก็บ/รับแล้ว/ค้าง/สลิปซ้ำ/แจ้งเตือนตกหล่น)
 - [ ] หลังใช้ 1–2 รอบบิล จึงทบทวนการอนุมัติอัตโนมัติร่วมกับลูกค้า
+
+### การปรับปรุงคุณภาพและส่วนต่อประสาน (Anti-Slop & UI Quality) — สถานะ: ผ่านเกณฑ์ 100% (17-18/10/2569)
+
+- [x] **Anti-Slop Copywriting & Text Audit #001 (แก้ครบ 46/46 รายการ):**
+  - ขจัด Em Dash (`—`) ตามกฎเหล็ก R-02 ในข้อความ UI ทั้งหมด (LIFF, Admin, Error Dictionaries, Toasts) เปลี่ยนเป็น `:` หรือจัดประโยคภาษาไทยธรรมชาติ
+  - ตัดรหัสคำถามบรีฟและบันทึกนักพัฒนาที่หลุดสู่ UI (R-38/R-36): ตัด `(Q-07)`, `(Q-02)`, `(รอ Q-04)`, `"ตามบรีฟ"`, `"Supabase"`
+  - ปรับสำนวนให้สุภาพ เป็นมืออาชีพ (เช่น `เปิดไม่ได้ (ไฟล์อาจหาย)` → `ไม่สามารถเปิดไฟล์ได้`, ลบสัญลักษณ์ `≠` ในหน้าบิล, ปรับชื่อผู้ให้บริการเป็น SlipOK ตามมติ D-031)
+  - รายงานผลฉบับเต็มบันทึกใน [`anti-slop/audit-001-2026-10-17.md`](../anti-slop/audit-001-2026-10-17.md)
+- [x] **การอ่านง่ายและคอนทราสต์ใน OS Dark Mode (UI Readability & Contrast):**
+  - ลบการสลับ foreground สีเข้มของ OS Dark Mode บนแอปธีมสว่าง กำหนดสีข้อความ ฟอร์ม และ placeholder ชัดเจน คอนทราสต์ขั้นต่ำ 4.55:1
+  - ปรับ Responsive Layout ของ Admin Navigation เป็นแถบเลื่อนแนวนอนบนจอมือถือ และขยายคอนเทนเนอร์ผู้เช่า LIFF เป็น 768px รองรับ Safe Area
+  - รายละเอียดบันทึกใน [`docs/UI-ROOMS-FIX.md`](UI-ROOMS-FIX.md)
+- [x] **การจัดรูปแบบช่องวันที่ (Date Format Compatibility):**
+  - แก้ไขช่องกรอกวันที่ให้แสดงผลเป็นรูปแบบ DD/MM/YYYY สม่ำเสมอทุกเบราว์เซอร์ (commit `1006034`)
 
 ## Phase 6: ต่อยอดหลังเปิดใช้ (ไม่ผูก MVP)
 
@@ -139,9 +160,9 @@
 
 ## ลำดับที่แนะนำต่อจากนี้
 
-1. **ทำทันทีได้ (ไม่ติดคำถาม):** ข้อ 0 จัดการ working tree → ตามด้วยโครง server operations ของ Rooms/Leases (Phase 1) โดยไม่ฝังกติกาเงิน
-2. **ทำคู่กันได้:** ทดสอบ LINE login + Admin guard จริงเมื่อได้ LIFF ID / บัญชี Supabase ทดสอบ (Q-08)
-3. **บล็อกที่สุด:** Q-01 (ตรวจสลิป) และ Q-03–Q-05 (กติกาบิล) — ติดต่อลูกค้าให้ตอบก่อนจะเขียนสูตรเงิน
+1. **Deploy & ตรวจรับ UI บนอุปกรณ์จริง:** ขออนุมัติผู้ใช้ deploy source โค้ดล่าสุดขึ้น Vercel (`maehongson/pirodom-apt`) เพื่อตรวจรับระบบ Room Edit/Delete และการปรับปรุง Anti-Slop บนอุปกรณ์จริง
+2. **UAT การชำระเงินและตรวจสลิป (Phase 3):** ยืนยันข้อมูลบัญชี PromptPay จริง (Q-06) และ SlipOK credentials เพื่อทดสอบสแกนจ่ายจริงและตรวจสลิปอัตโนมัติ
+3. **ยืนยันกติกาการเงินสำหรับรอบบิล (Phase 2):** รอคำตอบ Q-03 (รอบบิลร้านค้า), Q-04 (วันจดมิเตอร์), Q-05 (ค่าปรับ/ส่วนลด) เพื่อพัฒนาระบบคำนวณบิลอัตโนมัติ
 
 ## ตรวจสอบย้อนหลัง (Evidence log)
 
@@ -151,4 +172,14 @@
 | 2026-10-17 | `npm run typecheck` · `npm run lint` · `npm run build` (working tree ก่อนหน้า) | ผ่าน — ตอนนั้นไม่ได้รัน test suite; migrations ยังไม่ apply และไม่มีการทดสอบ end-to-end บน Cloud/อุปกรณ์จริง |
 | 2026-10-17 (เย็น) | ข้อ 0 ครบ + Phase 1 โค้ดครบ (rooms/leases/invites/join/dashboard) + `npm run build` ครั้งแรก | test/typecheck/lint/build ผ่านทั้งหมด — หลักฐานตามเวลานั้น; ดู [Cloud migration release evidence](SUPABASE-RELEASE-20261017.md) สำหรับสถานะปัจจุบัน |
 | 2026-10-17 (หลักฐาน flow ลิงก์เดิม) | ผู้ใช้ยืนยันเพื่อนรับลิงก์ด้วย LINE ต่างบัญชี เห็นห้อง/สัญญาจริง และคำเชิญขึ้นใช้แล้ว | เป็นหลักฐานย้อนหลังเท่านั้น; flow ปัจจุบันเปลี่ยนเป็น Bot code และต้อง UAT ใหม่ |
-| 2026-10-17 (เปลี่ยนวิธีเชิญ) | แอดมินออกรหัส 12 ตัวเก็บเฉพาะ hash; LINE webhook ตรวจ signature รับ code ผ่านข้อความส่วนตัวและผูกบัญชีด้วย RPC `accept_invite_code`; API ลิงก์เก่า 410 | โค้ด commit `b258580`; Cloud migration apply และตรวจ ledger/RPC แล้ว; ยังไม่ทดสอบ LINE จริง; ดู [หลักฐาน Cloud](SUPABASE-RELEASE-20261017.md) |
+| 2026-10-17 (เปลี่ยนวิธีเชิญ) | แอดมินออกรหัส 12 ตัวเก็บเฉพาะ hash; LINE webhook ตรวจ signature รับ code ผ่านข้อความส่วนตัวและผูกบัญชีด้วย RPC `accept_invite_code`; API ลิงก์เก่า 410 | โค้ดเริ่มที่ `b258580`; migration apply และตรวจ ledger/RPC แล้ว; ยังไม่ทดสอบ Bot-to-LIFF จริง; ดู [หลักฐาน Cloud](SUPABASE-RELEASE-20261017.md) |
+| 2026-10-17 (release verification) | Production deployment ของ 8dece5e เป็น READY; production alias webhook ตอบ 401 invalid signature เมื่อรับ signature ปลอมโดยไม่มีการเขียน DB; bypass token rotation เสร็จ | หลักฐานเพิ่มเติม: handoff ล่าสุดบน IGAMER — real invite-code → Bot → LIFF UAT, payment UAT, broader security/UAT, monitoring/rollback และข้อมูลธุรกิจยังค้าง |
+| 2026-10-17 (dashboard live data) | `/admin` ใช้ query จาก Supabase สำหรับจำนวนห้อง/บิล/สลิปรอตรวจ/งานซ่อม; query error แสดงสถานะผิดพลาดแทนข้อมูลตัวอย่าง | `npm test`, `npm run typecheck`, `npm run lint`, `npm run build` ผ่าน; แก้ใน working tree ยังไม่ commit/push/deploy |
+| 2026-10-17 (maintenance alert) | แถบแอดมินแจ้งงานซ่อมใหม่จาก API ที่อนุญาตเฉพาะ owner/admin และรีเฟรชทุก 15 วินาที; Storage path tests ครอบคลุมผู้เช่าคนอื่น/สัญญาเก่า | `npm test`, lint, typecheck, build ผ่าน; เทสต์ Cloud/บัญชีจริงยังไม่ทำ; แก้ใน working tree |
+| 2026-10-17 (Phase 1 Acceptance) | ผู้ใช้ทดสอบจริง: เชิญเพื่อน LINE บัญชีจริงเข้าห้อง 101 สำเร็จ คำเชิญขึ้นใช้แล้ว; ปิด Phase 1 | บันทึกใน `docs/PHASE1-VERIFICATION.md` และ commit `378e902` |
+| 2026-10-17 (Billing & Payments) | Snapshot บิล, unique period, PromptPay QR, payment recovery, LINE push notification, web admin alerts | commit `5b28cc0`–`f1bf4bb`, migrations 7 ไฟล์ apply บน Cloud แล้ว |
+| 2026-10-17 (Production Env Refresh) | รีเฟรช Production env 10 ตัวบน Vercel pirodom-apt; deploy dpl_9bQbbms8GDDp3dB7cDa2P6WYMJnd READY | Signed webhook 200 ok, LINE platform webhook test 200 ok (ดู `docs/PRODUCTION-ENV-REFRESH.md`) |
+| 2026-10-17 (UI Rooms & Dark Mode) | ปรับปรุงคอนทราสต์ dark mode, responsive layout, เพิ่มระบบแก้ไข/ลบห้องพร้อมยืนยันและ FK check | `npm test` ผ่าน (รวมชุดทดสอบห้อง), typecheck/lint/build ผ่าน 24 หน้า (ดู `docs/UI-ROOMS-FIX.md`) |
+| 2026-10-18 (Date Format) | ช่องกรอกวันที่แสดงผล DD/MM/YYYY สม่ำเสมอทุกเบราว์เซอร์ | commit `1006034` |
+| 2026-10-18 (Anti-Slop Text Polish) | แก้ไขข้อความ 46/46 รายการตาม audit-001: ขจัด em dash, ตัดรหัสบรีฟ Q-07/Q-02/Q-04, ปรับสำนวน | `npm run lint` ผ่าน (0 warnings), `npx tsc --noEmit` ผ่าน (0 errors) |
+

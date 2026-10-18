@@ -52,22 +52,6 @@ export function isLiffConfigured(): boolean {
   return !!getEnv("NEXT_PUBLIC_LIFF_ID");
 }
 
-export function isLineConfigured(): boolean {
-  return (
-    !!getEnv("LINE_CHANNEL_SECRET") &&
-    !!getEnv("LINE_CHANNEL_ACCESS_TOKEN") &&
-    !!getEnv("LINE_LOGIN_CHANNEL_ID")
-  );
-}
-
-export function isLineWebhookConfigured(): boolean {
-  return !!getEnv("LINE_CHANNEL_SECRET");
-}
-
-export function isSlipokConfigured(): boolean {
-  return !!getEnv("SLIPOK_API_KEY") && !!getEnv("SLIPOK_BRANCH_ID");
-}
-
 /** ตอบ 503 มาตรฐานเมื่อ service ยังไม่ตั้งค่า */
 export function notConfiguredResponse(missing: readonly string[]) {
   return Response.json(

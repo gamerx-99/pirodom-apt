@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getEnv } from "@/lib/env";
+import { getSetting } from "@/lib/settings";
 import { pushLineText } from "@/lib/line-push";
 import { MESSAGE_MAX_LENGTH, fillMessage } from "@/lib/messages";
 import { requireStaff } from "@/lib/phase1";
@@ -28,7 +28,7 @@ export async function sendMessages(_previous: SendResult | null, form: FormData)
     const targets = all.filter((r) => mode === "all" || (mode === "unpaid" && r.unpaid > 0) || (mode === "rooms" && picked.has(r.leaseId)));
     if (targets.length === 0) return fail(mode === "rooms" ? "กรุณาเลือกห้องอย่างน้อย 1 ห้อง" : "ไม่มีผู้รับตามเงื่อนไขที่เลือก");
 
-    const token = getEnv("LINE_CHANNEL_ACCESS_TOKEN");
+    const token = await getSetting("LINE_CHANNEL_ACCESS_TOKEN");
     const count = { sent: 0, failed: 0, skipped: 0 };
     let unrecorded = 0;
     const deliveries = targets.flatMap((room) => {
@@ -81,7 +81,7 @@ export async function resendNotification(_previous: SendResult | null, form: For
   if (!row) return fail("รายการนี้ถูกส่งแล้วหรือกำลังดำเนินการ กรุณารีเฟรชประวัติ");
   const target = row as unknown as { id: string; message: string | null; profiles: { line_user_id: string | null } | null };
   const sent = target.message
-    ? await pushLineText(getEnv("LINE_CHANNEL_ACCESS_TOKEN"), target.profiles?.line_user_id, target.message)
+    ? await pushLineText(await getSetting("LINE_CHANNEL_ACCESS_TOKEN"), target.profiles?.line_user_id, target.message)
     : { status: "failed" as const, error: "ไม่มีข้อความเดิมให้ส่งซ้ำ" };
   const { error: updateError } = await admin.from("notifications")
     .update({ status: sent.status, last_error: sent.error ?? null, sent_at: sent.status === "sent" ? new Date().toISOString() : null })

@@ -12,11 +12,12 @@ function form(values) {
 test('room editing accepts complete fields and rejects malformed input', () => {
   const values = { room_no: ' 101 ', unit_type: 'commercial', floor: '', status: 'maintenance' };
   assert.deepEqual(parseRoomInput(form(values)), {
-    ok: true, value: { room_no: '101', unit_type: 'commercial', floor: null, status: 'maintenance' },
+    ok: true, value: { room_no: '101', unit_type: 'commercial', floor: null, status: 'maintenance', rent_amount: 0, deposit: 0, water_fee: 0, electric_rate: 0, due_day: 31 },
   });
   for (const change of [
     { room_no: ' ' }, { room_no: 'x'.repeat(41) }, { unit_type: 'admin' },
     { floor: '1.5' }, { floor: 'NaN' }, { floor: '2147483648' }, { status: 'deleted' },
+    { rent_amount: '-1' }, { deposit: 'abc' }, { due_day: '0' }, { due_day: '32' },
   ]) assert.equal(parseRoomInput(form({ ...values, ...change })).ok, false);
 });
 
@@ -55,6 +56,29 @@ test('room edits retain references; deletion protects history and denies tenants
     for (const table of ['leases', 'meter_readings', 'maintenance_requests']) {
       assert.equal((await db.query(`select count(*)::int as n from ${table}`)).rows[0].n, 1);
     }
+  } finally {
+    await db.close();
+  }
+});
+
+test('room prices lock while a lease is active and unlock after it ends', async () => {
+  const db = await createTestDb();
+  try {
+    const owner = '00000000-0000-0000-0000-000000000001';
+    const room = '10000000-0000-0000-0000-000000000001';
+    await db.exec(`
+      insert into auth.users(id) values('${owner}');
+      insert into profiles(id,role) values('${owner}','owner');
+      insert into rooms(id,room_no,unit_type,rent_amount,deposit) values('${room}','101','residential',3500,7000);
+      insert into leases(room_id,start_date,status,rent_amount,due_day) values('${room}','2026-01-01','active',3500,31);
+    `);
+    await assert.rejects(asUser(db, owner, `update rooms set rent_amount=4000 where id='${room}'`), /room_price_locked/);
+    // non-price edits still work during a lease
+    assert.equal((await asUser(db, owner, `update rooms set floor=2 where id='${room}' returning id`)).rows.length, 1);
+    await db.exec(`update leases set status='ended', end_date='2026-10-01'`);
+    assert.equal((await asUser(db, owner, `update rooms set rent_amount=4000 where id='${room}' returning id`)).rows.length, 1);
+    // tenants and anon cannot touch app_settings
+    await assert.rejects(asUser(db, owner, `select * from app_settings`), /permission denied/);
   } finally {
     await db.close();
   }

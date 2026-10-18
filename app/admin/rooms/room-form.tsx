@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { createRoom } from "./actions";
+import { PriceFields } from "./room-actions";
 
 export function CreateRoomForm() {
   const [state, action, pending] = useActionState(createRoom, null);
@@ -31,6 +32,7 @@ export function CreateRoomForm() {
           <option value="maintenance">ปรับปรุง</option>
         </select>
       </label>
+      <PriceFields className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2 font-normal" />
       <div className="flex items-end sm:col-span-2 xl:col-span-1">
         <button disabled={pending} className="w-full rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50">
           {pending ? "กำลังบันทึก…" : "เพิ่มยูนิต"}

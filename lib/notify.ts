@@ -1,6 +1,6 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { getEnv } from "./env";
+import { getSetting } from "./settings";
 import { paymentResultText, pushLineText } from "./line-push";
 
 type PaymentForNotify = {
@@ -42,7 +42,7 @@ export async function notifyPaymentResult(
       total: Number(invoice.total),
       reason: payment.review_reason,
     });
-    const token = getEnv("LINE_CHANNEL_ACCESS_TOKEN");
+    const token = await getSetting("LINE_CHANNEL_ACCESS_TOKEN");
 
     for (const tenant of invoice.leases?.lease_tenants ?? []) {
       const { data: row, error: insertError } = await admin

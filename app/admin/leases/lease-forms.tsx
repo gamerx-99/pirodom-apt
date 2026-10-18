@@ -1,16 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { createInvite, createLease } from "./actions";
 import { DateInput } from "@/app/components/date-input";
 
-export function CreateLeaseForm({ rooms }: { rooms: { id: string; room_no: string }[] }) {
+type RoomPrice = { id: string; room_no: string; rent_amount: number; deposit: number; water_fee: number; electric_rate: number; due_day: number };
+
+// เลือกห้องแล้วดึงราคาตั้งต้นของห้องมาใส่ แก้เฉพาะสัญญานี้ได้ (ราคาห้องไม่เปลี่ยน)
+export function CreateLeaseForm({ rooms }: { rooms: RoomPrice[] }) {
   const [state, action, pending] = useActionState(createLease, null);
+  const [roomId, setRoomId] = useState("");
+  const room = rooms.find((r) => r.id === roomId);
   return (
     <form action={action} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
       <label className="text-sm">
         ห้อง
-        <select name="room_id" required className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" defaultValue="">
+        <select name="room_id" required className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" value={roomId} onChange={(e) => setRoomId(e.target.value)}>
           <option value="" disabled>เลือกห้อง</option>
           {rooms.map((r) => (
             <option key={r.id} value={r.id}>{r.room_no}</option>
@@ -27,23 +32,23 @@ export function CreateLeaseForm({ rooms }: { rooms: { id: string; room_no: strin
       </label>
       <label className="text-sm">
         ครบกำหนดวันที่ (31 = สิ้นเดือน)
-        <input name="due_day" inputMode="numeric" required defaultValue="31" className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
+        <input key={`due-${roomId}`} name="due_day" inputMode="numeric" required defaultValue={room?.due_day ?? 31} className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
       </label>
       <label className="text-sm">
         ค่าเช่า (บาท)
-        <input name="rent_amount" inputMode="decimal" required placeholder="3500" className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
+        <input key={`rent-${roomId}`} name="rent_amount" inputMode="decimal" required placeholder="3500" defaultValue={room && Number(room.rent_amount) > 0 ? Number(room.rent_amount) : undefined} className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
       </label>
       <label className="text-sm">
         ค่าน้ำเหมาจ่าย
-        <input name="water_fee" inputMode="decimal" defaultValue="0" className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
+        <input key={`water-${roomId}`} name="water_fee" inputMode="decimal" defaultValue={Number(room?.water_fee ?? 0)} className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
       </label>
       <label className="text-sm">
         ค่าไฟ/หน่วย
-        <input name="electric_rate" inputMode="decimal" defaultValue="0" className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
+        <input key={`elec-${roomId}`} name="electric_rate" inputMode="decimal" defaultValue={Number(room?.electric_rate ?? 0)} className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
       </label>
       <label className="text-sm">
         เงินประกัน
-        <input name="deposit" inputMode="decimal" defaultValue="0" className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
+        <input key={`dep-${roomId}`} name="deposit" inputMode="decimal" defaultValue={Number(room?.deposit ?? 0)} className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2" />
       </label>
       <div className="col-span-2 flex items-end sm:col-span-4">
         <button disabled={pending} className="w-full rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50 sm:w-auto">

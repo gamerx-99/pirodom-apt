@@ -37,7 +37,7 @@ export default async function Page() {
   }
 
   const supabase = await createClient();
-  const { data: rooms } = await supabase.from("rooms").select("id,room_no,unit_type,floor,status").order("room_no");
+  const { data: rooms } = await supabase.from("rooms").select("id,room_no,unit_type,floor,status,rent_amount,deposit,water_fee,electric_rate,due_day").order("room_no");
    const { data: activeLeasesRaw } = await supabase
      .from("leases")
      .select("room_id, lease_tenants(profiles(display_name))")
@@ -83,7 +83,8 @@ export default async function Page() {
                     {r.unit_type === "commercial" ? "ร้านค้า" : "ห้องพัก"}
                     {r.floor != null ? ` · ชั้น ${r.floor}` : ""} · {tenants.length > 0 ? tenants.join(", ") : "ยังไม่มีผู้เช่า"}
                   </p>
-                  <RoomActions room={r} />
+                  <p className="mt-1 text-sm text-gray-600">เช่า {Number(r.rent_amount)}/ด. · ประกัน {Number(r.deposit)} · น้ำ {Number(r.water_fee)} · ไฟ {Number(r.electric_rate)}/หน่วย</p>
+                  <RoomActions room={{ ...r, rent_amount: Number(r.rent_amount), deposit: Number(r.deposit), water_fee: Number(r.water_fee), electric_rate: Number(r.electric_rate) }} locked={tenantsByRoom.has(r.id)} />
                 </div>
               );
             })}

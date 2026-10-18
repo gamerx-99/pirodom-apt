@@ -1,14 +1,12 @@
 import {
   ENV_KEYS,
   isLiffConfigured,
-  isLineConfigured,
-  isLineWebhookConfigured,
-  isSlipokConfigured,
   isSupabaseAdminConfigured,
   isSupabaseConfigured,
   missingEnv,
 } from "@/lib/env";
 import { requireStaff } from "@/lib/phase1";
+import { SETTING_KEYS, getSettings, isLineConfigured, isSlipokConfigured } from "@/lib/settings";
 import { createClient } from "@/lib/supabase/server";
 
 // รายงานว่า env ขาดอะไร — เปิดสาธารณะไม่ได้ เพราะชื่อ key บอกโครงสร้างระบบไปให้ผู้อื่น
@@ -22,7 +20,11 @@ export async function GET() {
   }
   if (!authorized) return Response.json({ error: "unauthorized" }, { status: 401 });
 
-  const missing = missingEnv(ENV_KEYS);
+  const settings = await getSettings();
+  const missing = [
+    ...missingEnv(ENV_KEYS.filter((k) => !(SETTING_KEYS as readonly string[]).includes(k))),
+    ...SETTING_KEYS.filter((k) => !settings[k]),
+  ];
   return Response.json({
     ok: missing.length === 0,
     // true = ข้ามส่วนนั้นไปก่อนได้โดยไม่พัง
@@ -30,9 +32,9 @@ export async function GET() {
       supabase: !isSupabaseConfigured(),
       supabase_admin: !isSupabaseAdminConfigured(),
       liff: !isLiffConfigured(),
-      line: !isLineConfigured(),
-      line_webhook: !isLineWebhookConfigured(),
-      slipok: !isSlipokConfigured(),
+      line: !(await isLineConfigured()),
+      line_webhook: !settings.LINE_CHANNEL_SECRET,
+      slipok: !(await isSlipokConfigured()),
     },
     missing,
     note: missing.length

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { audit, toNumberOrNull } from "@/lib/phase1";
-import { getEnv, isSlipokConfigured } from "@/lib/env";
+import { getSetting, isSlipokConfigured } from "@/lib/settings";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { removePrivateFile, storagePath, uploadPrivateFile } from "@/lib/storage";
@@ -122,10 +122,10 @@ export async function POST(request: Request) {
     let reference: string | null = null;
     let verification: Record<string, unknown> = { status: "pending_review", reason: "slipok_not_configured" };
 
-    if (isSlipokConfigured()) {
+    if (await isSlipokConfigured()) {
       try {
-        const branchId = getEnv("SLIPOK_BRANCH_ID")!;
-        const apiKey = getEnv("SLIPOK_API_KEY")!;
+        const branchId = (await getSetting("SLIPOK_BRANCH_ID"))!;
+        const apiKey = (await getSetting("SLIPOK_API_KEY"))!;
         const body = new FormData();
         body.append("files", file, file.name || `slip.${extension}`);
         body.append("amount", String(Number(invoice.total)));

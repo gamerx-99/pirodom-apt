@@ -6,7 +6,19 @@ export type RoomInput = {
   unit_type: (typeof UNIT_TYPES)[number];
   floor: number | null;
   status: (typeof ROOM_STATUSES)[number];
+  rent_amount: number;
+  deposit: number;
+  water_fee: number;
+  electric_rate: number;
+  due_day: number;
 };
+
+export const PRICE_FIELDS = [
+  ["rent_amount", "ค่าเช่า"],
+  ["deposit", "เงินประกัน"],
+  ["water_fee", "ค่าน้ำเหมาจ่าย"],
+  ["electric_rate", "ค่าไฟ/หน่วย"],
+] as const;
 
 export type RoomResult = { ok: true } | { ok: false; error: string };
 
@@ -25,5 +37,15 @@ export function parseRoomInput(form: FormData):
   if (floor !== null && (!Number.isInteger(floor) || floor < -2147483648 || floor > 2147483647)) {
     return { ok: false, error: "ชั้นต้องเป็นจำนวนเต็มที่รองรับ" };
   }
-  return { ok: true, value: { room_no: room.trim(), unit_type: unit as RoomInput["unit_type"], status: status as RoomInput["status"], floor } };
+  const prices = {} as Record<(typeof PRICE_FIELDS)[number][0], number>;
+  for (const [key, label] of PRICE_FIELDS) {
+    const entry = form.get(key) ?? "";
+    const n = typeof entry === "string" && entry.trim() !== "" ? Number(entry) : 0;
+    if (!Number.isFinite(n) || n < 0 || n > 9999999999) return { ok: false, error: `${label}ต้องเป็นตัวเลข 0 ขึ้นไป` };
+    prices[key] = Math.round(n * 100) / 100;
+  }
+  const dueEntry = form.get("due_day") ?? "";
+  const due_day = typeof dueEntry === "string" && dueEntry.trim() !== "" ? Number(dueEntry) : 31;
+  if (!Number.isInteger(due_day) || due_day < 1 || due_day > 31) return { ok: false, error: "วันครบกำหนดต้องเป็น 1–31 (31 = สิ้นเดือน)" };
+  return { ok: true, value: { room_no: room.trim(), unit_type: unit as RoomInput["unit_type"], status: status as RoomInput["status"], floor, ...prices, due_day } };
 }

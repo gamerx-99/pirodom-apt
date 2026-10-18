@@ -21,7 +21,7 @@ export default async function Page() {
   }
 
   const supabase = await createClient();
-  const { data: rooms } = await supabase.from("rooms").select("id,room_no").order("room_no");
+  const { data: rooms } = await supabase.from("rooms").select("id,room_no,rent_amount,deposit,water_fee,electric_rate,due_day").order("room_no");
    type LeaseRow = {
      id: string;
      room_id: string;

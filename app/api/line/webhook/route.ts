@@ -1,4 +1,5 @@
-import { isLineWebhookConfigured, isSupabaseAdminConfigured, getEnv, missingEnv, notConfiguredResponse } from "@/lib/env";
+import { isSupabaseAdminConfigured, getEnv, missingEnv, notConfiguredResponse } from "@/lib/env";
+import { getSetting } from "@/lib/settings";
 import { verifyLineSignature } from "@/lib/line";
 import { acceptInviteCodeFromLine } from "@/lib/line-invites";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -11,7 +12,7 @@ type LineMessageEvent = {
 };
 
 async function reply(replyToken: string, text: string) {
-  const token = getEnv("LINE_CHANNEL_ACCESS_TOKEN");
+  const token = await getSetting("LINE_CHANNEL_ACCESS_TOKEN");
   if (!token) throw new Error("LINE channel access token is not configured");
   const response = await fetch("https://api.line.me/v2/bot/message/reply", {
     method: "POST",
@@ -23,7 +24,7 @@ async function reply(replyToken: string, text: string) {
 }
 
 async function lineDisplayName(userId: string): Promise<string> {
-  const token = getEnv("LINE_CHANNEL_ACCESS_TOKEN");
+  const token = await getSetting("LINE_CHANNEL_ACCESS_TOKEN");
   if (!token) throw new Error("LINE channel access token is not configured");
   const response = await fetch(`https://api.line.me/v2/bot/profile/${encodeURIComponent(userId)}`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -73,15 +74,15 @@ async function handleEvent(admin: ReturnType<typeof createAdminClient>, event: L
 }
 
 export async function POST(request: Request) {
-  if (!isLineWebhookConfigured()) return notConfiguredResponse(["LINE_CHANNEL_SECRET"]);
+  if (!(await getSetting("LINE_CHANNEL_SECRET"))) return notConfiguredResponse(["LINE_CHANNEL_SECRET"]);
   const body = await request.text();
-  if (!verifyLineSignature(body, request.headers.get("x-line-signature"))) {
+  if (!(await verifyLineSignature(body, request.headers.get("x-line-signature")))) {
     return new Response("invalid signature", { status: 401 });
   }
   if (!isSupabaseAdminConfigured()) {
     return notConfiguredResponse(missingEnv(["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY"]));
   }
-  if (!getEnv("LINE_CHANNEL_ACCESS_TOKEN")) return notConfiguredResponse(["LINE_CHANNEL_ACCESS_TOKEN"]);
+  if (!(await getSetting("LINE_CHANNEL_ACCESS_TOKEN"))) return notConfiguredResponse(["LINE_CHANNEL_ACCESS_TOKEN"]);
 
   let payload: { events?: LineMessageEvent[] };
   try {

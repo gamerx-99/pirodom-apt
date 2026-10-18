@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { getEnv, isSupabaseAdminConfigured, isSupabaseConfigured, notConfiguredResponse } from "@/lib/env";
+import { getSetting } from "@/lib/settings";
+import { isSupabaseAdminConfigured, isSupabaseConfigured, notConfiguredResponse } from "@/lib/env";
 import { verifyLineIdToken } from "@/lib/line-auth";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
   if (!isSupabaseAdminConfigured()) {
     return notConfiguredResponse(["SUPABASE_SERVICE_ROLE_KEY"]);
   }
-  const channelId = getEnv("LINE_LOGIN_CHANNEL_ID");
+  const channelId = await getSetting("LINE_LOGIN_CHANNEL_ID");
   if (!channelId) {
     return notConfiguredResponse(["LINE_LOGIN_CHANNEL_ID"]);
   }
