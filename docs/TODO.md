@@ -1,13 +1,13 @@
 # Todo — ระบบจัดการหอพักผ่าน LINE
 
-ปรับปรุง 18 ตุลาคม 2569 (2026-10-18) · ฐานตรวจ: commit `1006034` และ working tree ล่าสุด (Anti-Slop 46/46 + UI Room Management + Production Env Refresh + LINE 3-Tier Auth & Admin Management by LINE ID)
+ปรับปรุง 18 ตุลาคม 2569 (2026-10-18) · ฐานตรวจ: commit `1fa2f1c` บน `main` และ production deployment ล่าสุด (Anti-Slop 46/46 + UI Room Management + Production Env Refresh + LINE 3-Tier Auth & Admin Management by LINE ID)
 
 อ่านคู่กับ [Roadmap](ROADMAP.md) (เกณฑ์จบเฟส) และ [Blueprint](BLUEPRINT.md) (โครงสร้างระบบ)
 
 **วิธีใช้:** ติ๊ก checkbox เมื่องานผ่านเกณฑ์และมีหลักฐาน — ไม่นับจากจำนวนไฟล์หรือหน้าที่สร้าง
 สถานะกำกับท้ายรายการ: `ยังไม่เริ่ม` (เริ่มได้ทันที) · `เจ้าของกรอกเอง` (ไม่บล็อก ลูกค้าใส่หลังส่งมอบ) · `รอตรวจ` (โค้ดเสร็จ รอทดสอบ/ตรวจจริง)
 
- **ผลตรวจรอบล่าสุด 18/10/2569:** `npm test` ผ่าน 100% (PGlite + ชุด Phase 1 + Rooms FK + PromptPay CRC + Notifications) · `npx tsc --noEmit` ผ่าน (0 errors) · `npm run lint` ผ่าน (0 errors, 0 warnings) · หลังแก้ build error ที่ `/login`: `npm run build` และ ESLint ไฟล์ที่แก้ผ่าน · Live Cloud migrations 15 ไฟล์ apply แล้ว (รวม `20261018000009_atomic_admin_demotion.sql`) · Production env บน Vercel refreshed และ webhook test 200 ok
+**ผลตรวจล่าสุด 18/10/2569:** `main` และ `origin/main` อยู่ที่ `1fa2f1c`; production deployment `dpl_4A5Kwbxv9VW7U4aqHUpML5uAYvLV` เป็น `READY` จาก commit เดียวกัน · GET `/login?redirect=%2Fadmin` บน production ตอบ HTML 200 ซึ่งมี Next redirect payload ไป `/liff?redirect=%2Fadmin` ด้วย status 307 · test/typecheck/lint/build ผ่านในการตรวจรอบก่อนหน้า; ยังไม่มีการ rerun ทั้งชุดหลัง deployment นี้ · Live Cloud migrations 15 ไฟล์ apply แล้ว · Production env บน Vercel refreshed และ webhook test 200 ok (หลักฐานเดิม)
 
 
 ---
@@ -50,17 +50,17 @@
 - [x] แก้ไข LINE OAuth 400 Bad Request: ปรับปรุง redirectUri ให้เป็น clean path `/liff` และเก็บ redirect target ใน sessionStorage ป้องกัน query string ขัดกับ Endpoint URL ที่ลงทะเบียนไว้
 
 **เหลือต้องทำ (เกณฑ์จบเฟสยังไม่ผ่าน):**
-- [ ] กรอก LIFF ID + Channel ID จริง และทดสอบ login ด้วย token จริงบนอุปกรณ์ — `รอตรวจ`
+- [x] ~~กรอก LIFF ID + Channel ID จริง และทดสอบ login ด้วย token จริงบนอุปกรณ์~~ — ยกเลิก (ผู้ใช้ 19/10/2569)
 - [ ] ทดสอบ Admin guard กับ Supabase env จริง: role ทุกแบบ + ออกจากระบบ + session หมดอายุ — `รอตรวจ`
-- [ ] ตรวจ migration/RLS/GRANT/Storage บนฐานข้อมูล Supabase ทดสอบจริง (PGlite ยังจำลอง Auth/Storage) — `รอตรวจ`
+- [x] ตรวจ migration/RLS/GRANT/Storage บน Supabase จริง (19/10/2569): ledger ครบถึง `20261019000000` (ลงวันนี้: ถอน policy อัปโหลดตรงของผู้เช่า + จำกัดขนาด/ชนิดไฟล์ 4 bucket); RLS เปิดครบ 17 ตาราง; `live-rls.sql` (30 assertions) และ `live-phase1.sql` รันบน Cloud ผ่าน fixtures rollback หมด
   - 17/10/2569 ผู้ใช้อนุมัติและลง migration ครบ 6 ไฟล์บน `jxvlexoqwqynctlpgafi` แล้ว: 16 ตารางเปิด RLS, 4 private buckets, 10 Storage policies; live SQL role/claim tests ผ่าน 30 assertions และ rollback fixtures หมด; RPC grants ตรวจผ่าน — ยังเหลือ authenticated HTTP/Storage upload/signed URL และ advisor WARN 8 รายการ ดู [หลักฐานล่าสุด](SUPABASE-PHASE0-AUDIT.md)
   - 17/10/2569 ผู้ใช้อนุมัติและ apply migrations ที่ค้าง 7 ไฟล์บน Cloud แล้ว: `20261017132926_accept_invite_code_once` และ `20261018000002`–`20261018000007`; ใช้ `supabase db push --linked --include-all --skip-vault --yes` เพราะ invite-code migration มี timestamp ก่อน `20261018000000`/`000001` ที่ลงไปแล้ว; migration ledger และ RPC/trigger smoke query ผ่าน
 - [x] ยืนยันวิธีเข้าใช้ของเจ้าของ/แอดมิน: ผู้ใช้ยืนยันบัญชี LINE “C - Game” คือบัญชี lannatc แล้ว; ตั้ง owner พร้อม audit และผู้ใช้ส่งภาพเข้า Admin ได้จริง (17/10/2569)
 - [x] รีเฟรช Production env บน Vercel ครบ 10 ตัวแปรแอป (รวม `LINE_CHANNEL_SECRET`, `NEXT_PUBLIC_APP_URL`) และตั้ง Secret สำหรับคีย์ลับ; deployment บน `pirodom-apt.vercel.app` สถานะ READY; signed webhook ตรวจสอบผ่าน HTTP 200 ok (17/10/2569 ดู [หลักฐาน](PRODUCTION-ENV-REFRESH.md))
-- [ ] แยก env ทดสอบ/จริง และ secret management — `ยังไม่เริ่ม`
-- [x] เผยแพร่บน Vercel หลัง independent review — production deployment จาก `8dece5e` เป็น READY (17/10/2569)
-- [ ] จัดขั้นตอนติดตาม error และซ้อม rollback — ยังไม่ทำ
-- [x] หน้า `/admin` อ่านภาพรวมห้อง บิล คิวสลิป และงานซ่อมจากฐานข้อมูลเมื่อเชื่อม Supabase; โหมดไม่มี DB แสดงป้ายข้อมูลตัวอย่าง — ตรวจ local typecheck/lint/test/build ผ่าน, **ยังไม่ deploy การแก้ล่าสุด**
+- [ ] แยก env ทดสอบ/จริง และ secret management — วางแนวทางไว้ใน [`docs/OPERATIONS.md`](OPERATIONS.md); ยังไม่ได้สร้าง test Supabase project หรือยืนยันการแยก Vercel Preview/LINE credentials
+- [x] เผยแพร่บน Vercel หลัง independent review — production deployment ล่าสุดจาก `1fa2f1c` เป็น READY (18/10/2569; `dpl_4A5Kwbxv9VW7U4aqHUpML5uAYvLV`)
+- [x] ซ้อม rollback แอป (19/10/2569): `vercel rollback` ไป deploy ก่อนหน้า แล้ว `vercel promote` กลับ ใช้เวลาฝั่ง Vercel ครั้งละ 3 วินาที หน้า /admin /liff /api/health ตอบปกติทั้งสองทาง; rollback ฐานข้อมูลยังไม่ซ้อม (ไม่มี staging) ดู [`docs/OPERATIONS.md`](OPERATIONS.md)
+- [x] หน้า `/admin` อ่านภาพรวมห้อง บิล คิวสลิป และงานซ่อมจากฐานข้อมูลเมื่อเชื่อม Supabase; โหมดไม่มี DB แสดงป้ายข้อมูลตัวอย่าง — อยู่ใน production code ที่ deployment จาก `1fa2f1c` สถานะ READY; ยังรอ UAT ด้วยบัญชีจริง
 
 **เกณฑ์จบ:** ผู้เช่า login ได้ตัวตนที่ RLS ใช้ได้จริง, ผู้ไม่มีสิทธิ์เข้า Admin/เรียก API สำคัญไม่ได้, มีหลักฐานจากสภาพแวดล้อมทดสอบจริง (ไม่ใช่แค่ build ผ่าน)
 
@@ -124,9 +124,9 @@
 - [ ] ทดสอบส่ง LINE จริงจากหน้า `/admin/messages` และตรวจประวัติ/สถานะส่ง (Q-06)
 - [x] Webhook LINE สำหรับยืนยัน invite code — [`app/api/line/webhook/route.ts`](../app/api/line/webhook/route.ts), [`lib/line-invites.ts`](../lib/line-invites.ts); migration `20261017132926` ลง Cloud แล้ว; ยังต้องทดสอบ event redelivery/LINE จริง
 - [ ] LINE notifications: ผลตรวจสลิปมี dedup, ส่งซ้ำด้วยมือจากประวัติ; migration `20261018000007` ลงแล้ว; รอตรวจ LINE จริง ไม่มี retry อัตโนมัติ
-- [ ] ตรวจ RLS/Storage/API authorization/การเงิน/session บนสภาพแวดล้อมทดสอบจริง — `ยังไม่เริ่ม`
+- [x] ตรวจสิทธิ์บน production (19/10/2569): ไม่ล็อกอิน /admin ถูก redirect ไป /liff ไม่มีข้อมูลหลุด; /api/health, /api/admin/* ตอบ 401, /api/slipok/verify 403, webhook ลายเซ็นผิด 401; ไม่มี grant/policy ให้ client เขียน invoices/invoice_items/payments; session หมดอายุยังไม่ได้ทดสอบด้วยบัญชีจริง
 - [ ] UAT ผู้เช่าจริง 2–3 ห้อง (วงจร สัญญา → บิล → ชำระ → ซ่อม) — `ยังไม่เริ่ม` (รอผู้ร่วมทดสอบ)
-- [ ] ซ้อม backup/restore + จัดทำคู่มือเจ้าของ/ผู้เช่า — `ยังไม่เริ่ม`
+- [ ] ซ้อม backup/restore — ยังไม่ซ้อม (ต้องมีโปรเจกต์ Supabase แยกสำหรับกู้คืน); คู่มือทำแล้ว: [`docs/MANUAL-OWNER.md`](MANUAL-OWNER.md), [`docs/MANUAL-TENANT.md`](MANUAL-TENANT.md)
 
 **เกณฑ์จบ:** มีหลักฐาน UAT ที่ลูกค้ายอมรับ — deployment สำเร็จอย่างเดียว**ไม่ทดแทน** UAT
 
@@ -157,14 +157,14 @@
 | ระดับ | งาน | เงื่อนไขก่อนเริ่ม |
 |---|---|---|
 | สูง | ใบเสร็จ PDF · รายงานรายรับ/Excel · ย้ายออก/คืนเงินประกัน | ยอดรับชำระนิ่ง + ยืนยันรูปแบบเอกสาร/กติกาคืนเงิน |
-| กลาง | ตรวจสภาพห้องพร้อมรูป · Rich Menu · สิทธิ์ Staff/ช่าง | ยืนยันผู้ใช้และสิทธิ์ของงานใหม่ |
+| กลาง | ตรวจสภาพห้องพร้อมรูป · Rich Menu · สิทธิ์ Staff/ช่าง | Rich Menu ตั้งเป็นค่าเริ่มต้นผ่าน LINE Messaging API แล้ว; รอ UAT เปิดแชทบนมือถือ; งานอื่นรอยืนยันผู้ใช้และสิทธิ์ |
 | ต่ำ | วิเคราะห์ไฟผิดปกติ · หลายอาคาร · PWA · Payment Gateway | ประเมินความจำเป็น + อนุมัติขอบเขตเพิ่ม |
 
 ---
 
 ## ลำดับที่แนะนำต่อจากนี้
 
-1. **แก้ build failure แล้วปล่อย UI ตรวจรับ:** Vercel production builds ของ `92f4647` และ `6f89877` ล้มที่ `/login` เพราะอ่าน `searchParams` ระหว่าง prerender; ตั้ง route เป็น `instant = false` เพื่อให้ redirect รอ request ได้. `npm run build`/ESLint ผ่านแล้ว และ local HTTP response มี redirect target `/liff?redirect=%2Fadmin`. ขั้นถัดไปคือขออนุมัติ commit/push การแก้ไป `main`, ตรวจ deployment ของ `maehongson/pirodom-apt`, แล้ว UAT บนอุปกรณ์จริง (รอบตรวจนี้ยังไม่พบ Android device/emulator เชื่อมต่อ)
+1. **ตรวจ release และ UAT บนอุปกรณ์:** แก้ `/login` แล้วใน `1fa2f1c`, commit อยู่บน `main`/`origin/main`, production deployment READY และ production HTML มี redirect payload ถูกต้อง; ยังรอ UAT ด้วย LINE บนอุปกรณ์จริง
 2. **UAT การชำระเงินและตรวจสลิป (Phase 3):** ยืนยันข้อมูลบัญชี PromptPay จริง (Q-06) และ SlipOK credentials เพื่อทดสอบสแกนจ่ายจริงและตรวจสลิปอัตโนมัติ
 3. **กรณีพิเศษการเงิน (Phase 2):** Q-03/Q-04 ปิดแล้ว (ยืดหยุ่นรายห้อง/รายบิล); Q-05 ปิดแล้ว: รับเต็มยอดเท่านั้น
 4. **UI ตาม mockup:** branch `ui/mockup-blue` (`ffb85f9`) ทำเมนูข้าง/ภาพรวม/ห้องแล้ว โทนขาว-ดำ-น้ำเงินตามลูกค้า หน้าที่เหลือ Gemini รับต่อ ยังไม่ merge
@@ -196,3 +196,6 @@
 | 2026-10-18 (LINE 400 Investigation) | ตรวจสอบ Error 400 Bad Request ด้วย Browser Subagent พบสาเหตุเกิดจากทดสอบบน `http://localhost:3000/liff` ที่ยังไม่ได้ลงทะเบียนใน Callback URL ของ LINE Console | บันทึกภาพถ่ายหน้าจอและแนวทางแก้ไขใน Knowledge Base |
 | 2026-10-18 (Apply Migration 0009 & Role Invariant) | ตรวจสอบ migration `20261018000009` (`set_staff_role`) พบ apply บน Live Cloud เรียบร้อย (15/15 files in sync), test/typecheck/lint ผ่าน 100% | ผ่าน 100% |
 | 2026-10-18 (Production build triage) | Vercel deployments for `92f4647` and `6f89877` fail prerendering `/login`: request `searchParams` were read during prerender. Set the redirect-only route to `instant = false` so it can wait for request-time query data. | Local `npm run build` and ESLint for `app/login/page.tsx` pass. Local HTTP response contains the expected `/liff?redirect=%2Fadmin` redirect target. Not committed, pushed, or deployed; Vercel MCP returned 403 so deployment status/logs were checked with scoped Vercel CLI. `adb devices -l` showed no device; no on-device UAT performed. |
+| 2026-10-18 (Production login redirect release) | `main`/`origin/main` at `1fa2f1c`; Vercel production deployment `dpl_4A5Kwbxv9VW7U4aqHUpML5uAYvLV` is `READY`; GET `/login?redirect=%2Fadmin` returns HTML 200 with embedded Next redirect payload `307 /liff?redirect=%2Fadmin`. | Production code is released; the HTTP check does not prove authenticated LINE login or on-device UAT. |
+| 2026-10-18 (Operations runbook) | Added environment separation, secret handling, release checks, incident monitoring, and rollback guidance in [`OPERATIONS.md`](OPERATIONS.md). | Documentation only; no Vercel/Supabase/LINE settings changed and no rollback rehearsal performed. |
+| 2026-10-18 (LINE notification acceptance) | User confirmed the real LINE notification test succeeded and accepted it as passed. | Confirms delivery to the user's account for that test only; payment-result delivery to a tenant and `/admin/messages` history/resend audit remain separate UAT items. |

@@ -11,7 +11,7 @@ await db.exec(`
   create table auth.users (id uuid primary key);
   create function auth.uid() returns uuid language sql stable as
     $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
-  create table storage.buckets (id text primary key, name text, public boolean);
+  create table storage.buckets (id text primary key, name text, public boolean, file_size_limit bigint, allowed_mime_types text[]);
   create table storage.objects (
     id uuid primary key default gen_random_uuid(),
     bucket_id text,
@@ -178,7 +178,10 @@ await rejects(as(A, "insert into maintenance_requests (room_id, category) values
 
 // ---------- storage.objects: path ต้องตรงกับสิทธิ์ ----------
 // slips/<lease_id>/<invoice_id>/<file> — tenant อ่าน/อัปโหลดเฉพาะบิลตัวเอง
-await as(A, `insert into storage.objects (bucket_id, name) values
+// ผู้เช่าไม่เขียน Storage ตรง (อัปโหลดผ่าน server เท่านั้น: 20261019000000)
+await rejects(as(A, `insert into storage.objects (bucket_id, name) values
+  ('slips', '20000000-0000-0000-0000-000000000001/30000000-0000-0000-0000-000000000001/direct.jpg')`), /row-level security/);
+await as(ADMIN, `insert into storage.objects (bucket_id, name) values
   ('slips', '20000000-0000-0000-0000-000000000001/30000000-0000-0000-0000-000000000001/a.jpg')`);
 await rejects(as(B, `insert into storage.objects (bucket_id, name) values
   ('slips', '20000000-0000-0000-0000-000000000001/30000000-0000-0000-0000-000000000001/b.jpg')`), /row-level security/);
@@ -207,7 +210,9 @@ assert.deepEqual(
 
 // maintenance/<room_id>/<request_id>/<file> — แจ้งซ่อมของตัวเองเท่านั้น
 const maintId = (await as(A, "select id::text as id from maintenance_requests")).rows[0].id;
-await as(A, `insert into storage.objects (bucket_id, name) values
+await rejects(as(A, `insert into storage.objects (bucket_id, name) values
+  ('maintenance', '10000000-0000-0000-0000-000000000001/${maintId}/direct.jpg')`), /row-level security/);
+await as(ADMIN, `insert into storage.objects (bucket_id, name) values
   ('maintenance', '10000000-0000-0000-0000-000000000001/${maintId}/photo.jpg')`);
 assert.equal((await as(A, "select id from storage.objects where bucket_id = 'maintenance'")).rows.length, 1);
 await rejects(as(B, `insert into storage.objects (bucket_id, name) values

@@ -24,6 +24,14 @@ const GROUPS: { title: string; desc: string; fields: { key: SettingKey; label: s
     ],
   },
   {
+    title: "Google Drive",
+    desc: "เชื่อมโฟลเดอร์ Google Drive: API Key อ่านไฟล์ที่แชร์เป็นสาธารณะได้เท่านั้น ถ้าต้องอัปโหลดไฟล์ต้องใช้ Service Account แทน",
+    fields: [
+      { key: "GOOGLE_DRIVE_API_KEY", label: "API Key", hint: "สร้างที่ Google Cloud Console > Credentials แล้วเปิด Drive API" },
+      { key: "GOOGLE_DRIVE_FOLDER_ID", label: "Folder ID", hint: "ส่วนท้ายของลิงก์โฟลเดอร์ drive.google.com/drive/folders/<ID>" },
+    ],
+  },
+  {
     title: "LINE",
     desc: "จาก LINE Developers: LINE Login และ Messaging API ต้องอยู่ Provider เดียวกัน",
     fields: [

@@ -2,8 +2,6 @@
  export const instant = false;
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import PaymentNotifications from "./payment-notifications";
-import MaintenanceNotifications from "./maintenance-notifications";
 import { AdminNav } from "./admin-nav";
 
 
@@ -78,8 +76,6 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
     <div className="flex min-h-dvh flex-col bg-[#f8f9ff] text-slate-900 lg:flex-row">
       <AdminNav />
       <main className="mx-auto w-full min-w-0 max-w-[1600px] flex-1 p-4 sm:p-6 lg:p-8">
-        <PaymentNotifications />
-        <MaintenanceNotifications />
         {children}
       </main>
     </div>

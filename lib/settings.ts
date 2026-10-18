@@ -9,6 +9,8 @@ export const SETTING_KEYS = [
   "SLIPOK_BRANCH_ID",
   "PROMPTPAY_ID",
   "PROMPTPAY_ACCOUNT_NAME",
+  "GOOGLE_DRIVE_API_KEY",
+  "GOOGLE_DRIVE_FOLDER_ID",
   "LINE_LOGIN_CHANNEL_ID",
   "LINE_CHANNEL_SECRET",
   "LINE_CHANNEL_ACCESS_TOKEN",
@@ -17,7 +19,7 @@ export const SETTING_KEYS = [
 export type SettingKey = (typeof SETTING_KEYS)[number];
 
 /** คีย์ลับ: ไม่ส่งค่ากลับไปหน้าเว็บ แสดงแค่ว่าตั้งแล้ว */
-export const SECRET_KEYS: readonly SettingKey[] = ["SLIPOK_API_KEY", "LINE_CHANNEL_SECRET", "LINE_CHANNEL_ACCESS_TOKEN"];
+export const SECRET_KEYS: readonly SettingKey[] = ["SLIPOK_API_KEY", "GOOGLE_DRIVE_API_KEY", "LINE_CHANNEL_SECRET", "LINE_CHANNEL_ACCESS_TOKEN"];
 
 export const getSettings = cache(async (): Promise<Partial<Record<SettingKey, string>>> => {
   const out: Partial<Record<SettingKey, string>> = {};

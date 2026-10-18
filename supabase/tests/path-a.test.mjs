@@ -87,8 +87,13 @@ assert.deepEqual(await maintFiles(C), []);
 assert.equal(await count(ADMIN, "select id from storage.objects where bucket_id = 'meters'"), 3);
 
 // ---------- 2. อัปโหลดรูปเข้าห้องที่ไม่ได้เช่าไม่ได้ ----------
-// (ก) ผู้เช่าอัปโหลดเข้าโฟลเดอร์งานของตัวเองได้
-await asUser(db, A, `insert into storage.objects (bucket_id, name) values
+// (ก) ผู้เช่าเขียน Storage ตรงไม่ได้แล้ว (20261019000000) ไฟล์ตัวอย่างสร้างโดย staff
+await rejects(
+  asUser(db, A, `insert into storage.objects (bucket_id, name) values
+    ('maintenance', '${ROOM_101}/${REQ_101}/direct.jpg')`),
+  /row-level security/,
+);
+await asUser(db, ADMIN, `insert into storage.objects (bucket_id, name) values
   ('maintenance', '${ROOM_101}/${REQ_101}/own.jpg')`);
 // (ข) งานเก่าของผู้เช่าเดิมในห้องเดียวกัน — ผู้เช่าปัจจุบันอัปโหลดเข้าไม่ได้
 // กติกาใน 20261018000002: งานต้องเกิดในช่วงสัญญาของผู้เช่าคนนั้น
