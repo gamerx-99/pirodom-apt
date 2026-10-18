@@ -91,23 +91,34 @@ export async function createAdmin(
       .maybeSingle();
 
     if (existingProfile) {
-      const { error: updateError } = await admin
-        .from("profiles")
-        .update({
-          role: targetRole,
-          display_name: displayName || existingProfile.display_name,
-          phone: phone || undefined,
-        })
-        .eq("id", existingProfile.id);
+      const { data, error: roleError } = await admin.rpc("set_staff_role", {
+        p_target_id: existingProfile.id,
+        p_target_role: targetRole,
+        p_actor_id: userId,
+        p_display_name: displayName || existingProfile.display_name,
+        p_phone: phone || null,
+      });
 
-      if (updateError) return { ok: false, error: updateError.message };
+      if (roleError) {
+        if (roleError.message.includes("last_owner")) {
+          return { ok: false, error: "ไม่สามารถถอดสิทธิ์เจ้าของ (Owner) คนสุดท้ายของระบบได้" };
+        }
+        if (roleError.message.includes("owner_required")) {
+          return { ok: false, error: "เฉพาะเจ้าของหอพักเท่านั้นที่สามารถจัดการบัญชีเจ้าของได้" };
+        }
+        if (roleError.message.includes("self_role_change")) {
+          return { ok: false, error: "ไม่สามารถเปลี่ยนบทบาทบัญชีของตนเองได้" };
+        }
+        return { ok: false, error: roleError.message };
+      }
+      const previous = data as { role: string; display_name: string | null };
 
       await audit(admin, {
         actor_id: userId,
         action: "admin.promote",
         table_name: "profiles",
         record_id: existingProfile.id,
-        before: { role: existingProfile.role },
+        before: { role: previous.role },
         after: { role: targetRole, line_user_id: lineUserId, display_name: displayName },
       });
 
@@ -173,7 +184,7 @@ export async function removeAdmin(
   form: FormData,
 ): Promise<AdminActionResult> {
   try {
-    const { userId, role } = await requireStaff(await createClient());
+    const { userId } = await requireStaff(await createClient());
     const targetId = (form.get("target_id") as string | null) ?? "";
 
     if (!targetId) return { ok: false, error: "ไม่พบรหัสผู้ใช้" };
@@ -185,9 +196,10 @@ export async function removeAdmin(
     const admin = createAdminClient();
 
     // Serialize owner demotions and check the last-owner invariant in one DB transaction.
-    const { data, error: demoteError } = await admin.rpc("demote_admin", {
+    const { data, error: demoteError } = await admin.rpc("set_staff_role", {
       p_target_id: targetId,
-      p_actor_role: role,
+      p_target_role: "tenant",
+      p_actor_id: userId,
     });
 
     if (demoteError) {
@@ -202,6 +214,9 @@ export async function removeAdmin(
       }
       if (demoteError.message.includes("not_staff")) {
         return { ok: false, error: "บัญชีนี้ไม่มีสิทธิ์ผู้ดูแลที่ถอดได้" };
+      }
+      if (demoteError.message.includes("self_role_change")) {
+        return { ok: false, error: "ไม่สามารถเปลี่ยนบทบาทบัญชีของตนเองได้" };
       }
       return { ok: false, error: demoteError.message };
     }

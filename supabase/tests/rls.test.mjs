@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 
 const db = new PGlite();
 await db.exec(`
-  create role anon nologin; create role authenticated nologin; create role service_role nologin;
+  create role anon nologin; create role authenticated nologin; create role service_role nologin bypassrls;
   create schema auth; create schema storage;
   create table auth.users (id uuid primary key);
   create function auth.uid() returns uuid language sql stable as
@@ -343,5 +343,41 @@ assert.equal(await setPrimary(LEASE1, "00000000-0000-0000-0000-0000000000ff"), f
 // หลังเปลี่ยนหลักแล้ว ถอนคนเดิมได้
 assert.equal(await removePrimary(LEASE1, A), "ok");
 assert.equal(await removePrimary(LEASE1, A), "not_found");
+
+// ---------- à¸ˆà¸±à¸”à¸à¸²à¸£ role à¸œà¹ˆà¸²à¸™ RPC à¸—à¸µà¹ˆà¸¥à¹‡à¸­à¸à¸à¸²à¸£à¹€à¸›à¸¥à¸µà¹ˆà¸¢à¸™à¹€à¸ˆà¹‰à¸²à¸‚à¸­à¸‡ ----------
+await db.exec(`grant select, update on public.profiles to service_role;`);
+await db.query("update profiles set role = 'owner' where id = any($1::uuid[])", [[A, B]]);
+
+const setStaffRole = async (targetId, targetRole, actorId) => {
+  await db.exec("set role service_role");
+  try {
+    return await db.query(
+      "select public.set_staff_role($1, $2, $3, null, null) as result",
+      [targetId, targetRole, actorId],
+    );
+  } finally {
+    await db.exec("reset role");
+  }
+};
+
+assert.equal(
+  (await db.query("select has_function_privilege('service_role', 'public.set_staff_role(uuid,text,uuid,text,text)', 'execute') as allowed")).rows[0].allowed,
+  true,
+);
+for (const role of ["anon", "authenticated"]) {
+  await rejects(
+    asRole(role, ADMIN, `select public.set_staff_role('${A}', 'admin', '${ADMIN}', null, null)`),
+    /permission denied/,
+  );
+}
+await rejects(setStaffRole(A, "admin", ADMIN), /owner_required/);
+await rejects(setStaffRole(A, "admin", C), /actor_not_staff/);
+await rejects(setStaffRole(A, "admin", A), /self_role_change/);
+
+const demotedOwner = await setStaffRole(A, "admin", B);
+assert.deepEqual(demotedOwner.rows[0].result, { role: "owner", display_name: null });
+assert.equal((await db.query("select role from profiles where id = $1", [A])).rows[0].role, "admin");
+await rejects(setStaffRole(B, "tenant", B), /last_owner/);
+await rejects(setStaffRole(C, "invalid", B), /invalid_target_role/);
 
 console.log("rls.test: all passed");
