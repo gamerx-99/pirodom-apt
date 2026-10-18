@@ -41,9 +41,9 @@ export function InvoiceDraftForm({
           <DateInput name="due_date" required className="mt-1 w-full rounded-xl border border-gray-200 bg-white px-3 py-2" />
         </label>
         <label className="text-sm">
-          เลือกงวดมิเตอร์ที่จะใช้คิดค่าไฟ
-          <select name="meter_reading_id" required defaultValue="" className="mt-1 w-full rounded-xl border border-gray-200 bg-white px-3 py-2">
-            <option value="" disabled>เลือกข้อมูลมิเตอร์</option>
+          มิเตอร์ที่ใช้คิดค่าไฟ (เลือกงวดล่าสุดของห้องให้แล้ว)
+          <select name="meter_reading_id" required defaultValue={lease.readings[0]?.id ?? ""} className="mt-1 w-full rounded-xl border border-gray-200 bg-white px-3 py-2">
+            <option value="" disabled>ยังไม่มีมิเตอร์ที่ยังไม่ออกบิล: จดมิเตอร์ห้องนี้ก่อน</option>
             {lease.readings.map((reading) => (
               <option key={reading.id} value={reading.id}>
                 {reading.period} · {reading.units} หน่วย ({reading.prev} → {reading.curr})
@@ -55,7 +55,7 @@ export function InvoiceDraftForm({
           <p>ค่าเช่า: {lease.rent_amount} บาท</p>
           <p>น้ำเหมาจ่าย: {lease.water_fee} บาท</p>
           <p>ค่าไฟ: {lease.electric_rate} บาท/หน่วย</p>
-          <p className="mt-1 text-xs text-gray-500">เลือกวันครบกำหนดและงวดมิเตอร์ตามข้อมูลที่ตรวจแล้ว</p>
+          <p className="mt-1 text-xs text-gray-500">ระบบเลือกมิเตอร์ล่าสุดที่ยังไม่ออกบิลของห้องนี้ให้แล้ว</p>
         </div>
         <label className="text-sm">
           รายการเพิ่ม (บาท)

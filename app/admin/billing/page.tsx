@@ -54,7 +54,7 @@ export default async function Page() {
   const [{ data, error }, { data: rawLeases, error: leaseError }, { data: rawReadings, error: readingError }] = await Promise.all([
     supabase
       .from("invoices")
-      .select("id,period,issue_date,due_date,total,status,leases(rooms(room_no),lease_tenants(profiles(display_name))),invoice_items(id,type,description,amount)")
+      .select("id,period,issue_date,due_date,total,status,leases(rooms(room_no),lease_tenants(profiles(display_name))),invoice_items(id,type,description,amount,meter_reading_id)")
       .neq("status", "void")
       .order("due_date", { ascending: true }),
     supabase
@@ -81,10 +81,15 @@ export default async function Page() {
   }
 
   const invoices = (data ?? []) as unknown as Invoice[];
+  // มิเตอร์ที่ออกบิลไปแล้วไม่ต้องให้เลือกซ้ำ: เหลือเฉพาะงวดที่ยังไม่ใช้ เรียงล่าสุดก่อน
+  const usedMeterIds = new Set(
+    (data ?? []).flatMap((i) => ((i as { invoice_items?: { meter_reading_id: string | null }[] }).invoice_items ?? []).map((it) => it.meter_reading_id)),
+  );
   const readingsByRoom = new Map<string, DraftLeaseInput["readings"]>();
   for (const reading of (rawReadings ?? []) as unknown as {
     id: string; room_id: string; period: string; prev_value: number; curr_value: number; units: number;
   }[]) {
+    if (usedMeterIds.has(reading.id)) continue;
     const current = readingsByRoom.get(reading.room_id) ?? [];
     current.push({ id: reading.id, period: reading.period, prev: Number(reading.prev_value), curr: Number(reading.curr_value), units: Number(reading.units) });
     readingsByRoom.set(reading.room_id, current);
