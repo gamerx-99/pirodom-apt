@@ -1,7 +1,8 @@
  // อ่าน session/DB ทุก request — ยกเว้น static-shell validation (Cache Components)
  export const instant = false;
 import Link from "next/link";
-import { Badge, Card, EmptyState } from "@/app/components/ui";
+import { redirect } from "next/navigation";
+import { Badge, Card } from "@/app/components/ui";
 import LiffNav from "./components/nav";
 import { INVOICE_STATUS_LABEL, MAINT_STATUS_LABEL } from "@/lib/mock";
 import { formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib/format";
@@ -26,38 +27,100 @@ export default async function Page() {
   }
 
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   if (!user) {
     return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">เข้าสู่ระบบด้วย LINE</h1>
-        <Card title="ยังไม่ได้ผูกบัญชี" desc="ยืนยันตัวตนผ่าน LINE Bot ก่อน">
-          <p className="text-sm text-gray-500">ขอรหัสจากผู้ดูแล ส่งรหัสหา LINE Bot ของหอพัก แล้วเปิดเมนูระบบผู้เช่าอีกครั้ง</p>
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">ระบบหอพัก</h1>
+        </div>
+        <Card title="ไม่สามารถตรวจสอบห้องพักของคุณได้กรุณาติดต่อ 053-276631">
+          <p className="text-sm font-medium text-rose-700">
+            ไม่สามารถตรวจสอบห้องพักของคุณได้กรุณาติดต่อ 053-276631
+          </p>
+          <div className="mt-4">
+            <a
+              href="tel:053276631"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+            >
+              โทร 053-276631
+            </a>
+          </div>
         </Card>
-        <LiffNav />
       </div>
     );
   }
 
-  const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", user.id).maybeSingle();
-   const { data: myLeasesRaw } = await supabase
-     .from("lease_tenants")
-     .select("is_primary, leases(id,status,rooms(room_no,unit_type))")
-     .eq("profile_id", user.id);
-   const myLeases = (myLeasesRaw ?? []) as unknown as {
-     is_primary: boolean;
-     leases: { id: string; status: string; rooms: { room_no: string; unit_type: string } | null } | null;
-   }[];
-   const active = myLeases.filter((t) => t.leases?.status === "active");
-   if (active.length === 0) {
-     return (
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name, role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  // เงื่อนไข 1: User > Admin -> พาไปหน้า Admin
+  if (profile?.role === "owner" || profile?.role === "admin") {
+    redirect("/admin");
+  }
+
+  const { data: myLeasesRaw } = await supabase
+    .from("lease_tenants")
+    .select("is_primary, leases(id,status,rooms(room_no,unit_type))")
+    .eq("profile_id", user.id);
+
+  const myLeases = (myLeasesRaw ?? []) as unknown as {
+    is_primary: boolean;
+    leases: { id: string; status: string; rooms: { room_no: string; unit_type: string } | null } | null;
+  }[];
+
+  const active = myLeases.filter((t) => t.leases?.status === "active");
+
+  // เงื่อนไข 3: User อื่นๆ -> ให้แจ้งว่า ไม่สามารถตรวจสอบห้องพักของคุณได้กรุณาติดต่อ 053-276631
+  if (active.length === 0) {
+    return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">สวัสดี {profile?.display_name ?? ""}</h1>
-        <EmptyState
-          title="ยังไม่มีห้องที่ผูกอยู่"
-          desc="ถ้าเพิ่งย้ายเข้าหรือเปลี่ยนบัญชี ให้ขอรหัสยืนยันจากผู้ดูแลและส่งหา LINE Bot (รหัสใช้ได้ครั้งเดียว 7 วัน)"
-        />
-        <LiffNav />
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">
+            สวัสดี {profile?.display_name ?? ""}
+          </h1>
+        </div>
+        <Card
+          title="ไม่สามารถตรวจสอบห้องพักของคุณได้กรุณาติดต่อ 053-276631"
+          desc="ระบบไม่พบข้อมูลห้องพักที่ผูกกับบัญชี LINE นี้"
+        >
+          <p className="text-base font-semibold text-rose-700">
+            ไม่สามารถตรวจสอบห้องพักของคุณได้กรุณาติดต่อ 053-276631
+          </p>
+          <p className="mt-2 text-sm text-gray-600">
+            หากท่านเป็นผู้พักอาศัย กรุณาติดต่อสำนักงานหอพักเพื่อตรวจสอบข้อมูลการเข้าพัก หรือขอรหัสเชื่อมต่อห้องพัก
+          </p>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <a
+              href="tel:053276631"
+              className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              โทร 053-276631
+            </a>
+            <form action="/api/auth/logout" method="POST">
+              <button
+                type="submit"
+                className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                สลับบัญชี LINE
+              </button>
+            </form>
+          </div>
+        </Card>
       </div>
     );
   }

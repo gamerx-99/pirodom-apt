@@ -31,7 +31,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/liff");
+  if (!user) redirect("/liff?redirect=/admin");
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -44,15 +44,31 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
       <div className="flex min-h-dvh items-center justify-center bg-gray-50 p-6 text-gray-900">
         <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-gray-100">
           <p className="text-lg font-bold text-gray-900">403: ไม่มีสิทธิ์เข้าถึงส่วนนี้</p>
-          <p className="mt-1 text-sm text-gray-500">
-            หน้านี้สำหรับเจ้าของและแอดมินเท่านั้น บัญชีนี้มี role: {profile?.role ?? "ยังไม่ผูก role"}
+          <p className="mt-2 text-sm font-medium text-rose-700">
+            ไม่สามารถตรวจสอบห้องพักของคุณได้กรุณาติดต่อ 053-276631
           </p>
-          <Link
-            href="/liff"
-            className="mt-4 inline-block rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
-          >
-            กลับหน้าผู้เช่า
-          </Link>
+          <div className="mt-5 flex items-center justify-center gap-3">
+            <a
+              href="tel:053276631"
+              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+            >
+              โทร 053-276631
+            </a>
+            <Link
+              href="/liff"
+              className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            >
+              กลับหน้าผู้เช่า
+            </Link>
+            <form action="/api/auth/logout" method="POST">
+              <button
+                type="submit"
+                className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                ออกจากระบบ
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     );

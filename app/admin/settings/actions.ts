@@ -46,3 +46,180 @@ export async function saveSettings(_prev: Result | null, form: FormData): Promis
     return { ok: false, error: e instanceof Error ? e.message : "บันทึกไม่สำเร็จ" };
   }
 }
+
+export type AdminActionResult = {
+  ok: boolean;
+  error?: string;
+  message?: string;
+};
+
+export async function createAdmin(
+  _prev: AdminActionResult | null,
+  form: FormData,
+): Promise<AdminActionResult> {
+  try {
+    const { userId, role } = await requireStaff(await createClient());
+
+    const lineUserId = (form.get("line_user_id") as string | null)?.trim() ?? "";
+    const displayName = (form.get("display_name") as string | null)?.trim() ?? "";
+    const phone = (form.get("phone") as string | null)?.trim() ?? "";
+    const targetRole = (form.get("role") as string | null)?.trim() ?? "admin";
+
+    if (!lineUserId || !/^U[0-9a-fA-F]{32}$/i.test(lineUserId)) {
+      return {
+        ok: false,
+        error: "LINE User ID ไม่ถูกต้อง (ต้องขึ้นต้นด้วยตัว U และมีความยาว 33 ตัวอักษร เช่น U0123456789abcdef0123456789abcdef)",
+      };
+    }
+    if (!displayName) {
+      return { ok: false, error: "กรุณาระบุชื่อผู้ดูแล" };
+    }
+    if (targetRole !== "admin" && targetRole !== "owner") {
+      return { ok: false, error: "บทบาทไม่ถูกต้อง" };
+    }
+    if (targetRole === "owner" && role !== "owner") {
+      return { ok: false, error: "เฉพาะเจ้าของหอพักเท่านั้นที่สามารถแต่งตั้ง Owner เพิ่มได้" };
+    }
+
+    const admin = createAdminClient();
+
+    // 1. ตรวจสอบว่ามี profile ที่ผูกกับ line_user_id นี้อยู่แล้วหรือไม่
+    const { data: existingProfile } = await admin
+      .from("profiles")
+      .select("id, role, display_name")
+      .eq("line_user_id", lineUserId)
+      .maybeSingle();
+
+    if (existingProfile) {
+      const { error: updateError } = await admin
+        .from("profiles")
+        .update({
+          role: targetRole,
+          display_name: displayName || existingProfile.display_name,
+          phone: phone || undefined,
+        })
+        .eq("id", existingProfile.id);
+
+      if (updateError) return { ok: false, error: updateError.message };
+
+      await audit(admin, {
+        actor_id: userId,
+        action: "admin.promote",
+        table_name: "profiles",
+        record_id: existingProfile.id,
+        before: { role: existingProfile.role },
+        after: { role: targetRole, line_user_id: lineUserId, display_name: displayName },
+      });
+
+      revalidatePath("/admin/settings");
+      return {
+        ok: true,
+        message: `แต่งตั้ง "${displayName}" เป็น ${targetRole === "owner" ? "เจ้าของหอพัก" : "แอดมิน"} สำเร็จ`,
+      };
+    }
+
+    // 2. ถ้ายังไม่เคยล็อกอิน: สร้าง Auth user สังเคราะห์ตามมาตรฐาน LINE Login ของระบบ
+    const email = `line_${lineUserId.toLowerCase()}@line.local`;
+    const created = await admin.auth.admin.createUser({
+      email,
+      email_confirm: true,
+      user_metadata: { line_user_id: lineUserId, display_name: displayName },
+    });
+
+    if (created.error && !/already|exists|registered/i.test(created.error.message)) {
+      return { ok: false, error: created.error.message };
+    }
+
+    let authUserId = created.data.user?.id;
+    if (!authUserId) {
+      const { data: listData } = await admin.auth.admin.listUsers();
+      authUserId = listData?.users?.find((u) => u.email?.toLowerCase() === email)?.id;
+    }
+
+    if (!authUserId) {
+      return { ok: false, error: "ไม่สามารถสร้างบัญชีผู้ใช้ได้" };
+    }
+
+    const { error: insertError } = await admin.from("profiles").upsert({
+      id: authUserId,
+      line_user_id: lineUserId,
+      display_name: displayName,
+      phone: phone || null,
+      role: targetRole,
+    });
+
+    if (insertError) return { ok: false, error: insertError.message };
+
+    await audit(admin, {
+      actor_id: userId,
+      action: "admin.create",
+      table_name: "profiles",
+      record_id: authUserId,
+      after: { role: targetRole, line_user_id: lineUserId, display_name: displayName },
+    });
+
+    revalidatePath("/admin/settings");
+    return {
+      ok: true,
+      message: `เพิ่มผู้ดูแล LINE: "${displayName}" (${targetRole === "owner" ? "เจ้าของหอพัก" : "แอดมิน"}) สำเร็จ`,
+    };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "เกิดข้อผิดพลาดในการเพิ่มผู้ดูแล" };
+  }
+}
+
+export async function removeAdmin(
+  _prev: AdminActionResult | null,
+  form: FormData,
+): Promise<AdminActionResult> {
+  try {
+    const { userId, role } = await requireStaff(await createClient());
+    const targetId = (form.get("target_id") as string | null) ?? "";
+
+    if (!targetId) return { ok: false, error: "ไม่พบรหัสผู้ใช้" };
+
+    if (targetId === userId) {
+      return { ok: false, error: "ไม่สามารถถอดสิทธิ์บัญชีของตนเองได้" };
+    }
+
+    const admin = createAdminClient();
+
+    // Serialize owner demotions and check the last-owner invariant in one DB transaction.
+    const { data, error: demoteError } = await admin.rpc("demote_admin", {
+      p_target_id: targetId,
+      p_actor_role: role,
+    });
+
+    if (demoteError) {
+      if (demoteError.message.includes("last_owner")) {
+        return { ok: false, error: "ไม่สามารถถอดสิทธิ์เจ้าของ (Owner) คนสุดท้ายของระบบได้" };
+      }
+      if (demoteError.message.includes("owner_required")) {
+        return { ok: false, error: "เฉพาะเจ้าของหอพักเท่านั้นที่สามารถจัดการบัญชีเจ้าของได้" };
+      }
+      if (demoteError.message.includes("staff_not_found")) {
+        return { ok: false, error: "ไม่พบข้อมูลผู้ดูแลในระบบ" };
+      }
+      if (demoteError.message.includes("not_staff")) {
+        return { ok: false, error: "บัญชีนี้ไม่มีสิทธิ์ผู้ดูแลที่ถอดได้" };
+      }
+      return { ok: false, error: demoteError.message };
+    }
+
+    const previous = data as { role: string; display_name: string | null };
+
+    await audit(admin, {
+      actor_id: userId,
+      action: "admin.remove",
+      table_name: "profiles",
+      record_id: targetId,
+      before: { role: previous.role },
+      after: { role: "tenant" },
+    });
+
+    revalidatePath("/admin/settings");
+    return { ok: true, message: `ถอดสิทธิ์ผู้ดูแล "${previous.display_name ?? targetId}" เรียบร้อยแล้ว` };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "เกิดข้อผิดพลาดในการถอดสิทธิ์ผู้ดูแล" };
+  }
+}

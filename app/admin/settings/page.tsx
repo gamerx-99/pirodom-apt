@@ -1,6 +1,9 @@
 import { DemoBanner, StatCard } from "@/app/components/ui";
 import { isSupabaseAdminConfigured } from "@/lib/env";
 import { SECRET_KEYS, getSettings, isLineConfigured, isSlipokConfigured, type SettingKey } from "@/lib/settings";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
+import { AdminManagement, type StaffMember } from "./admin-management";
 import { SettingsForm } from "./settings-form";
 
 const GROUPS: { title: string; desc: string; fields: { key: SettingKey; label: string; hint?: string }[] }[] = [
@@ -31,6 +34,25 @@ const GROUPS: { title: string; desc: string; fields: { key: SettingKey; label: s
   },
 ];
 
+const DEMO_STAFF: StaffMember[] = [
+  {
+    id: "demo-owner",
+    display_name: "เจ้าของหอพัก (Demo)",
+    line_user_id: "U0123456789abcdef0123456789owner",
+    role: "owner",
+    phone: "081-234-5678",
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-admin",
+    display_name: "ผู้จัดการหอพัก (Demo)",
+    line_user_id: "U0123456789abcdef0123456789admin",
+    role: "admin",
+    phone: "089-876-5432",
+    created_at: new Date().toISOString(),
+  },
+];
+
 export default async function Page() {
   if (!isSupabaseAdminConfigured()) {
     return (
@@ -45,11 +67,51 @@ export default async function Page() {
           <StatCard label="SlipOK" value="ยังไม่ตั้งค่า" sub="สลิปจะเข้าคิวให้ตรวจมือ" icon="check" tone="amber" />
           <StatCard label="LINE" value="ยังไม่ครบ" sub="ยังไม่ได้ผูกโทเคน LINE" icon="message" tone="amber" />
         </div>
+        <AdminManagement staffList={DEMO_STAFF} demo />
       </div>
     );
   }
-  const settings = await getSettings();
-  const [line, slipok] = await Promise.all([isLineConfigured(), isSlipokConfigured()]);
+
+  const [settings, line, slipok, supabase] = await Promise.all([
+    getSettings(),
+    isLineConfigured(),
+    isSlipokConfigured(),
+    createClient(),
+  ]);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const adminClient = createAdminClient();
+
+  const [{ data: staffProfiles }, { data: candidateProfiles }] = await Promise.all([
+    adminClient
+      .from("profiles")
+      .select("id, line_user_id, display_name, phone, role, created_at")
+      .in("role", ["owner", "admin"])
+      .order("created_at", { ascending: true }),
+    adminClient
+      .from("profiles")
+      .select("id, line_user_id, display_name, phone")
+      .eq("role", "tenant")
+      .not("line_user_id", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+
+  const staffList: StaffMember[] = (staffProfiles ?? []).map((p) => ({
+    id: p.id,
+    display_name: p.display_name,
+    line_user_id: p.line_user_id,
+    phone: p.phone,
+    role: p.role,
+    created_at: p.created_at,
+  }));
+
+  const currentUserProfile = staffProfiles?.find((p) => p.id === user?.id);
+  const currentUserRole = currentUserProfile?.role ?? "admin";
+
   const groups = GROUPS.map((g) => ({
     ...g,
     fields: g.fields.map((f) => {
@@ -58,6 +120,7 @@ export default async function Page() {
       return { ...f, secret, isSet: !!settings[f.key], value: secret ? undefined : settings[f.key] };
     }),
   }));
+
   return (
     <div className="space-y-4">
       <div>
@@ -87,6 +150,14 @@ export default async function Page() {
           tone={line ? "green" : "amber"}
         />
       </div>
+
+      <AdminManagement
+        staffList={staffList}
+        candidateUsers={candidateProfiles ?? []}
+        currentUserId={user?.id}
+        currentUserRole={currentUserRole}
+      />
+
       <SettingsForm groups={groups} />
     </div>
   );

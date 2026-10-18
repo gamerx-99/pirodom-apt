@@ -35,7 +35,7 @@ export async function requireStaff(
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("กรุณาเข้าสู่ระบบก่อน (LINE Login)");
+  if (!user) throw new Error("กรุณาเข้าสู่ระบบก่อน");
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")

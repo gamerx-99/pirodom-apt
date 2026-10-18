@@ -24,9 +24,28 @@ export default function LiffLayout({ children }: LayoutProps<"/liff">) {
       .then(({ default: liff }) =>
         liff.init({ liffId }).then(async () => {
           if (cancelled) return;
+          if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("logout") === "true") {
+              if (liff.isLoggedIn()) {
+                liff.logout();
+              }
+              sessionStorage.removeItem("dorm_redirect");
+              // Start a fresh document so LIFF initialization runs again and
+              // begins LINE login with the cleared LIFF session.
+              window.location.replace("/liff");
+              return;
+            }
+          }
           if (!liff.isLoggedIn()) {
-            // คืนกลับ URL เดิม เพื่อไม่ให้ token ใน /liff/join/<token> หายตอน login
-            liff.login({ redirectUri: window.location.href });
+            if (typeof window !== "undefined") {
+              const params = new URLSearchParams(window.location.search);
+              const r = params.get("redirect");
+              if (r) sessionStorage.setItem("dorm_redirect", r);
+            }
+            // ป้องกัน 400 Bad Request: redirectUri ต้องเป็น Endpoint URL ที่ลงทะเบียนไว้กับ LINE Developers
+            const cleanRedirect = window.location.origin + "/liff";
+            liff.login({ redirectUri: cleanRedirect });
             return;
           }
           const idToken = liff.getIDToken();
@@ -52,6 +71,22 @@ export default function LiffLayout({ children }: LayoutProps<"/liff">) {
             });
             return;
           }
+
+          const resData = (await res.json().catch(() => null)) as {
+            ok: boolean;
+            profile?: { role: string; display_name: string | null };
+          } | null;
+
+          const role = resData?.profile?.role ?? "tenant";
+
+          // เงื่อนไข 1: User > Admin -> พาไปหน้า Admin
+          if (role === "owner" || role === "admin") {
+            const storedRedirect = typeof window !== "undefined" ? sessionStorage.getItem("dorm_redirect") : null;
+            if (typeof window !== "undefined") sessionStorage.removeItem("dorm_redirect");
+            window.location.href = storedRedirect && storedRedirect.startsWith("/admin") ? storedRedirect : "/admin";
+            return;
+          }
+
           setState({ status: "ready" });
           // เซิร์ฟเวอร์เรนเดอร์หน้านี้ไปก่อนที่ cookie จะมี ให้ดึงใหม่เพื่อได้ข้อมูลจริง
           router.refresh();

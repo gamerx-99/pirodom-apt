@@ -50,9 +50,29 @@ export function AdminNav({ demo = false }: { demo?: boolean }) {
             </Link>
           );
         })}
+        <form action="/api/auth/logout" method="POST" className="shrink-0 lg:hidden">
+          <button
+            type="submit"
+            aria-label="ออกจากระบบ"
+            title="ออกจากระบบ"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-400 hover:bg-white/10 hover:text-white"
+          >
+            <Icon name="logout" className="h-5 w-5" />
+            <span>ออก</span>
+          </button>
+        </form>
       </div>
       <div className="hidden border-t border-white/10 pt-4 lg:mt-auto lg:block">
-        <Link href="/api/health" className="px-3 text-xs text-slate-400 hover:text-white">
+        <form action="/api/auth/logout" method="POST">
+          <button
+            type="submit"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <Icon name="logout" className="h-5 w-5" />
+            ออกจากระบบ
+          </button>
+        </form>
+        <Link href="/api/health" className="mt-2 block px-3 text-xs text-slate-500 hover:text-white">
           {demo ? "สถานะระบบ (demo)" : "สถานะระบบ"}
         </Link>
       </div>
