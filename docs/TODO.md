@@ -7,7 +7,7 @@
 **วิธีใช้:** ติ๊ก checkbox เมื่องานผ่านเกณฑ์และมีหลักฐาน — ไม่นับจากจำนวนไฟล์หรือหน้าที่สร้าง
 สถานะกำกับท้ายรายการ: `ยังไม่เริ่ม` (เริ่มได้ทันที) · `เจ้าของกรอกเอง` (ไม่บล็อก ลูกค้าใส่หลังส่งมอบ) · `รอตรวจ` (โค้ดเสร็จ รอทดสอบ/ตรวจจริง)
 
- **ผลตรวจรอบล่าสุด 18/10/2569:** `npm test` ผ่าน 100% (PGlite + ชุด Phase 1 + Rooms FK + PromptPay CRC + Notifications) · `npx tsc --noEmit` ผ่าน (0 errors) · `npm run lint` ผ่าน (0 errors, 0 warnings) · Live Cloud migrations 15 ไฟล์ apply แล้ว (รวม `20261018000009_atomic_admin_demotion.sql`) · Production env บน Vercel refreshed และ webhook test 200 ok
+ **ผลตรวจรอบล่าสุด 18/10/2569:** `npm test` ผ่าน 100% (PGlite + ชุด Phase 1 + Rooms FK + PromptPay CRC + Notifications) · `npx tsc --noEmit` ผ่าน (0 errors) · `npm run lint` ผ่าน (0 errors, 0 warnings) · หลังแก้ build error ที่ `/login`: `npm run build` และ ESLint ไฟล์ที่แก้ผ่าน · Live Cloud migrations 15 ไฟล์ apply แล้ว (รวม `20261018000009_atomic_admin_demotion.sql`) · Production env บน Vercel refreshed และ webhook test 200 ok
 
 
 ---
@@ -164,7 +164,7 @@
 
 ## ลำดับที่แนะนำต่อจากนี้
 
-1. **Deploy & ตรวจรับ UI บนอุปกรณ์จริง:** ขออนุมัติผู้ใช้ deploy source โค้ดล่าสุดขึ้น Vercel (`maehongson/pirodom-apt`) เพื่อตรวจรับระบบ Room Edit/Delete และการปรับปรุง Anti-Slop บนอุปกรณ์จริง
+1. **แก้ build failure แล้วปล่อย UI ตรวจรับ:** Vercel production builds ของ `92f4647` และ `6f89877` ล้มที่ `/login` เพราะอ่าน `searchParams` ระหว่าง prerender; ตั้ง route เป็น `instant = false` เพื่อให้ redirect รอ request ได้. `npm run build`/ESLint ผ่านแล้ว และ local HTTP response มี redirect target `/liff?redirect=%2Fadmin`. ขั้นถัดไปคือขออนุมัติ commit/push การแก้ไป `main`, ตรวจ deployment ของ `maehongson/pirodom-apt`, แล้ว UAT บนอุปกรณ์จริง (รอบตรวจนี้ยังไม่พบ Android device/emulator เชื่อมต่อ)
 2. **UAT การชำระเงินและตรวจสลิป (Phase 3):** ยืนยันข้อมูลบัญชี PromptPay จริง (Q-06) และ SlipOK credentials เพื่อทดสอบสแกนจ่ายจริงและตรวจสลิปอัตโนมัติ
 3. **กรณีพิเศษการเงิน (Phase 2):** Q-03/Q-04 ปิดแล้ว (ยืดหยุ่นรายห้อง/รายบิล); Q-05 ปิดแล้ว: รับเต็มยอดเท่านั้น
 4. **UI ตาม mockup:** branch `ui/mockup-blue` (`ffb85f9`) ทำเมนูข้าง/ภาพรวม/ห้องแล้ว โทนขาว-ดำ-น้ำเงินตามลูกค้า หน้าที่เหลือ Gemini รับต่อ ยังไม่ merge
@@ -195,3 +195,4 @@
 | 2026-10-18 (Logout LIFF Session & Clean Diff) | แก้ไขการออกจากระบบให้ล้าง LIFF session ด้วย `liff.logout()`, แก้ lint warning location-assign, เพิ่ม `.devpit/` ใน `.gitignore`, เคลียร์ whitespace diff | `npm run lint` ผ่าน (0 errors, 0 warnings), `npm test` ผ่าน 100% |
 | 2026-10-18 (LINE 400 Investigation) | ตรวจสอบ Error 400 Bad Request ด้วย Browser Subagent พบสาเหตุเกิดจากทดสอบบน `http://localhost:3000/liff` ที่ยังไม่ได้ลงทะเบียนใน Callback URL ของ LINE Console | บันทึกภาพถ่ายหน้าจอและแนวทางแก้ไขใน Knowledge Base |
 | 2026-10-18 (Apply Migration 0009 & Role Invariant) | ตรวจสอบ migration `20261018000009` (`set_staff_role`) พบ apply บน Live Cloud เรียบร้อย (15/15 files in sync), test/typecheck/lint ผ่าน 100% | ผ่าน 100% |
+| 2026-10-18 (Production build triage) | Vercel deployments for `92f4647` and `6f89877` fail prerendering `/login`: request `searchParams` were read during prerender. Set the redirect-only route to `instant = false` so it can wait for request-time query data. | Local `npm run build` and ESLint for `app/login/page.tsx` pass. Local HTTP response contains the expected `/liff?redirect=%2Fadmin` redirect target. Not committed, pushed, or deployed; Vercel MCP returned 403 so deployment status/logs were checked with scoped Vercel CLI. `adb devices -l` showed no device; no on-device UAT performed. |
