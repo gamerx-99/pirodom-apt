@@ -172,7 +172,7 @@ function InvoiceTable({ invoices }: { invoices: (Invoice | (typeof MOCK_INVOICES
                     </Badge>
                     {invoice.status === "draft" && (
                       <details className="mt-2">
-                        <summary className="cursor-pointer text-xs font-medium text-teal-700">ตรวจรายการและออกบิล</summary>
+                        <summary className="cursor-pointer text-xs font-medium text-blue-700">ตรวจรายการและออกบิล</summary>
                         <ul className="mt-2 space-y-1 text-xs text-gray-600">
                           {(invoice as Invoice).invoice_items?.map((item) => (
                             <li key={item.id} className="flex justify-between gap-2">
@@ -183,7 +183,7 @@ function InvoiceTable({ invoices }: { invoices: (Invoice | (typeof MOCK_INVOICES
                         <div className="mt-2 flex flex-wrap gap-2">
                           <form action={issueInvoiceDraft}>
                             <input type="hidden" name="invoice_id" value={invoice.id} />
-                            <button className="rounded-lg bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-800">
+                            <button className="rounded-lg bg-blue-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-800">
                               ออกบิลหลังตรวจรายการ
                             </button>
                           </form>

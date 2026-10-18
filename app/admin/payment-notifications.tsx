@@ -36,17 +36,17 @@ export default function PaymentNotifications() {
     };
   }, []);
 
-  return <aside aria-label="แจ้งเตือนสลิป" className="mb-4 rounded-xl border border-teal-200 bg-teal-50 px-4 py-3 text-sm">
-    <p role="status" aria-live="polite" className="font-semibold text-teal-900">
+  return <aside aria-label="แจ้งเตือนสลิป" className="mb-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm">
+    <p role="status" aria-live="polite" className="font-semibold text-blue-900">
       {error ? "โหลดแจ้งเตือนไม่สำเร็จ ระบบจะลองใหม่อัตโนมัติ" : !alerts ? "กำลังตรวจสลิปที่รอเจ้าหน้าที่…" : alerts.count > 0 ? `มีสลิปรอเจ้าหน้าที่ตรวจ ${alerts.count} รายการ` : "ยังไม่มีสลิปรอตรวจ"}
     </p>
-    {alerts && alerts.items.length > 0 && <ul className="mt-1 space-y-1 text-teal-800">
+    {alerts && alerts.items.length > 0 && <ul className="mt-1 space-y-1 text-blue-800">
       {alerts.items.map((item) => <li key={item.id}>
         <Link href={`/admin/payments#payment-${item.id}`} className="underline underline-offset-2">
           ห้อง {item.room} · งวด {item.period}{item.status === "uploaded" ? " · เก็บสลิปแล้ว รอผลตรวจ/นำผลกลับเข้าคิว" : " · เปิดตรวจสลิป"}
         </Link>
       </li>)}
     </ul>}
-    <Link href="/admin/payments" className="mt-2 inline-block font-semibold text-teal-800 underline underline-offset-2">ไปคิวตรวจสลิปทั้งหมด</Link>
+    <Link href="/admin/payments" className="mt-2 inline-block font-semibold text-blue-800 underline underline-offset-2">ไปคิวตรวจสลิปทั้งหมด</Link>
   </aside>;
 }

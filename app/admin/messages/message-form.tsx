@@ -5,7 +5,7 @@ import { MESSAGE_MAX_LENGTH, MESSAGE_TEMPLATES, fillMessage } from "@/lib/messag
 import { resendNotification, sendMessages } from "./actions";
 
 type Room = { leaseId: string; roomNo: string; unpaid: number; nextDue: string | null; names: string };
-const button = "rounded-lg bg-teal-700 px-4 py-2 font-semibold text-white disabled:opacity-50";
+const button = "rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white disabled:opacity-50";
 
 export function MessageForm({ rooms }: { rooms: Room[] }) {
   const [state, action, pending] = useActionState(sendMessages, null);
@@ -30,7 +30,7 @@ export function MessageForm({ rooms }: { rooms: Room[] }) {
       {first && <div className="rounded-lg bg-gray-50 p-3"><p className="font-semibold">ตัวอย่างห้อง {first.roomNo}</p><p className="whitespace-pre-wrap">{fillMessage(text, { room: first.roomNo, unpaid: first.unpaid, nextDue: first.nextDue })}</p></div>}
       <button disabled={pending || selected.length === 0 || !text.trim()} className={button}>{pending ? "กำลังส่ง…" : `ส่งข้อความถึง ${selected.length} ห้อง`}</button>
     </fieldset>
-    {state && <p role="status" className={state.ok ? "text-teal-800" : "text-red-700"}>{state.message}</p>}
+    {state && <p role="status" className={state.ok ? "text-blue-800" : "text-red-700"}>{state.message}</p>}
   </form>;
 }
 

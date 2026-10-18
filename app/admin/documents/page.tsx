@@ -128,7 +128,7 @@ export default async function Page() {
           <div className="sm:col-span-3">
             <button
               type="submit"
-              className="rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700"
+              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
             >
               อัปโหลดและผูกกับสัญญา
             </button>
@@ -171,7 +171,7 @@ export default async function Page() {
                       href={url}
                       target="_blank"
                       rel="noreferrer"
-                      className="rounded-lg bg-teal-50 px-3 py-1.5 text-xs font-semibold text-teal-700 hover:bg-teal-100"
+                      className="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100"
                     >
                       เปิดไฟล์
                     </a>

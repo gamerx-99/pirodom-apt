@@ -68,7 +68,7 @@ export function InvoiceDraftForm({
           <input name="discount_description" maxLength={160} placeholder="ระบุเหตุผลเมื่อมีส่วนลด" className="mt-1 w-full rounded-xl border border-gray-200 bg-white px-3 py-2" />
         </label>
         <div className="flex items-end">
-          <button disabled={pending || lease.tenant_count === 0 || lease.readings.length === 0} className="w-full rounded-xl bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50">
+          <button disabled={pending || lease.tenant_count === 0 || lease.readings.length === 0} className="w-full rounded-xl bg-blue-700 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-800 disabled:opacity-50">
             {pending ? "กำลังสร้างร่าง…" : "คำนวณและบันทึกเป็นร่าง"}
           </button>
         </div>

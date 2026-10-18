@@ -185,7 +185,7 @@ export default async function Page() {
                       />
                     </label>
                   </div>
-                  <button className="rounded-lg bg-teal-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-teal-700">
+                  <button className="rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-700">
                     อัปเดตงาน
                   </button>
                   {nextList.length === 0 && (
@@ -208,7 +208,7 @@ export default async function Page() {
                               href={photoUrls[p.id]}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-teal-700 hover:underline"
+                              className="text-blue-700 hover:underline"
                             >
                               {p.kind === "result" ? "ผลงาน" : "ผู้แจ้ง"} #{shots.indexOf(p) + 1}
                             </a>

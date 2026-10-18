@@ -24,7 +24,7 @@ export function ApprovePaymentForm({ id, amount }: { id: string; amount: number 
     <label className="text-xs">ยอดรับจริง
       <input name="amount" type="number" min="0.01" step="0.01" required defaultValue={amount ?? ""} className="mt-1 block w-32 rounded-lg border border-gray-200 px-2 py-1.5 text-sm" />
     </label>
-    <button disabled={pending} className="rounded-lg bg-teal-600 px-3 py-2 text-xs font-semibold text-white disabled:opacity-50">{pending ? "กำลังบันทึก…" : "อนุมัติและปิดบิล"}</button>
+    <button disabled={pending} className="rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white disabled:opacity-50">{pending ? "กำลังบันทึก…" : "อนุมัติและปิดบิล"}</button>
     {state && <span role="status" className={`text-xs ${state.ok ? "text-emerald-700" : "text-red-700"}`}>{state.message}</span>}
   </form>;
 }

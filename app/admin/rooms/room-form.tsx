@@ -34,7 +34,7 @@ export function CreateRoomForm() {
       </label>
       <PriceFields className="mt-1 w-full rounded-xl border border-gray-200 px-3 py-2 font-normal" />
       <div className="flex items-end sm:col-span-2 xl:col-span-1">
-        <button disabled={pending} className="w-full rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50">
+        <button disabled={pending} className="w-full rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50">
           {pending ? "กำลังบันทึก…" : "เพิ่มยูนิต"}
         </button>
       </div>

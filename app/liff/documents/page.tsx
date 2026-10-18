@@ -131,7 +131,7 @@ export default async function Page() {
                     href={url}
                     target="_blank"
                     rel="noreferrer"
-                    className="shrink-0 rounded-xl bg-teal-600 px-3 py-2 text-xs font-semibold text-white hover:bg-teal-700"
+                    className="shrink-0 rounded-xl bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700"
                   >
                     เปิดดู
                   </a>
@@ -148,7 +148,7 @@ export default async function Page() {
         <p className="text-sm text-gray-500">
           ขณะนี้เจ้าหน้าที่ระบุชื่อเอกสารตามสัญญาของแต่ละห้อง
         </p>
-        <Link href="/liff" className="mt-2 inline-block text-sm font-semibold text-teal-700 hover:underline">
+        <Link href="/liff" className="mt-2 inline-block text-sm font-semibold text-blue-700 hover:underline">
           ← กลับหน้าหลัก
         </Link>
       </Card>

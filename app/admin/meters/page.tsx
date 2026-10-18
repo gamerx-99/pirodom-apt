@@ -125,7 +125,7 @@ export default async function Page() {
                     href={photos[r.id]}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-1 inline-block text-xs font-semibold text-teal-700 hover:underline"
+                    className="mt-1 inline-block text-xs font-semibold text-blue-700 hover:underline"
                   >
                     เปิดรูปมิเตอร์
                   </a>

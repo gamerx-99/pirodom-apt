@@ -386,7 +386,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
                 className="mt-1 w-full text-sm text-gray-600 file:mr-2 file:rounded-lg file:border-0 file:bg-white file:px-3 file:py-1.5 file:text-sm"
               />
             </label>
-            <button className="w-full rounded-xl bg-teal-600 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-700">
+            <button className="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700">
               ส่งเรื่อง
             </button>
           </form>
@@ -425,7 +425,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
                               href={photoUrls[p.id]}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-teal-700 hover:underline"
+                              className="text-blue-700 hover:underline"
                             >
                               {p.kind === "result" ? "ผลงาน" : "รูปที่แจ้ง"} #{i + 1}
                             </a>
@@ -461,7 +461,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
                           placeholder="หมายเหตุ (ถ้ามี)"
                           className="min-w-0 flex-1 rounded-lg border border-emerald-200 px-3 py-2 text-sm"
                         />
-                        <button className="rounded-lg bg-teal-600 px-3 py-2 text-sm font-semibold text-white hover:bg-teal-700">
+                        <button className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700">
                           ยืนยันปิดงาน
                         </button>
                       </div>

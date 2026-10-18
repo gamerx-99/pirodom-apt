@@ -14,7 +14,7 @@ export default function LiffNav() {
           <Link
             key={href}
             href={href}
-            className="px-2 py-3 text-center text-sm font-medium text-gray-600 hover:text-teal-700 focus-visible:outline-2 focus-visible:outline-teal-600"
+            className="px-2 py-3 text-center text-sm font-medium text-gray-600 hover:text-blue-700 focus-visible:outline-2 focus-visible:outline-blue-600"
           >
             {label}
           </Link>

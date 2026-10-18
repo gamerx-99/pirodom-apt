@@ -36,7 +36,7 @@ export function RoomActions({ room, locked }: { room: Room; locked: boolean }) {
   return (
     <div className="mt-4 space-y-3 border-t border-gray-200 pt-3">
       <details>
-        <summary className="rounded-lg px-2 py-2 text-sm font-semibold text-teal-800">แก้ไขข้อมูลห้อง {room.room_no}</summary>
+        <summary className="rounded-lg px-2 py-2 text-sm font-semibold text-blue-800">แก้ไขข้อมูลห้อง {room.room_no}</summary>
         <form action={editAction} className="mt-3 space-y-3">
           <input type="hidden" name="id" value={room.id} />
           <fieldset disabled={saving || deleting} className="space-y-3 disabled:opacity-60">
@@ -62,7 +62,7 @@ export function RoomActions({ room, locked }: { room: Room; locked: boolean }) {
               <PriceFields prices={room} locked={locked} className={fieldClass} />
             </div>
             {locked && <p className="text-xs text-gray-600">ราคาล็อกตามสัญญาปัจจุบัน แก้ได้หลังปิดสัญญา (ผู้เช่าออก)</p>}
-            <button type="submit" className="w-full rounded-xl bg-teal-700 px-4 py-3 text-sm font-semibold text-white hover:bg-teal-800">
+            <button type="submit" className="w-full rounded-xl bg-blue-700 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-800">
               {saving ? "กำลังบันทึก…" : "บันทึกการแก้ไข"}
             </button>
           </fieldset>

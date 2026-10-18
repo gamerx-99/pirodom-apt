@@ -65,7 +65,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
   if (!isSupabaseConfigured()) {
     return (
       <div className="space-y-4 pb-20">
-        <Link href="/liff" className="text-sm font-semibold text-teal-700">← กลับหน้าหลัก</Link>
+        <Link href="/liff" className="text-sm font-semibold text-blue-700">← กลับหน้าหลัก</Link>
         <DemoBanner text="รายละเอียดด้านล่างเป็นข้อมูลตัวอย่าง ไม่ใช่ยอดเรียกเก็บจริง" />
         <Card title="บิลห้องตัวอย่าง · ต.ค. 2569" desc={`รหัส ${id} · ครบกำหนด 30 ก.ย. 2569`}>
           <div className="flex items-center justify-between gap-3">
@@ -90,7 +90,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
   if (!user) {
     return (
       <div className="space-y-4 pb-20">
-        <Link href="/liff" className="text-sm font-semibold text-teal-700">← กลับหน้าหลัก</Link>
+        <Link href="/liff" className="text-sm font-semibold text-blue-700">← กลับหน้าหลัก</Link>
         <EmptyState title="กรุณาเข้าสู่ระบบด้วย LINE" desc="เปิดหน้านี้ผ่าน LINE LIFF เพื่อดูบิลของสัญญาที่ผูกกับบัญชี" />
       </div>
     );
@@ -104,7 +104,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
   if (error || !rawInvoice) {
     return (
       <div className="space-y-4 pb-20">
-        <Link href="/liff" className="text-sm font-semibold text-teal-700">← กลับหน้าหลัก</Link>
+        <Link href="/liff" className="text-sm font-semibold text-blue-700">← กลับหน้าหลัก</Link>
         <EmptyState title="ไม่พบบิลนี้" desc="บิลอาจถูกยกเลิก หรือบัญชีนี้ไม่มีสิทธิ์ดูรายการดังกล่าว" />
       </div>
     );
@@ -114,7 +114,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
   if (invoice.status === "draft" || invoice.status === "void") {
     return (
       <div className="space-y-4 pb-20">
-        <Link href="/liff" className="text-sm font-semibold text-teal-700">← กลับหน้าหลัก</Link>
+        <Link href="/liff" className="text-sm font-semibold text-blue-700">← กลับหน้าหลัก</Link>
         <EmptyState title="ไม่พบบิลที่เปิดดูได้" desc="รายการนี้ยังไม่ออกบิลหรือถูกยกเลิกแล้ว" />
       </div>
     );
@@ -136,7 +136,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
 
   return (
     <div className="space-y-4 pb-20">
-      <Link href="/liff" className="text-sm font-semibold text-teal-700">← กลับหน้าหลัก</Link>
+      <Link href="/liff" className="text-sm font-semibold text-blue-700">← กลับหน้าหลัก</Link>
       <div>
         <h1 className="text-xl font-bold text-gray-900">บิลห้อง {invoice.leases?.rooms?.room_no ?? "—"}</h1>
         <p className="text-sm text-gray-500">

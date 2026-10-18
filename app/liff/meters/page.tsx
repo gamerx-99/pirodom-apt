@@ -132,7 +132,7 @@ export default async function Page() {
                 .map((r) => (
                   <div
                     key={r.id}
-                    className="flex-1 rounded-t-lg bg-teal-200"
+                    className="flex-1 rounded-t-lg bg-blue-200"
                     style={{ height: `${Math.max(6, (Number(r.units ?? 0) / maxUnits) * 100)}%` }}
                     title={`${r.period}: ${Number(r.units ?? 0)} หน่วย`}
                   />
@@ -172,7 +172,7 @@ export default async function Page() {
                               href={photoUrls[r.id]}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-xs font-semibold text-teal-700 hover:underline"
+                              className="text-xs font-semibold text-blue-700 hover:underline"
                             >
                               ดูรูป
                             </a>

@@ -55,7 +55,7 @@ export default async function Page() {
                 </div>
                 <p className="mt-1 text-sm text-gray-500">ยอดบิล {formatTHB(Number(invoice?.total ?? 0))} · ผลตรวจ {p.amount == null ? "ยังไม่มียอด" : formatTHB(Number(p.amount))} · ส่ง {formatDateTH(p.created_at)} · ครบกำหนด {invoice?.due_date ?? "—"}</p>
                 {p.review_reason && <p className="mt-1 text-sm text-red-700">เหตุผลเดิม: {p.review_reason}</p>}
-                {url ? <a href={url} target="_blank" rel="noreferrer" className="mt-2 inline-block rounded-lg bg-teal-50 px-3 py-1.5 text-sm font-semibold text-teal-700">เปิดรูปสลิป</a> : <p className="mt-2 text-sm text-red-700">เปิดไฟล์สลิปไม่ได้</p>}
+                {url ? <a href={url} target="_blank" rel="noreferrer" className="mt-2 inline-block rounded-lg bg-blue-50 px-3 py-1.5 text-sm font-semibold text-blue-700">เปิดรูปสลิป</a> : <p className="mt-2 text-sm text-red-700">เปิดไฟล์สลิปไม่ได้</p>}
                 <details className="mt-2 text-xs text-gray-600">
                   <summary className="cursor-pointer font-semibold">Log ผลตรวจที่บันทึกไว้</summary>
                   <p className="mt-1 break-all">รหัสรายการ: {p.id}</p>

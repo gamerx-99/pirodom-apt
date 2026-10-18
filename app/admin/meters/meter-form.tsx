@@ -185,7 +185,7 @@ export function MeterForm({
       <div className="flex flex-wrap items-center gap-3">
         <button
           disabled={pending || picked.length === 0}
-          className="rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-50"
+          className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
         >
           {pending ? "กำลังบันทึก…" : `บันทึก ${picked.length} ห้อง`}
         </button>

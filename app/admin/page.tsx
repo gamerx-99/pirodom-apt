@@ -100,7 +100,7 @@ async function LiveDashboard() {
   ) {
     return (
       <div className="space-y-4">
-        <h1 className="text-xl font-bold text-gray-900">ภาพรวม</h1>
+        <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ภาพรวม</h1>
         <Card title="โหลดภาพรวมไม่สำเร็จ">
           <p className="text-sm text-red-700">ข้อมูลบางส่วนอ่านไม่ได้ กรุณารีเฟรชหน้านี้หรือตรวจสิทธิ์ฐานข้อมูล</p>
         </Card>
@@ -124,26 +124,26 @@ async function LiveDashboard() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">ภาพรวม</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ภาพรวม</h1>
           <p className="text-sm text-gray-500">ตัวเลขจากฐานข้อมูลปัจจุบัน</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/billing" className="rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700">ดูบิล</Link>
-          <Link href="/admin/meters" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-teal-700 ring-1 ring-teal-200 hover:bg-teal-50">บันทึกมิเตอร์</Link>
+          <Link href="/admin/billing" className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">ดูบิล</Link>
+          <Link href="/admin/meters" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-blue-700 ring-1 ring-blue-200 hover:bg-blue-50">บันทึกมิเตอร์</Link>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard label="บิลที่ออกแล้ว" value={`${issuedCount ?? 0} รายการ`} sub="ไม่รวมร่าง/ยกเลิก" />
-        <StatCard label="ชำระแล้ว" value={`${paidCount ?? 0} บิล`} sub="สถานะอนุมัติแล้ว" />
-        <StatCard label="บิลค้างชำระ" value={`${overdueCount} บิล`} sub="เลยวันครบกำหนดหรือมีสถานะค้างชำระ" />
-        <StatCard label="ห้องมีผู้เช่า" value={`${occupied}/${liveRooms.length}`} sub="ตามสถานะยูนิตในระบบ" />
+        <StatCard label="บิลที่ออกแล้ว" value={`${issuedCount ?? 0} รายการ`} sub="ไม่รวมร่าง/ยกเลิก" icon="receipt" />
+        <StatCard label="ชำระแล้ว" value={`${paidCount ?? 0} บิล`} sub="สถานะอนุมัติแล้ว" icon="check" tone="green" />
+        <StatCard label="บิลค้างชำระ" value={`${overdueCount} บิล`} sub="เลยวันครบกำหนดหรือมีสถานะค้างชำระ" icon="alert" tone={overdueCount > 0 ? "red" : "default"} />
+        <StatCard label="ห้องมีผู้เช่า" value={`${occupied}/${liveRooms.length}`} sub="ตามสถานะยูนิตในระบบ" icon="building" tone="blue" />
       </div>
       <Card title="งานที่ต้องจัดการ" desc="จำนวนจากข้อมูลจริงในฐานข้อมูล">
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           {tasks.map(([label, count, href]) => (
-            <Link key={label} href={href} className="rounded-xl bg-gray-50 p-3 ring-1 ring-gray-100 hover:bg-teal-50">
-              <p className="text-2xl font-bold text-gray-900">{count}</p>
-              <p className="text-sm text-gray-600">{label}</p>
+            <Link key={label} href={href} className="flex items-center justify-between gap-3 rounded-2xl bg-white p-4 ring-1 ring-slate-200 hover:ring-blue-300">
+              <span className="text-sm font-semibold text-slate-800">{label}</span>
+              <span className={`rounded-full px-3 py-1 text-sm font-bold tabular-nums ${count === "0" ? "bg-slate-100 text-slate-500" : "bg-blue-600 text-white"}`}>{count}</span>
             </Link>
           ))}
         </div>
@@ -185,7 +185,7 @@ async function LiveDashboard() {
               ))}
             </ul>
           )}
-          <Link href="/admin/maintenance" className="mt-3 inline-block text-sm font-semibold text-teal-700 hover:underline">ไปหน้างานซ่อม →</Link>
+          <Link href="/admin/maintenance" className="mt-3 inline-block text-sm font-semibold text-blue-700 hover:underline">ไปหน้างานซ่อม →</Link>
         </Card>
       </div>
     </div>
@@ -205,27 +205,27 @@ function DemoDashboard() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">ภาพรวม</h1>
+          <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">ภาพรวม</h1>
           <p className="text-sm text-gray-500">สถานะห้อง ยอดเงิน และงานที่ต้องจัดการ · ข้อมูลตัวอย่าง</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/billing" className="rounded-xl bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700">สร้างบิล</Link>
-          <Link href="/admin/meters" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-teal-700 ring-1 ring-teal-200 hover:bg-teal-50">บันทึกมิเตอร์</Link>
+          <Link href="/admin/billing" className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">สร้างบิล</Link>
+          <Link href="/admin/meters" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-blue-700 ring-1 ring-blue-200 hover:bg-blue-50">บันทึกมิเตอร์</Link>
         </div>
       </div>
       <DemoBanner />
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard label="ยอดเรียกเก็บ" value={formatTHB(billed)} sub="ไม่รวมร่าง/ยกเลิก" />
-        <StatCard label="รับชำระแล้ว" value={formatTHB(paid)} sub="เฉพาะที่อนุมัติแล้ว" />
-        <StatCard label="ค้างชำระ" value={formatTHB(billed - paid)} sub={`เกินกำหนด ${overdueCount} บิล`} />
-        <StatCard label="ห้องมีผู้เช่า" value={`${occupied}/${MOCK_ROOMS.length}`} sub="ยูนิตตัวอย่าง" />
+        <StatCard label="ยอดเรียกเก็บ" value={formatTHB(billed)} sub="ไม่รวมร่าง/ยกเลิก" icon="receipt" />
+        <StatCard label="รับชำระแล้ว" value={formatTHB(paid)} sub="เฉพาะที่อนุมัติแล้ว" icon="check" tone="green" />
+        <StatCard label="ค้างชำระ" value={formatTHB(billed - paid)} sub={`เกินกำหนด ${overdueCount} บิล`} icon="clock" tone="amber" />
+        <StatCard label="ห้องมีผู้เช่า" value={`${occupied}/${MOCK_ROOMS.length}`} sub="ยูนิตตัวอย่าง" icon="building" tone="blue" />
       </div>
       <Card title="งานที่ต้องจัดการ" desc="ข้อมูลตัวอย่าง">
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
           {DEMO_TASKS.map(([label, count, href]) => (
-            <Link key={label} href={href} className="rounded-xl bg-gray-50 p-3 ring-1 ring-gray-100 hover:bg-teal-50">
-              <p className="text-2xl font-bold text-gray-900">{count}</p>
-              <p className="text-sm text-gray-600">{label}</p>
+            <Link key={label} href={href} className="flex items-center justify-between gap-3 rounded-2xl bg-white p-4 ring-1 ring-slate-200 hover:ring-blue-300">
+              <span className="text-sm font-semibold text-slate-800">{label}</span>
+              <span className={`rounded-full px-3 py-1 text-sm font-bold tabular-nums ${count === "0" ? "bg-slate-100 text-slate-500" : "bg-blue-600 text-white"}`}>{count}</span>
             </Link>
           ))}
         </div>
@@ -233,7 +233,7 @@ function DemoDashboard() {
       <Card title="สถานะยูนิต" desc="ข้อมูลตัวอย่าง">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {MOCK_ROOMS.map((room) => (
-            <Link key={room.id} href="/admin/rooms" className="rounded-xl border border-gray-100 p-3 hover:border-teal-200">
+            <Link key={room.id} href="/admin/rooms" className="rounded-xl border border-gray-100 p-3 hover:border-blue-200">
               <div className="flex items-center justify-between">
                 <p className="font-semibold text-gray-900">{room.room_no}</p>
                 <Badge tone={room.status === "occupied" ? "green" : room.status === "vacant" ? "blue" : "gray"}>{ROOM_STATUS_LABEL[room.status]}</Badge>
@@ -243,7 +243,7 @@ function DemoDashboard() {
           ))}
         </div>
       </Card>
-      <Card title="งานซ่อมล่าสุด" action={<Link href="/admin/maintenance" className="text-sm font-semibold text-teal-700">ดูทั้งหมด</Link>}>
+      <Card title="งานซ่อมล่าสุด" action={<Link href="/admin/maintenance" className="text-sm font-semibold text-blue-700">ดูทั้งหมด</Link>}>
         <ul className="space-y-2">
           {MOCK_MAINTENANCE.map((request) => (
             <li key={request.id} className="flex items-center justify-between gap-3 rounded-xl bg-gray-50 px-3 py-2 text-sm">

@@ -87,7 +87,7 @@ export default async function Page() {
       <Card title="ยอดค้างชำระ" desc={nextDue ? `ครบกำหนด ${nextDue}` : "ไม่มียอดค้าง"}>
         <p className="text-3xl font-bold text-gray-900">{formatTHB(outstanding)}</p>
         {bills && bills.length > 0 ? (
-          <Link href={`/liff/bills/${bills[0].id}`} className="mt-3 block rounded-xl bg-teal-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-teal-700">
+          <Link href={`/liff/bills/${bills[0].id}`} className="mt-3 block rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700">
             ดูบิลและชำระเงิน
           </Link>
         ) : (
