@@ -28,7 +28,7 @@ export function AdminNav({ demo = false }: { demo?: boolean }) {
         </span>
         <span className="flex flex-col">
           <span className="text-base font-bold text-white">ระบบจัดการหอพัก</span>
-          <span className="text-xs text-slate-400">เจ้าของ / แอดมิน</span>
+          <span className="text-xs text-slate-400">ระบบแอดมิน</span>
         </span>
       </div>
       <div className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:gap-1.5 lg:overflow-visible lg:pb-0">
