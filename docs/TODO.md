@@ -1,13 +1,13 @@
 # Todo — ระบบจัดการหอพักผ่าน LINE
 
-ปรับปรุง 18 ตุลาคม 2569 (2026-10-18) · ฐานตรวจ: commit `1006034` และ working tree ล่าสุด (Anti-Slop 46/46 + UI Room Management + Production Env Refresh)
+ปรับปรุง 18 ตุลาคม 2569 (2026-10-18) · ฐานตรวจ: commit `1006034` และ working tree ล่าสุด (Anti-Slop 46/46 + UI Room Management + Production Env Refresh + LINE 3-Tier Auth & Admin Management by LINE ID)
 
 อ่านคู่กับ [Roadmap](ROADMAP.md) (เกณฑ์จบเฟส) และ [Blueprint](BLUEPRINT.md) (โครงสร้างระบบ)
 
 **วิธีใช้:** ติ๊ก checkbox เมื่องานผ่านเกณฑ์และมีหลักฐาน — ไม่นับจากจำนวนไฟล์หรือหน้าที่สร้าง
 สถานะกำกับท้ายรายการ: `ยังไม่เริ่ม` (เริ่มได้ทันที) · `เจ้าของกรอกเอง` (ไม่บล็อก ลูกค้าใส่หลังส่งมอบ) · `รอตรวจ` (โค้ดเสร็จ รอทดสอบ/ตรวจจริง)
 
- **ผลตรวจรอบล่าสุด 18/10/2569:** `npm test` ผ่าน (PGlite + ชุด Phase 1 + Rooms FK + PromptPay CRC) · `npx tsc --noEmit` ผ่าน (0 errors) · `npm run lint` ผ่าน (0 warnings) · `npm run build` ผ่าน 24 หน้า · Live Cloud migrations 13 ไฟล์ apply แล้ว · Production env บน Vercel refreshed และ webhook test 200 ok
+ **ผลตรวจรอบล่าสุด 18/10/2569:** `npm test` ผ่าน 100% (PGlite + ชุด Phase 1 + Rooms FK + PromptPay CRC + Notifications) · `npx tsc --noEmit` ผ่าน (0 errors) · `npm run lint` ผ่าน (0 errors, 0 warnings) · Live Cloud migrations 15 ไฟล์ apply แล้ว (รวม `20261018000009_atomic_admin_demotion.sql`) · Production env บน Vercel refreshed และ webhook test 200 ok
 
 
 ---
@@ -44,6 +44,10 @@
 - [x] ทดสอบ RLS บน PGlite ผ่าน — `npm test` (17/10/2569)
 - [x] โค้ด LINE Login bridge: ตรวจ ID token ฝั่ง Server → ผูก profile → ตั้ง Supabase session — [`app/api/auth/line/route.ts`](../app/api/auth/line/route.ts), [`lib/line-auth.ts`](../lib/line-auth.ts)
 - [x] Admin guard ฝั่ง server: ไม่มี session → redirect /liff, role ไม่ใช่ owner/admin → 403 — [`app/admin/layout.tsx`](../app/admin/layout.tsx) (โหมดเดโมเมื่อไม่มี env)
+- [x] ระบบคัดกรองสิทธิ์ 3 ระดับ (3-Tier Auth Routing): 1) Admin/Owner → `/admin` ทันที 2) ผู้เช่ามีสัญญา active → `/liff` แสดงห้องพัก บิล มิเตอร์ เอกสาร แจ้งซ่อม 3) ผู้ใช้อื่นๆ หรือยังไม่ผูกห้อง → แสดงการ์ด "ไม่สามารถตรวจสอบห้องพักของคุณได้กรุณาติดต่อ 053-276631" พร้อมปุ่มโทรออกและสลับบัญชี — [`app/liff/page.tsx`](../app/liff/page.tsx), [`app/liff/layout.tsx`](../app/liff/layout.tsx)
+- [x] จัดการผู้ดูแลระบบด้วย LINE User ID ในหน้า Settings (`/admin/settings`): แสดงตารางผู้ดูแลพร้อม LINE ID, ฟอร์มแต่งตั้งด้วย LINE User ID (Regex `U...` 33 หลัก) หรือเลือกเลื่อนขั้นจากรายชื่อผู้ใช้ LINE ในระบบ, ป้องกันการถอดสิทธิ์ Owner คนสุดท้าย, ตัดระบบ email/password ออกทั้งหมด — [`app/admin/settings/`](../app/admin/settings)
+- [x] ระบบออกจากระบบและสลับบัญชี LINE: เคลียร์ Supabase session ทางเซิร์ฟเวอร์ และดักจับ query `?logout=true` เพื่อสั่ง `liff.logout()` บน Client ล้าง token LINE ออกจากเบราว์เซอร์จริง — [`app/api/auth/logout/route.ts`](../app/api/auth/logout/route.ts), [`app/liff/layout.tsx`](../app/liff/layout.tsx)
+- [x] แก้ไข LINE OAuth 400 Bad Request: ปรับปรุง redirectUri ให้เป็น clean path `/liff` และเก็บ redirect target ใน sessionStorage ป้องกัน query string ขัดกับ Endpoint URL ที่ลงทะเบียนไว้
 
 **เหลือต้องทำ (เกณฑ์จบเฟสยังไม่ผ่าน):**
 - [ ] กรอก LIFF ID + Channel ID จริง และทดสอบ login ด้วย token จริงบนอุปกรณ์ — `รอตรวจ`
@@ -187,3 +191,7 @@
 | 2026-10-18 (Live Production UAT: Settings, Rooms, Leases) | ทดสอบบน https://pirodom-apt.vercel.app: 1) /admin/settings บันทึก PromptPay/SlipOK/LINE สำเร็จ สถานะ "พร้อม" 2) แก้ราคาห้อง 101 (มีสัญญา) ถูกบล็อกด้วย trigger rooms_lock_prices, ห้อง 103 (ว่าง) แก้ราคาได้ 3) สร้างสัญญาเลือกห้อง 103 ดึงราคาและเงื่อนไขอัตโนมัติครบถ้วน | ผ่าน 100% ครบทั้ง 3 จุด มีภาพบันทึกหลักฐานยืนยัน |
 | 2026-10-18 (Settings + ราคาห้อง) | หน้าตั้งค่า SlipOK/PromptPay/LINE เก็บใน `app_settings` (service role เท่านั้น); ราคาตั้งต้นรายห้อง ล็อกด้วย trigger ระหว่างมีสัญญา; สัญญาดึงราคาจากห้อง | commit `2a7a78f`; migration `20261018000008` ลง Cloud แล้ว; deploy READY; test/typecheck/lint/build ผ่าน |
 | 2026-10-18 (UI mockup) | ธีมขาว-ดำ-น้ำเงิน, ฟอนต์ Inter+Prompt, เมนูข้างดำมีไอคอน, ภาพรวม, ห้องแยกตามชั้น | branch `ui/mockup-blue` commit `ffb85f9`; ตรวจภาพโหมดตัวอย่าง desktop/มือถือ; build ผ่าน; ยังไม่ merge |
+| 2026-10-18 (LINE 3-Tier Auth & Admin by LINE ID) | เงื่อนไขล็อกอิน 3 ระดับ (Admin → `/admin`, ผู้เช่า → ห้องพัก, อื่นๆ → แจ้งโทร 053-276631), จัดการแอดมินด้วย LINE User ID ใน Settings, ยกเลิก email/password | โค้ดเสร็จสมบูรณ์, `npm test` ผ่าน 100%, `npx tsc --noEmit` 0 errors |
+| 2026-10-18 (Logout LIFF Session & Clean Diff) | แก้ไขการออกจากระบบให้ล้าง LIFF session ด้วย `liff.logout()`, แก้ lint warning location-assign, เพิ่ม `.devpit/` ใน `.gitignore`, เคลียร์ whitespace diff | `npm run lint` ผ่าน (0 errors, 0 warnings), `npm test` ผ่าน 100% |
+| 2026-10-18 (LINE 400 Investigation) | ตรวจสอบ Error 400 Bad Request ด้วย Browser Subagent พบสาเหตุเกิดจากทดสอบบน `http://localhost:3000/liff` ที่ยังไม่ได้ลงทะเบียนใน Callback URL ของ LINE Console | บันทึกภาพถ่ายหน้าจอและแนวทางแก้ไขใน Knowledge Base |
+| 2026-10-18 (Apply Migration 0009 & Role Invariant) | ตรวจสอบ migration `20261018000009` (`set_staff_role`) พบ apply บน Live Cloud เรียบร้อย (15/15 files in sync), test/typecheck/lint ผ่าน 100% | ผ่าน 100% |
