@@ -165,15 +165,17 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
     const id = String(form.get("id") ?? "");
     if (!id) throw new Error("ไม่พบงานที่จะยืนยัน");
     // อ่านด้วย session ของผู้เช่า → RLS ตัดงานของห้อง/ช่วงสัญญาอื่นทิ้ง
-    const { data } = await supabase
-      .from("maintenance_requests")
-      .select("id,room_id,status")
-      .eq("id", id)
-      .maybeSingle();
+    const [{ data }, { data: myLeasesRaw }] = await Promise.all([
+      supabase
+        .from("maintenance_requests")
+        .select("id,room_id,status")
+        .eq("id", id)
+        .maybeSingle(),
+      supabase.from("leases").select("room_id").eq("status", "active"),
+    ]);
     const request = data as unknown as { id: string; room_id: string; status: string } | null;
     if (!request) throw new Error("ไม่พบงานนี้ หรือไม่มีสิทธิ์ดูงานนี้");
 
-    const { data: myLeasesRaw } = await supabase.from("leases").select("room_id").eq("status", "active");
     const myRooms = ((myLeasesRaw ?? []) as unknown as { room_id: string }[]).map((l) => l.room_id);
     if (!myRooms.includes(request.room_id)) {
       throw new Error("ยืนยันปิดงานได้เฉพาะงานของห้องที่คุณเช่าอยู่");
@@ -231,10 +233,18 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
     );
   }
 
-  const { data: leasesRaw } = await supabase
-    .from("leases")
-    .select("room_id, rooms(id,room_no,unit_type)")
-    .eq("status", "active");
+  const [{ data: leasesRaw }, { data: requestsRaw }] = await Promise.all([
+    supabase
+      .from("leases")
+      .select("room_id, rooms(id,room_no,unit_type)")
+      .eq("status", "active"),
+    // RLS limits requests to the signed-in tenant's active lease period.
+    supabase
+      .from("maintenance_requests")
+      .select("id,room_id,category,priority,description,status,created_at, rooms(room_no)")
+      .order("created_at", { ascending: false })
+      .limit(20),
+  ]);
   const rooms = ((leasesRaw ?? []) as unknown as {
     room_id: string;
     rooms: { id: string; room_no: string; unit_type: string } | null;
@@ -242,11 +252,6 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
     .map((l) => l.rooms)
     .filter((r): r is { id: string; room_no: string; unit_type: string } => !!r);
 
-  const { data: requestsRaw } = await supabase
-    .from("maintenance_requests")
-    .select("id,room_id,category,priority,description,status,created_at, rooms(room_no)")
-    .order("created_at", { ascending: false })
-    .limit(20);
   const requests = (requestsRaw ?? []) as unknown as RequestRow[];
   const requestIds = requests.map((r) => r.id);
 
@@ -281,12 +286,16 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
     const list = photosByRequest.get(p.request_id) ?? [];
     list.push(p);
     photosByRequest.set(p.request_id, list);
-    try {
-      photoUrls[p.id] = await signedUrl("maintenance", p.file_path);
-    } catch {
-      // เปิดรูปไม่ได้ — ข้ามรายการนี้
-    }
   }
+  await Promise.all(
+    photos.map(async (photo) => {
+      try {
+        photoUrls[photo.id] = await signedUrl("maintenance", photo.file_path);
+      } catch {
+        // เปิดรูปไม่ได้ — ข้ามรายการนี้
+      }
+    }),
+  );
 
   return (
     <div className="space-y-4 pb-20">

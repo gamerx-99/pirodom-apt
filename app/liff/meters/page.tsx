@@ -54,10 +54,17 @@ export default async function Page() {
     );
   }
 
-  const { data: leasesRaw } = await supabase
-    .from("leases")
-    .select("id,status,rooms(id,room_no,unit_type)")
-    .eq("status", "active");
+  const [{ data: leasesRaw }, { data: readingsRaw }] = await Promise.all([
+    supabase
+      .from("leases")
+      .select("id,status,rooms(id,room_no,unit_type)")
+      .eq("status", "active"),
+    // Meter row security limits this result to the user's own lease periods.
+    supabase
+      .from("meter_readings")
+      .select("id,room_id,period,prev_value,curr_value,units,photo_path,created_at, rooms(room_no)")
+      .order("period", { ascending: false }),
+  ]);
   const rooms = ((leasesRaw ?? []) as unknown as {
     rooms: { id: string; room_no: string; unit_type: string } | null;
   }[])
@@ -77,11 +84,6 @@ export default async function Page() {
     );
   }
 
-  // RLS กรองให้เห็นเฉพาะงวดที่อยู่ในช่วงสัญญาของผู้เช่าคนนี้
-  const { data: readingsRaw } = await supabase
-    .from("meter_readings")
-    .select("id,room_id,period,prev_value,curr_value,units,photo_path,created_at, rooms(room_no)")
-    .order("period", { ascending: false });
   const readings = (readingsRaw ?? []) as unknown as Reading[];
 
   const byRoom = new Map<string, Reading[]>();
@@ -92,14 +94,17 @@ export default async function Page() {
   }
 
   const photoUrls: Record<string, string> = {};
-  for (const r of readings) {
-    if (!r.photo_path) continue;
-    try {
-      photoUrls[r.id] = await signedUrl("meters", r.photo_path);
-    } catch {
-      // เปิดรูปไม่ได้ — ยังแสดงตัวเลขตามปกติ
-    }
-  }
+  await Promise.all(
+    readings
+      .filter((reading): reading is Reading & { photo_path: string } => Boolean(reading.photo_path))
+      .map(async (reading) => {
+        try {
+          photoUrls[reading.id] = await signedUrl("meters", reading.photo_path);
+        } catch {
+          // เปิดรูปไม่ได้ — ยังแสดงตัวเลขตามปกติ
+        }
+      }),
+  );
 
   const roomNos = rooms.map((r) => r.room_no).join(", ");
   const totalUnits = readings.reduce((s, r) => s + Number(r.units ?? 0), 0);

@@ -120,15 +120,18 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
     );
   }
 
-  const { data: rawItems, error: itemError } = await supabase
-    .from("invoice_items")
-    .select("id,type,description,qty,unit_price,amount")
-    .eq("invoice_id", invoice.id);
+  const [{ data: rawItems, error: itemError }, { data: paymentsRaw }] = await Promise.all([
+    supabase
+      .from("invoice_items")
+      .select("id,type,description,qty,unit_price,amount")
+      .eq("invoice_id", invoice.id),
+    supabase
+      .from("payments")
+      .select("id,status,amount,created_at,review_reason")
+      .eq("invoice_id", invoice.id)
+      .order("created_at", { ascending: false }),
+  ]);
   const items = itemError ? [] : (rawItems ?? []) as unknown as InvoiceItem[];
-  const { data: paymentsRaw } = await supabase.from("payments")
-    .select("id,status,amount,created_at,review_reason")
-    .eq("invoice_id", invoice.id)
-    .order("created_at", { ascending: false });
   const payments = paymentsRaw ?? [];
   const status = invoiceStatusForDisplay(invoice.status, invoice.due_date, todayTH());
   const activePayment = payments.find((payment) => ["uploaded", "slipok_passed", "slipok_failed", "mismatch", "pending_review"].includes(payment.status));

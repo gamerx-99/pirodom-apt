@@ -57,10 +57,17 @@ export default async function Page() {
   }
 
   // RLS จำกัดอยู่แล้ว แต่หน้านี้กรองซ้ำฝั่ง server เพื่อไม่ให้พึ่ง policy อย่างเดียว
-  const { data: myLeasesRaw } = await supabase
-    .from("lease_tenants")
-    .select("leases(id,status,rooms(room_no))")
-    .eq("profile_id", user.id);
+  const [{ data: myLeasesRaw }, { data: docsRaw }] = await Promise.all([
+    supabase
+      .from("lease_tenants")
+      .select("leases(id,status,rooms(room_no))")
+      .eq("profile_id", user.id),
+    // RLS limits documents to active leases; filter against this user's lease IDs below as defense in depth.
+    supabase
+      .from("documents")
+      .select("id,lease_id,type,file_path,created_at")
+      .order("created_at", { ascending: false }),
+  ]);
   const refs = (myLeasesRaw ?? []) as unknown as { leases: LeaseRef | null }[];
   const active = refs.filter((r) => r.leases?.status === "active");
   if (active.length === 0) {
@@ -79,12 +86,8 @@ export default async function Page() {
   const leaseIds = active.map((r) => r.leases!.id);
   const roomByLease = new Map(active.map((r) => [r.leases!.id, r.leases!.rooms?.room_no ?? "?"]));
 
-  const { data: docsRaw } = await supabase
-    .from("documents")
-    .select("id,lease_id,type,file_path,created_at")
-    .in("lease_id", leaseIds)
-    .order("created_at", { ascending: false });
-  const docs = (docsRaw ?? []) as unknown as DocRow[];
+  const activeLeaseIds = new Set(leaseIds);
+  const docs = ((docsRaw ?? []) as unknown as DocRow[]).filter((doc) => activeLeaseIds.has(doc.lease_id));
 
   // ลิงก์เปิดไฟล์ออกจาก server เท่านั้น ไม่ส่ง path ให้ client เรียกเอง
   const items = await Promise.all(
