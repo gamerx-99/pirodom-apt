@@ -54,25 +54,27 @@ export default async function Page() {
     );
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("display_name, role")
-    .eq("id", user.id)
-    .maybeSingle();
+  // Both reads are scoped to the authenticated user and do not depend on each other.
+  const [{ data: profile }, { data: myLeasesRaw }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("display_name, role")
+      .eq("id", user.id)
+      .maybeSingle(),
+    supabase
+      .from("lease_tenants")
+      .select("is_primary, leases(id,status,rooms(id,room_no,unit_type))")
+      .eq("profile_id", user.id),
+  ]);
 
   // เงื่อนไข 1: User > Admin -> พาไปหน้า Admin
   if (profile?.role === "owner" || profile?.role === "admin") {
     redirect("/admin");
   }
 
-  const { data: myLeasesRaw } = await supabase
-    .from("lease_tenants")
-    .select("is_primary, leases(id,status,rooms(room_no,unit_type))")
-    .eq("profile_id", user.id);
-
   const myLeases = (myLeasesRaw ?? []) as unknown as {
     is_primary: boolean;
-    leases: { id: string; status: string; rooms: { room_no: string; unit_type: string } | null } | null;
+    leases: { id: string; status: string; rooms: { id: string; room_no: string; unit_type: string } | null } | null;
   }[];
 
   const active = myLeases.filter((t) => t.leases?.status === "active");
@@ -127,20 +129,32 @@ export default async function Page() {
 
   const leaseIds = active.map((t) => t.leases!.id);
   const roomNos = active.map((t) => t.leases!.rooms?.room_no ?? "?").join(", ");
-  const { data: bills } = await supabase
-    .from("invoices")
-    .select("id,period,total,status,due_date")
-    .in("lease_id", leaseIds)
-    .in("status", ["issued", "verifying", "pending_review", "overdue"])
-    .order("due_date", { ascending: true })
-    .limit(5);
+  const roomIds = [
+    ...new Set(
+      active
+        .map((tenant) => tenant.leases?.rooms?.id)
+        .filter((roomId): roomId is string => Boolean(roomId)),
+    ),
+  ];
+  const [{ data: bills }, { data: maint }] = await Promise.all([
+    supabase
+      .from("invoices")
+      .select("id,period,total,status,due_date")
+      .in("lease_id", leaseIds)
+      .in("status", ["issued", "verifying", "pending_review", "overdue"])
+      .order("due_date", { ascending: true })
+      .limit(5),
+    roomIds.length
+      ? supabase
+          .from("maintenance_requests")
+          .select("id,description,status")
+          .in("room_id", roomIds)
+          .order("created_at", { ascending: false })
+          .limit(1)
+      : Promise.resolve({ data: [] as { id: string; description: string | null; status: string }[] }),
+  ]);
   const outstanding = (bills ?? []).reduce((s, b) => s + Number(b.total ?? 0), 0);
   const nextDue = bills?.[0]?.due_date ?? null;
-
-  const roomIds = (await supabase.from("leases").select("room_id").in("id", leaseIds)).data?.map((l) => l.room_id) ?? [];
-  const { data: maint } = roomIds.length
-    ? await supabase.from("maintenance_requests").select("id,description,status").in("room_id", roomIds).order("created_at", { ascending: false }).limit(1)
-    : { data: [] as { id: string; description: string | null; status: string }[] };
 
   return (
     <div className="space-y-4 pb-20">

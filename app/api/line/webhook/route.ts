@@ -35,8 +35,25 @@ async function lineDisplayName(userId: string): Promise<string> {
   return profile.displayName?.trim().slice(0, 120) || "ผู้เช่าจาก LINE";
 }
 
+function isUidCommand(text: string): boolean {
+  return /^(?:\/?uid|ตรวจสอบ\s*uid|เช็ค\s*uid|ขอ\s*uid)$/i.test(text.trim());
+}
+
 async function handleEvent(admin: ReturnType<typeof createAdminClient>, event: LineMessageEvent) {
   if (event.type !== "message" || event.message?.type !== "text" || !event.replyToken) return;
+  const text = event.message.text ?? "";
+  if (isUidCommand(text)) {
+    if (event.source?.type !== "user") {
+      await reply(event.replyToken, "เพื่อความเป็นส่วนตัว กรุณาส่งคำสั่งตรวจสอบ UID ในแชทส่วนตัวกับ LINE OA");
+      return;
+    }
+    if (!event.source.userId) {
+      await reply(event.replyToken, "LINE ไม่ได้ส่ง UID มาให้ กรุณาลองใหม่ในแชทส่วนตัวกับ LINE OA");
+      return;
+    }
+    await reply(event.replyToken, `LINE User ID ของคุณคือ:\n${event.source.userId}`);
+    return;
+  }
   if (event.source?.type !== "user") {
     await reply(event.replyToken, "กรุณาส่งรหัสยืนยันในแชทส่วนตัวกับ LINE Bot ของหอพัก");
     return;
@@ -45,7 +62,7 @@ async function handleEvent(admin: ReturnType<typeof createAdminClient>, event: L
     await reply(event.replyToken, "LINE ยังไม่ส่งข้อมูลยืนยันตัวตนให้ Bot กรุณาอนุญาตการเข้าถึงข้อมูลโปรไฟล์ของ LINE OA แล้วลองใหม่ หรือติดต่อผู้ดูแล");
     return;
   }
-  const code = event.message.text ?? "";
+  const code = text;
   const displayName = await lineDisplayName(event.source.userId);
   const result = await acceptInviteCodeFromLine(admin, {
     code,
