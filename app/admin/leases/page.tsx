@@ -39,6 +39,7 @@ export default async function Page() {
      due_day: number;
      deposit: number;
      status: string;
+     drive_folders: { folder: string } | null;
      rooms: { room_no: string } | null;
      lease_tenants: {
        profile_id: string;
@@ -50,7 +51,7 @@ export default async function Page() {
    const { data: leasesRaw } = await supabase
      .from("leases")
      .select(
-       "id,room_id,start_date,end_date,rent_amount,water_fee,electric_rate,due_day,deposit,status, rooms(room_no), lease_tenants(profile_id, is_primary, profiles(display_name, phone))",
+       "id,room_id,start_date,end_date,rent_amount,water_fee,electric_rate,due_day,deposit,status,drive_folders, rooms(room_no), lease_tenants(profile_id, is_primary, profiles(display_name, phone))",
      )
      .order("start_date", { ascending: false });
    const leases = (leasesRaw ?? []) as unknown as LeaseRow[];
@@ -107,6 +108,11 @@ export default async function Page() {
                 <p className="text-sm text-gray-500">
                   น้ำ {l.water_fee} · ไฟ {l.electric_rate}/หน่วย · ประกัน {l.deposit}
                 </p>
+                {l.drive_folders?.folder && (
+                  <a href={`https://drive.google.com/drive/folders/${encodeURIComponent(l.drive_folders.folder)}`} target="_blank" rel="noreferrer" className="mt-1 inline-block text-sm font-semibold text-blue-700 hover:underline">
+                    เปิดโฟลเดอร์ Google Drive (สลิป / เอกสาร)
+                  </a>
+                )}
                 <div className="mt-2">
                   <p className="text-sm font-semibold">ผู้เช่า ({tenants.length})</p>
                   {tenants.length === 0 ? (

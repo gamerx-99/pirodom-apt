@@ -57,6 +57,7 @@ export function CreateLeaseForm({ rooms }: { rooms: RoomPrice[] }) {
       </div>
       {state && !state.ok && <p className="col-span-2 text-sm text-red-600 sm:col-span-4">{state.error}</p>}
       {state?.ok && <p className="col-span-2 text-sm text-emerald-700 sm:col-span-4">สร้างสัญญาเรียบร้อยแล้ว: สามารถออกรหัสยืนยันให้ผู้เช่าได้ด้านล่าง</p>}
+      {state?.warning && <p role="alert" className="col-span-2 text-sm text-amber-800 sm:col-span-4">{state.warning}</p>}
     </form>
   );
 }

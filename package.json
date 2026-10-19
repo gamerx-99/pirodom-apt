@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "node supabase/tests/rls.test.mjs && node supabase/tests/path-a.test.mjs && node supabase/tests/path-b.test.mjs && npm run test:rooms && npm run test:billing && npm run test:line-invites && npm run test:payments && node --test tests/maintenance-notifications.test.mjs",
+    "test": "node supabase/tests/rls.test.mjs && node supabase/tests/path-a.test.mjs && node supabase/tests/path-b.test.mjs && npm run test:rooms && npm run test:billing && npm run test:line-invites && npm run test:payments && node --test tests/maintenance-notifications.test.mjs tests/google-drive.test.mjs",
     "test:payments": "node --test tests/payment-recovery.test.mjs tests/promptpay.test.mjs tests/line-push.test.mjs tests/admin-messages.test.mjs",
     "test:billing": "node --test tests/billing-actions.test.mjs",
     "test:line-invites": "node --test tests/line-invites.test.mjs && node supabase/tests/invite-codes.test.mjs",

@@ -25,10 +25,10 @@ const GROUPS: { title: string; desc: string; fields: { key: SettingKey; label: s
   },
   {
     title: "Google Drive",
-    desc: "เชื่อมโฟลเดอร์ Google Drive: API Key อ่านไฟล์ที่แชร์เป็นสาธารณะได้เท่านั้น ถ้าต้องอัปโหลดไฟล์ต้องใช้ Service Account แทน",
+    desc: "สร้างโฟลเดอร์ของแต่ละสัญญาอัตโนมัติเมื่อเปิดสัญญาใหม่ (มีโฟลเดอร์สลิปและเอกสารข้างใน)",
     fields: [
-      { key: "GOOGLE_DRIVE_API_KEY", label: "API Key", hint: "สร้างที่ Google Cloud Console > Credentials แล้วเปิด Drive API" },
-      { key: "GOOGLE_DRIVE_FOLDER_ID", label: "Folder ID", hint: "ส่วนท้ายของลิงก์โฟลเดอร์ drive.google.com/drive/folders/<ID>" },
+      { key: "GOOGLE_SERVICE_ACCOUNT_JSON", label: "Service Account (ไฟล์ JSON)", hint: "Google Cloud Console > IAM > Service Accounts > Keys > Add key (JSON) เปิด Drive API แล้ววางเนื้อหาไฟล์ทั้งไฟล์" },
+      { key: "GOOGLE_DRIVE_FOLDER_ID", label: "Folder ID หลัก", hint: "ส่วนท้ายของลิงก์ drive.google.com/drive/folders/<ID> และต้องแชร์โฟลเดอร์นี้ให้อีเมล service account เป็นผู้แก้ไข" },
     ],
   },
   {

@@ -12,8 +12,10 @@ import {
   requireStaff,
   toNumberOrNull,
 } from "@/lib/phase1";
+import { createLeaseFolders } from "@/lib/google-drive";
+import { getSettings } from "@/lib/settings";
 
-type Result = { ok: boolean; error?: string; inviteCode?: string };
+type Result = { ok: boolean; error?: string; inviteCode?: string; warning?: string };
 
 const fail = (error: string): Result => ({ ok: false, error });
 
@@ -61,11 +63,27 @@ export async function createLease(_prev: Result | null, form: FormData): Promise
     }
     await admin.from("rooms").update({ status: "occupied" }).eq("id", room_id);
     await audit(admin, { actor_id: userId, action: "lease.create", table_name: "leases", record_id: data.id, after: { room_id, start_date, rent_amount: rent, due_day } });
+    const warning = await createDriveFolders(admin, data.id, room_id, start_date);
     revalidatePath("/admin/leases");
     revalidatePath("/admin/rooms");
-    return { ok: true };
+    return { ok: true, warning };
   } catch (e) {
     return fail(e instanceof Error ? e.message : "สร้างสัญญาไม่สำเร็จ");
+  }
+}
+
+// สร้างโฟลเดอร์ Drive ของสัญญา: สัญญาสร้างแล้วเสมอ ถ้า Drive ล้มเหลวคืนคำเตือนแทน error
+async function createDriveFolders(admin: ReturnType<typeof createAdminClient>, leaseId: string, roomId: string, startDate: string): Promise<string | undefined> {
+  const s = await getSettings();
+  if (!s.GOOGLE_SERVICE_ACCOUNT_JSON || !s.GOOGLE_DRIVE_FOLDER_ID) return undefined;
+  try {
+    const { data: room } = await admin.from("rooms").select("room_no").eq("id", roomId).maybeSingle();
+    const folders = await createLeaseFolders(s.GOOGLE_SERVICE_ACCOUNT_JSON, s.GOOGLE_DRIVE_FOLDER_ID, `ห้อง ${room?.room_no ?? "?"} · ${startDate}`);
+    const { error } = await admin.from("leases").update({ drive_folders: folders }).eq("id", leaseId);
+    if (error) return "สร้างโฟลเดอร์ใน Google Drive แล้ว แต่บันทึกรหัสโฟลเดอร์ไม่สำเร็จ";
+    return undefined;
+  } catch (e) {
+    return `สร้างสัญญาแล้ว แต่สร้างโฟลเดอร์ Google Drive ไม่สำเร็จ: ${e instanceof Error ? e.message : "ไม่ทราบสาเหตุ"}`;
   }
 }
 

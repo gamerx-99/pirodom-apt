@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { audit, requireStaff } from "@/lib/phase1";
+import { parseServiceAccount } from "@/lib/google-drive";
 import { promptPayPayload } from "@/lib/promptpay";
 import { SECRET_KEYS, SETTING_KEYS, type SettingKey } from "@/lib/settings";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -19,7 +20,11 @@ export async function saveSettings(_prev: Result | null, form: FormData): Promis
       const raw = form.get(key);
       if (typeof raw !== "string") continue;
       const value = raw.trim();
-      if (value.length > 1000) return { ok: false, error: `${key} ยาวเกินไป` };
+      // ไฟล์ JSON ของ service account ยาวราว 2–3 พันตัวอักษร
+      if (value.length > (key === "GOOGLE_SERVICE_ACCOUNT_JSON" ? 10000 : 1000)) return { ok: false, error: `${key} ยาวเกินไป` };
+      if (key === "GOOGLE_SERVICE_ACCOUNT_JSON" && !parseServiceAccount(value)) {
+        return { ok: false, error: "Service Account ต้องเป็นไฟล์ JSON ที่มี client_email และ private_key" };
+      }
       if (!value) {
         if (!SECRET_KEYS.includes(key)) clears.push(key);
         continue;
