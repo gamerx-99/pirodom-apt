@@ -138,7 +138,7 @@ export default async function Page({ params }: PageProps<"/liff/bills/[id]">) {
     <div className="space-y-4 pb-20">
       <Link href="/liff" className="text-sm font-semibold text-blue-700">← กลับหน้าหลัก</Link>
       <div>
-        <h1 className="text-xl font-bold text-gray-900">บิลห้อง {invoice.leases?.rooms?.room_no ?? "—"}</h1>
+        <h1 className="text-2xl font-bold text-slate-900">บิลห้อง {invoice.leases?.rooms?.room_no ?? "—"}</h1>
         <p className="text-sm text-gray-500">
           งวด {invoice.period.slice(0, 7)} · {invoice.issue_date ? `ออก ${formatDateTH(invoice.issue_date)} · ` : ""}
           ครบกำหนด {formatDateTH(invoice.due_date)}

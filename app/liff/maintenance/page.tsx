@@ -66,7 +66,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
   if (!isSupabaseConfigured()) {
     return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">แจ้งซ่อม</h1>
+        <h1 className="text-2xl font-bold text-slate-900">แจ้งซ่อม</h1>
         <EmptyState
           title="ยังไม่ได้เชื่อมฐานข้อมูล"
           desc="ฟอร์มแจ้งซ่อมจะใช้ได้เมื่อเชื่อม Supabase แล้ว"
@@ -220,7 +220,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
   if (!user) {
     return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">แจ้งซ่อม</h1>
+        <h1 className="text-2xl font-bold text-slate-900">แจ้งซ่อม</h1>
         <Card title="ยังไม่ได้ผูกบัญชี" desc="เปิดผ่าน LINE เพื่อยืนยันตัวตนก่อน">
           <p className="text-sm text-gray-500">
             ถ้ามีลิงก์เชิญจากผู้ดูแลหอพัก ให้กดลิงก์นั้นเพื่อผูกห้องก่อนแจ้งซ่อม
@@ -291,7 +291,7 @@ export default async function Page({ searchParams }: PageProps<"/liff/maintenanc
   return (
     <div className="space-y-4 pb-20">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">แจ้งซ่อม</h1>
+        <h1 className="text-2xl font-bold text-slate-900">แจ้งซ่อม</h1>
         <p className="text-sm text-gray-500">แจ้งปัญหาพร้อมรูป แล้วติดตามจนผู้ดูแลปิดงาน</p>
       </div>
 

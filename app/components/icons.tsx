@@ -14,6 +14,9 @@ const PATHS = {
   clock: "M12 7v5l3 3M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z",
   door: "M5 21V3h11v18M16 5h3v16M12 12h.01M3 21h18",
   logout: "M16 17l5-5-5-5M21 12H9M12 21H4V3h8",
+  home: "M3 11l9-8 9 8M5 9v12h14V9M10 21v-6h4v6",
+  phone: "M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2",
+  chevron: "M9 6l6 6-6 6",
 } as const;
 
 export type IconName = keyof typeof PATHS;

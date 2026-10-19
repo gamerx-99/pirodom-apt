@@ -100,12 +100,12 @@ export default function LiffLayout({ children }: LayoutProps<"/liff">) {
     };
   }, [liffId, router]);
 
-  if (state.status === "loading") return <p role="status" className="min-h-dvh bg-gray-50 p-6 text-gray-900">กำลังโหลด...</p>;
+  if (state.status === "loading") return <p role="status" className="min-h-dvh bg-[#f8f9ff] p-6 text-gray-900">กำลังโหลด...</p>;
   if (state.status === "error")
-    return <p role="alert" className="min-h-dvh bg-gray-50 p-6 text-gray-900">เปิดผ่าน LINE ไม่สำเร็จ: {state.message}</p>;
+    return <p role="alert" className="min-h-dvh bg-[#f8f9ff] p-6 text-gray-900">เปิดผ่าน LINE ไม่สำเร็จ: {state.message}</p>;
   if (state.status === "demo")
     return (
-      <div className="min-h-dvh w-full bg-gray-50 text-gray-900">
+      <div className="min-h-dvh w-full bg-[#f8f9ff] text-slate-900">
         <div className="mx-auto w-full max-w-3xl px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-24">
           <p className="mb-3 rounded-xl border border-dashed border-amber-300 bg-amber-50 px-4 py-2 text-sm text-amber-900">
             <span className="font-semibold">โหมดตัวอย่าง</span>: ยังไม่ได้กำหนดค่า LIFF ID
@@ -116,7 +116,7 @@ export default function LiffLayout({ children }: LayoutProps<"/liff">) {
       </div>
     );
   return (
-    <div className="min-h-dvh w-full bg-gray-50 text-gray-900">
+    <div className="min-h-dvh w-full bg-[#f8f9ff] text-slate-900">
       <div className="mx-auto w-full max-w-3xl px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-24">{children}</div>
     </div>
   );

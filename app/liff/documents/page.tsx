@@ -29,7 +29,7 @@ export default async function Page() {
     return (
       <div className="space-y-4 pb-20">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">เอกสารของฉัน</h1>
+          <h1 className="text-2xl font-bold text-slate-900">เอกสารของฉัน</h1>
           <p className="text-sm text-gray-500">สัญญาและเอกสารแนบ · เปิดได้เฉพาะสัญญาของห้องที่อยู่</p>
         </div>
         <DemoBanner text="ไฟล์จริงจะเปิดผ่าน Signed URL เมื่อเชื่อม Supabase แล้ว" />
@@ -46,7 +46,7 @@ export default async function Page() {
   if (!user) {
     return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">เข้าสู่ระบบด้วย LINE</h1>
+        <h1 className="text-2xl font-bold text-slate-900">เข้าสู่ระบบด้วย LINE</h1>
         <EmptyState
           title="ยังไม่ได้ผูกบัญชี"
           desc="เปิดหน้านี้ผ่าน LINE แล้วยืนยันตัวตน หากเพิ่งย้ายเข้าให้กดลิงก์เชิญจากผู้ดูแลก่อน"
@@ -66,7 +66,7 @@ export default async function Page() {
   if (active.length === 0) {
     return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">เอกสารของฉัน</h1>
+        <h1 className="text-2xl font-bold text-slate-900">เอกสารของฉัน</h1>
         <EmptyState
           title="ยังไม่มีห้องที่ผูกอยู่"
           desc="ถ้าเพิ่งย้ายเข้าใหม่ ให้ขอลิงก์เชิญจากผู้ดูแลอีกครั้ง (ลิงก์ใช้ได้ครั้งเดียว 7 วัน)"
@@ -101,7 +101,7 @@ export default async function Page() {
   return (
     <div className="space-y-4 pb-20">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">เอกสารของฉัน</h1>
+        <h1 className="text-2xl font-bold text-slate-900">เอกสารของฉัน</h1>
         <p className="text-sm text-gray-500">
           ห้อง {[...roomByLease.values()].join(", ")} · เห็นเฉพาะเอกสารของสัญญาที่อยู่
         </p>

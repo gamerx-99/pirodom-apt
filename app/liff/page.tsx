@@ -2,27 +2,26 @@
  export const instant = false;
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { Badge, Card } from "@/app/components/ui";
 import LiffNav from "./components/nav";
 import { INVOICE_STATUS_LABEL, MAINT_STATUS_LABEL } from "@/lib/mock";
-import { formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib/format";
+import { formatDateTH, formatTHB, invoiceStatusForDisplay, todayTH } from "@/lib/format";
+import { Icon, type IconName } from "@/app/components/icons";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function Page() {
   if (!isSupabaseConfigured()) {
+    await connection(); // วันนี้ (todayTH) ต้องคิดตอน request ไม่ใช่ตอน prerender
     return (
-      <div className="space-y-4 pb-20">
-        <div>
-          <p className="text-sm text-gray-500">โหมดตัวอย่าง: ยังไม่ได้เชื่อมต่อระบบฐานข้อมูล</p>
-          <h1 className="text-xl font-bold text-gray-900">สวัสดี · ห้อง 101</h1>
-        </div>
-        <Card title="ยอดค้างชำระ" desc="ครบกำหนด 30 ก.ย. 2569">
-          <p className="text-3xl font-bold text-gray-900">{formatTHB(3850)}</p>
-          <p className="mt-1 text-sm text-gray-500">ขอรหัสยืนยันจากผู้ดูแล แล้วส่งรหัสหา LINE Bot เพื่อผูกห้องก่อนเข้าสู่ระบบ</p>
-        </Card>
-        <LiffNav />
-      </div>
+      <TenantHome
+        name="ผู้เช่าตัวอย่าง"
+        rooms="101"
+        outstanding={3850}
+        bills={[{ id: "demo", period: "2026-09-01", total: 3850, status: "issued", due_date: "2026-09-30" }]}
+        maint={{ description: "แอร์มีน้ำหยด", status: "in_progress" }}
+      />
     );
   }
 
@@ -154,60 +153,115 @@ export default async function Page() {
       : Promise.resolve({ data: [] as { id: string; description: string | null; status: string }[] }),
   ]);
   const outstanding = (bills ?? []).reduce((s, b) => s + Number(b.total ?? 0), 0);
-  const nextDue = bills?.[0]?.due_date ?? null;
+  return (
+    <TenantHome
+      name={profile?.display_name ?? "ผู้เช่า"}
+      rooms={roomNos}
+      outstanding={outstanding}
+      bills={(bills ?? []).map((b) => ({ id: b.id, period: String(b.period), total: Number(b.total), status: b.status, due_date: b.due_date }))}
+      maint={maint?.[0] ? { description: maint[0].description, status: maint[0].status } : null}
+    />
+  );
+}
 
+type HomeBill = { id: string; period: string; total: number; status: string; due_date: string };
+
+// หน้าหลักผู้เช่าตาม mockup ui/line_liff_dashboard: หัวห้อง, การ์ดยอดค้าง, ทางลัด, บิล, งานซ่อม
+function TenantHome({ name, rooms, outstanding, bills, maint }: {
+  name: string; rooms: string; outstanding: number; bills: HomeBill[];
+  maint: { description: string | null; status: string } | null;
+}) {
+  const today = todayTH();
+  const first = bills[0];
+  const overdue = first && invoiceStatusForDisplay(first.status, first.due_date, today) === "overdue";
+  const quick: [string, string, IconName][] = [
+    ["/liff/meters", "มิเตอร์ไฟ-น้ำ", "meter"],
+    ["/liff/documents", "สัญญาเช่า", "contract"],
+    ["/liff/maintenance", "แจ้งซ่อม", "wrench"],
+  ];
   return (
     <div className="space-y-4 pb-20">
-      <div>
-        <h1 className="text-xl font-bold text-gray-900">สวัสดี {profile?.display_name ?? "ผู้เช่า"} · ห้อง {roomNos}</h1>
-      </div>
-      <Card title="ยอดค้างชำระ" desc={nextDue ? `ครบกำหนด ${nextDue}` : "ไม่มียอดค้าง"}>
-        <p className="text-3xl font-bold text-gray-900">{formatTHB(outstanding)}</p>
-        {bills && bills.length > 0 ? (
-          <Link href={`/liff/bills/${bills[0].id}`} className="mt-3 block rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700">
-            ดูบิลและชำระเงิน
-          </Link>
-        ) : (
-          <p className="mt-1 text-sm text-emerald-700">ไม่มีบิลค้าง (ชำระครบถ้วนแล้ว)</p>
+      <header className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white"><Icon name="building" /></span>
+          <div>
+            <p className="text-lg font-bold text-slate-900">ระบบผู้เช่า</p>
+            <p className="text-xs text-slate-500">สวัสดี {name}</p>
+          </div>
+        </div>
+        <span className="flex items-center gap-1.5 rounded-xl bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white"><Icon name="door" className="h-4 w-4" />ห้อง {rooms}</span>
+      </header>
+
+      <section className={`overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ${overdue ? "ring-rose-200" : "ring-slate-200"}`}>
+        {overdue && (
+          <p className="flex items-center gap-2 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700"><Icon name="alert" className="h-4 w-4" />เกินกำหนดชำระแล้ว · ครบกำหนด {formatDateTH(first.due_date)}</p>
         )}
-      </Card>
-      <Card title="บิลของฉัน" desc="เฉพาะบิลที่ยังไม่ชำระ">
-        {(bills ?? []).length === 0 ? (
-          <p className="text-sm text-gray-400">ยังไม่มีบิลรอชำระ</p>
+        <div className="p-4">
+          <p className="text-sm text-slate-500">ยอดค้างชำระปัจจุบัน</p>
+          <p className="mt-1 text-4xl font-bold tabular-nums text-slate-900">{formatTHB(outstanding)}</p>
+          {first ? (
+            <>
+              {!overdue && <p className="mt-1 text-sm text-slate-500">ครบกำหนด {formatDateTH(first.due_date)}</p>}
+              <Link href={`/liff/bills/${first.id}`} className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3 text-base font-semibold text-white hover:bg-blue-800">
+                <Icon name="receipt" />ดูบิลและชำระเงิน
+              </Link>
+            </>
+          ) : (
+            <p className="mt-2 flex items-center gap-1.5 text-sm font-medium text-emerald-700"><Icon name="check" className="h-4 w-4" />ชำระครบแล้ว ไม่มีบิลค้าง</p>
+          )}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-2 text-sm font-semibold text-slate-600">ทางลัด</h2>
+        <div className="grid grid-cols-4 gap-2">
+          {quick.map(([href, label, icon]) => (
+            <Link key={href} href={href} className="flex flex-col items-center gap-1.5 rounded-2xl bg-white p-3 text-center text-xs font-medium text-slate-700 ring-1 ring-slate-200 hover:ring-blue-300">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-700"><Icon name={icon} /></span>
+              {label}
+            </Link>
+          ))}
+          <a href="tel:053276631" className="flex flex-col items-center gap-1.5 rounded-2xl bg-white p-3 text-center text-xs font-medium text-slate-700 ring-1 ring-slate-200 hover:ring-blue-300">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-700"><Icon name="phone" /></span>
+            ติดต่อหอพัก
+          </a>
+        </div>
+      </section>
+
+      <Card title="บิลที่ยังไม่ชำระ">
+        {bills.length === 0 ? (
+          <p className="text-sm text-slate-500">ยังไม่มีบิลรอชำระ</p>
         ) : (
-          <ul className="space-y-2 text-sm">
-            {bills!.map((b) => (
-              <li key={b.id} className="flex items-center justify-between gap-2">
-                <Link href={`/liff/bills/${b.id}`} className="hover:underline">
-                  {String(b.period).slice(0, 7)} · {formatTHB(Number(b.total))}
-                </Link>
-                <Badge tone={invoiceStatusForDisplay(b.status, b.due_date, todayTH()) === "overdue" ? "red" : "amber"}>
-                  {INVOICE_STATUS_LABEL[invoiceStatusForDisplay(b.status, b.due_date, todayTH()) as keyof typeof INVOICE_STATUS_LABEL] ?? b.status}
-                </Badge>
-              </li>
-            ))}
+          <ul className="space-y-2">
+            {bills.map((b) => {
+              const st = invoiceStatusForDisplay(b.status, b.due_date, today);
+              return (
+                <li key={b.id}>
+                  <Link href={`/liff/bills/${b.id}`} className="flex items-center gap-3 rounded-xl p-3 ring-1 ring-slate-200 hover:ring-blue-300">
+                    <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${st === "overdue" ? "bg-rose-50 text-rose-600" : "bg-amber-50 text-amber-600"}`}><Icon name="receipt" /></span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-semibold text-slate-900">งวด {b.period.slice(0, 7)}</span>
+                      <span className="block text-xs text-slate-500">ครบกำหนด {formatDateTH(b.due_date)}</span>
+                    </span>
+                    <span className="text-right">
+                      <span className="block font-bold tabular-nums text-slate-900">{formatTHB(b.total)}</span>
+                      <Badge tone={st === "overdue" ? "red" : "amber"}>{INVOICE_STATUS_LABEL[st as keyof typeof INVOICE_STATUS_LABEL] ?? b.status}</Badge>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )}
       </Card>
-      <Card title="ทางลัด">
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <Link href="/liff/meters" className="rounded-xl bg-gray-50 p-3 text-center">ประวัติมิเตอร์</Link>
-          <Link href="/liff/documents" className="rounded-xl bg-gray-50 p-3 text-center">เอกสาร</Link>
-          <Link href="/liff/maintenance" className="rounded-xl bg-gray-50 p-3 text-center">แจ้งซ่อม</Link>
-          {bills?.[0] ? (
-            <Link href={`/liff/bills/${bills[0].id}`} className="rounded-xl bg-gray-50 p-3 text-center">บิลล่าสุด</Link>
-          ) : (
-            <span className="rounded-xl bg-gray-50 p-3 text-center text-gray-400">ยังไม่มีบิล</span>
-          )}
-        </div>
-      </Card>
-      <Card title="งานซ่อมล่าสุด">
-        {!maint || maint.length === 0 ? (
-          <p className="text-sm text-gray-400">ยังไม่มีงานซ่อม</p>
+
+      <Card title="งานแจ้งซ่อมล่าสุด" action={<Link href="/liff/maintenance" className="text-sm font-semibold text-blue-700">ดูทั้งหมด</Link>}>
+        {!maint ? (
+          <p className="text-sm text-slate-500">ยังไม่มีงานซ่อม</p>
         ) : (
-          <p className="flex items-center justify-between text-sm">
-            <span>{maint[0].description ?? "งานซ่อม"}</span>
-            <Badge tone="amber">{MAINT_STATUS_LABEL[maint[0].status as keyof typeof MAINT_STATUS_LABEL] ?? maint[0].status}</Badge>
+          <p className="flex items-center justify-between gap-2 text-sm">
+            <span className="flex items-center gap-2 text-slate-800"><Icon name="wrench" className="h-4 w-4 text-blue-700" />{maint.description ?? "งานซ่อม"}</span>
+            <Badge tone="amber">{MAINT_STATUS_LABEL[maint.status as keyof typeof MAINT_STATUS_LABEL] ?? maint.status}</Badge>
           </p>
         )}
       </Card>

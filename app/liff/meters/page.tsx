@@ -24,7 +24,7 @@ export default async function Page() {
     return (
       <div className="space-y-4 pb-20">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">ประวัติมิเตอร์</h1>
+          <h1 className="text-2xl font-bold text-slate-900">ประวัติมิเตอร์</h1>
           <p className="text-sm text-gray-500">โหมดตัวอย่าง: ยังไม่ได้เชื่อมต่อฐานข้อมูล</p>
         </div>
         <EmptyState
@@ -43,7 +43,7 @@ export default async function Page() {
   if (!user) {
     return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">ประวัติมิเตอร์</h1>
+        <h1 className="text-2xl font-bold text-slate-900">ประวัติมิเตอร์</h1>
         <Card title="ยังไม่ได้ผูกบัญชี" desc="เปิดผ่าน LINE เพื่อยืนยันตัวตนก่อน">
           <p className="text-sm text-gray-500">
             ถ้ามีลิงก์เชิญจากผู้ดูแลหอพัก ให้กดลิงก์นั้นเพื่อผูกห้องก่อนดูข้อมูล
@@ -67,7 +67,7 @@ export default async function Page() {
   if (rooms.length === 0) {
     return (
       <div className="space-y-4 pb-20">
-        <h1 className="text-xl font-bold text-gray-900">ประวัติมิเตอร์</h1>
+        <h1 className="text-2xl font-bold text-slate-900">ประวัติมิเตอร์</h1>
         <EmptyState
           title="ยังไม่มีห้องที่ผูกอยู่"
           desc="ถ้าเพิ่งย้ายเข้าหรือเปลี่ยนเครื่อง ให้ขอลิงก์เชิญจากผู้ดูแลอีกครั้ง (ลิงก์ใช้ได้ครั้งเดียว 7 วัน)"
@@ -108,7 +108,7 @@ export default async function Page() {
   return (
     <div className="space-y-4 pb-20">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">ประวัติมิเตอร์</h1>
+        <h1 className="text-2xl font-bold text-slate-900">ประวัติมิเตอร์</h1>
         <p className="text-sm text-gray-500">
           ห้อง {roomNos} · ดูได้เฉพาะงวดที่อยู่ในช่วงสัญญาของคุณ
         </p>
